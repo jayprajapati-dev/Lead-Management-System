@@ -1,6 +1,6 @@
 # Lead-Management-System
 <p align="center">
-  A powerful and modern <strong>Customer Relationship Management (CRM)</strong> web app designed for businesses to manage leads, follow-ups, and conversions.
+  A powerful and modern <strong>Customer Relationship Management (CRM)</strong> web app designed for businesses to manage leads, follow-ups, and conversions.this project enables streamlined lead tracking, user management, and data-driven business decisions through a modern and intuitive interface.
 </p>
 
 <p align="center">
@@ -21,14 +21,15 @@ The **Lead Management CRM System** is built for sales teams, agencies, and telec
 
 ---
 
-## 📌 Key Features
+## 🚀 Key Features
 
-- 🔐 Secure Login & Registration
-- 📊 Admin Dashboard with dynamic stats (Leads, Follow-ups, Conversions)
-- 📁 Lead Listing (View, Status, Actions)
-- ⏰ Follow-up Reminders (coming soon)
-- 📱 Fully Responsive Design using Bootstrap 5
-- 🧠 Modular PHP structure for easy customization
+- 🔹 **Lead Management**: Create, update, and organize leads with full control.
+- 🔹 **User Authentication**: Secure login and session management.
+- 🔹 **Admin Panel**: Manage users, roles, and system settings.
+- 🔹 **Dashboard Analytics**: Visual charts for conversions, sources, and KPIs.
+- 🔹 **Responsive UI**: Optimized for mobile, tablet, and desktop using Bootstrap.
+- 🔹 **Reusable Layouts**: Modular headers, sidebars, footers across all pages.
+- 🔹 **Dark Mode Support**: Switch between light and dark themes effortlessly.
 
 ---
 
@@ -40,17 +41,3 @@ The **Lead Management CRM System** is built for sales teams, agencies, and telec
 | Backend    | PHP (Procedural)   |
 | Database   | MySQL              |
 | Tools      | XAMPP / phpMyAdmin |
-
----
-
-## 🚀 Quick Start
-
-### 🔧 Prerequisites
-
-- XAMPP / WAMP installed
-- Git / VS Code
-<<<<<<< HEAD
-- Browser (Chrome recommended)
-=======
-- Browser (Chrome recommended)
->>>>>>> 70b43abf45d71a7f8add23693be8d0a140da3a65
