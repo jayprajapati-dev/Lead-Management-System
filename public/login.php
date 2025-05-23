@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             // Get user by email
             $stmt = executeQuery(
-                "SELECT id, name, role, email, password, status, is_locked, lock_until FROM users WHERE email = ?",
+                "SELECT id, email, password, status, is_locked, lock_until FROM users WHERE email = ?",
                 [$email]
             );
             $result = $stmt->get_result();
@@ -58,8 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             
                             // Set session variables
                             $_SESSION['user_id'] = $user['id'];
-                            $_SESSION['user_name'] = $user['name'];
-                            $_SESSION['user_role'] = $user['role'];
+                            $_SESSION['user_email'] = $user['email'];
                             $_SESSION['last_activity'] = time();
                             
                             // Handle remember me

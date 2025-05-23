@@ -48,3 +48,32 @@
 [23-May-2025 14:20:19 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
 [23-May-2025 14:20:27 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
 [23-May-2025 14:20:27 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 14:28:27 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:28:27 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:28:43 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:28:43 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:32:08 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:32:08 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:32:13 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:32:13 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:10 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:10 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:20 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:20 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:27 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:27 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:33 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:33 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:40 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:34:40 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:36:02 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:36:02 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:36:13 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:36:13 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 14:47:23 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:55:59 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:55:59 Europe/Berlin] Login error: Unknown column 'name' in 'field list'
+[23-May-2025 15:00:53 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 15:00:53 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 15:01:02 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 15:01:02 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine

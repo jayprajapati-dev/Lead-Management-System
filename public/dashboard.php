@@ -6,9 +6,8 @@ if (!isLoggedIn()) {
     redirect('index.php');
 }
 
-// Get user's name and role from session
-$userName = $_SESSION['user_name'] ?? 'Guest'; // Provide a default name if not set
-$userRole = $_SESSION['user_role'] ?? 'User'; // Provide a default role if not set
+// Get user's email from session
+$userEmail = $_SESSION['user_email'] ?? 'Guest'; // Provide a default email if not set
 
 // Get lead statistics
 $stats = []; // Initialize $stats as an empty array
@@ -98,8 +97,7 @@ try {
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Dashboard</h2>
                     <div class="user-info">
-                        Welcome, <?php echo htmlspecialchars($userName); ?> 
-                        <span class="badge bg-primary"><?php echo htmlspecialchars($userRole); ?></span>
+                        Welcome, <?php echo htmlspecialchars($userEmail); ?>
                     </div>
                 </div>
 
