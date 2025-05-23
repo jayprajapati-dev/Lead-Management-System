@@ -50,8 +50,3 @@ The **Lead Management CRM System** is built for sales teams, agencies, and telec
 - XAMPP / WAMP installed
 - Git / VS Code
 - Browser (Chrome recommended)
-
-### 📥 Installation
-
-```bash
-git clone https://github.com/your-username/lead-crm-system.git
