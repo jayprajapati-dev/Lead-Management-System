@@ -56,7 +56,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo SITE_URL; ?>/public/pricing.php">Pricing</a>
+                    <a class="nav-link" href="<?php echo SITE_URL; ?>/pricing.php">Pricing</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Blog</a>
@@ -70,8 +70,6 @@
                 <button class="btn btn-outline-secondary me-2" type="button" id="searchButton">
                     <i class="fas fa-search"></i>
                 </button>
-                <!-- Schedule Demo Button -->
-                <a href="#" class="btn btn-outline-primary me-2">Schedule Demo</a>
                 <!-- Login Button -->
                 <a href="<?php echo SITE_URL; ?>/login.php" class="btn btn-primary">Login</a>
             </div>

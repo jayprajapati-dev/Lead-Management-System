@@ -8,7 +8,7 @@ require_once '../includes/config.php';
 
 // Check if user is already logged in
 if (isLoggedIn()) {
-    header('Location: dashboard.php');
+    header('Location: ../dashboard/dashboard.php');
     exit();
 }
 
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             );
                             
                             // Redirect to dashboard
-                            header('Location: dashboard.php');
+                            header('Location: ../dashboard/dashboard.php');
                             exit();
                         }
                     } else {
@@ -137,7 +137,7 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
                     [$token]
                 );
                 
-                header('Location: dashboard.php');
+                header('Location: ../dashboard/dashboard.php');
                 exit();
             }
         }

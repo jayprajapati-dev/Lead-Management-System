@@ -1,5 +1,5 @@
 <?php
-// Redirect to the public login page
-header('Location: public/login.php');
+// Redirect to the public index page
+header('Location: public/index.php');
 exit;
 ?> 

@@ -1,75 +1,12 @@
 <?php
 $current_page = basename($_SERVER['PHP_SELF']);
 ?>
-<style>
-    .sidebar {
-        background-color: var(--sidebar-bg);
-        min-height: calc(100vh - 56px);
-        padding: 1rem 0;
-        position: sticky;
-        top: 56px;
-    }
-    
-    .sidebar .nav-link {
-        color: rgba(255, 255, 255, 0.8);
-        padding: 0.75rem 1.5rem;
-        display: flex;
-        align-items: center;
-        transition: all 0.3s;
-    }
-    
-    .sidebar .nav-link:hover {
-        color: #ffffff;
-        background-color: rgba(255, 255, 255, 0.1);
-    }
-    
-    .sidebar .nav-link.active {
-        color: #ffffff;
-        background-color: var(--primary-color);
-    }
-    
-    .sidebar .nav-link i {
-        width: 20px;
-        margin-right: 10px;
-    }
-    
-    .sidebar .nav-divider {
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin: 0.5rem 0;
-    }
-    
-    .sidebar-heading {
-        color: rgba(255, 255, 255, 0.4);
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        padding: 0.5rem 1.5rem;
-        margin-top: 1rem;
-    }
-    
-    /* Mobile sidebar */
-    @media (max-width: 991.98px) {
-        .sidebar {
-            position: fixed;
-            top: 56px;
-            left: -100%;
-            width: 100%;
-            height: calc(100vh - 56px);
-            z-index: 1000;
-            transition: all 0.3s;
-        }
-        
-        .sidebar.show {
-            left: 0;
-        }
-    }
-    
-    /* Dark mode styles */
-    .dark-mode .sidebar {
-        background-color: #2d2d2d;
-    }
-</style>
 
 <nav class="sidebar">
+    <div class="sidebar-header text-center mb-4">
+        <img src="/path/to/your/logo.png" alt="Lead Management Logo" class="img-fluid mb-2">
+        <h4>LEAD MANAGEMENT</h4>
+    </div>
     <ul class="nav flex-column">
         <li class="nav-item">
             <a class="nav-link <?php echo $current_page === 'dashboard.php' ? 'active' : ''; ?>" href="/dashboard/dashboard.php">
@@ -117,27 +54,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </a>
         </li>
     </ul>
+    <div class="free-trial-info text-center mt-4">
+        Free Trial : 6 Day Left<br>
+        <a href="#" class="text-light">click to upgrade</a>
+    </div>
 </nav>
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Mobile sidebar toggle
-    const sidebarToggle = document.querySelector('.sidebar-toggle');
-    const sidebar = document.querySelector('.sidebar');
-    
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('show');
-        });
-    }
-    
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener('click', function(event) {
-        if (window.innerWidth < 992) {
-            if (!sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
-                sidebar.classList.remove('show');
-            }
-        }
-    });
-});
-</script> 
+<?php // Removed the script block ?> 
