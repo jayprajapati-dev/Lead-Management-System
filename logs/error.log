@@ -1,0 +1,50 @@
+[23-May-2025 12:11:48 Europe/Berlin] PHP Warning:  Undefined variable $error in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 361
+[23-May-2025 12:11:48 Europe/Berlin] PHP Warning:  Undefined variable $success in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 368
+[23-May-2025 12:12:52 Europe/Berlin] PHP Warning:  Undefined variable $error in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 361
+[23-May-2025 12:12:52 Europe/Berlin] PHP Warning:  Undefined variable $success in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 368
+[23-May-2025 12:12:55 Europe/Berlin] PHP Warning:  Undefined variable $error in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 361
+[23-May-2025 12:12:55 Europe/Berlin] PHP Warning:  Undefined variable $success in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 368
+[23-May-2025 12:13:31 Europe/Berlin] PHP Warning:  Undefined variable $error in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 361
+[23-May-2025 12:13:31 Europe/Berlin] PHP Warning:  Undefined variable $success in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 368
+[23-May-2025 12:14:01 Europe/Berlin] PHP Warning:  Undefined variable $error in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 363
+[23-May-2025 12:14:01 Europe/Berlin] PHP Warning:  Undefined variable $success in C:\xampp\htdocs\Lead-Management-System\public\index.php on line 370
+[23-May-2025 12:43:32 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:43:32 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:45:30 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:45:30 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:46:07 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:46:07 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:46:42 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:46:42 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 12:59:34 Europe/Berlin] Database connection error: No connection could be made because the target machine actively refused it
+[23-May-2025 12:59:53 Europe/Berlin] Database connection error: No connection could be made because the target machine actively refused it
+[23-May-2025 13:05:06 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 13:05:06 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 13:05:35 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 13:05:35 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[23-May-2025 13:11:43 Europe/Berlin] PHP Warning:  Undefined array key "is_trial" in C:\xampp\htdocs\Lead-Management-System\public\register.php on line 421
+[23-May-2025 13:11:43 Europe/Berlin] PHP Warning:  Undefined array key "is_trial" in C:\xampp\htdocs\Lead-Management-System\public\register.php on line 428
+[23-May-2025 13:11:43 Europe/Berlin] PHP Warning:  Undefined array key "is_trial" in C:\xampp\htdocs\Lead-Management-System\public\register.php on line 429
+[23-May-2025 13:11:43 Europe/Berlin] PHP Warning:  Undefined array key "is_trial" in C:\xampp\htdocs\Lead-Management-System\public\register.php on line 446
+[23-May-2025 13:11:43 Europe/Berlin] PHP Warning:  Undefined array key "is_trial" in C:\xampp\htdocs\Lead-Management-System\public\register.php on line 459
+[23-May-2025 13:11:43 Europe/Berlin] PHP Warning:  Undefined array key "is_trial" in C:\xampp\htdocs\Lead-Management-System\public\register.php on line 461
+[23-May-2025 14:14:38 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[23-May-2025 14:14:38 Europe/Berlin] Password reset error: Unknown column 'name' in 'field list'
+[23-May-2025 14:16:58 Europe/Berlin] PHP Warning:  Undefined array key "user_name" in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 10
+[23-May-2025 14:16:58 Europe/Berlin] PHP Warning:  Undefined array key "user_role" in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 11
+[23-May-2025 14:16:58 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 14:16:58 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 86
+[23-May-2025 14:16:58 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 87
+[23-May-2025 14:16:58 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 145
+[23-May-2025 14:16:58 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 145
+[23-May-2025 14:18:46 Europe/Berlin] PHP Warning:  Undefined array key "user_name" in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 10
+[23-May-2025 14:18:46 Europe/Berlin] PHP Warning:  Undefined array key "user_role" in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 11
+[23-May-2025 14:18:46 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 14:18:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 86
+[23-May-2025 14:18:46 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 87
+[23-May-2025 14:18:46 Europe/Berlin] PHP Warning:  Undefined variable $stats in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 145
+[23-May-2025 14:18:46 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\public\dashboard.php on line 145
+[23-May-2025 14:20:19 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 14:20:19 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 14:20:27 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[23-May-2025 14:20:27 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine

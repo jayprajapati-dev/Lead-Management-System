@@ -1,0 +1,41 @@
+body {
+    padding-top: 56px; /* Adjust for fixed navbar height */
+}
+
+#hero {
+    background-color: #f8f9fa;
+}
+
+#features .feature-item img {
+    width: 80px;
+    height: 80px;
+}
+
+#testimonials .carousel-item {
+    padding: 30px;
+}
+
+#pricing .card {
+    border: none;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+#pricing .card-title {
+    color: #007bff;
+}
+
+footer a {
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 2.5rem;
+    }
+
+    #hero .btn {
+        display: block;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+} 
