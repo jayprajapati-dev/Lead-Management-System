@@ -41,3 +41,11 @@ The **Lead Management CRM System** is built for sales teams, agencies, and telec
 | Backend    | PHP (Procedural)   |
 | Database   | MySQL              |
 | Tools      | XAMPP / phpMyAdmin |
+
+---
+
+## 📝 License
+
+This project is open-source and free to use under the [MIT License](LICENSE).
+
+
