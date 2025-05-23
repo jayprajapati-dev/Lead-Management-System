@@ -1,6 +1,6 @@
 # Lead-Management-System
 <p align="center">
-  A powerful and modern <strong>Customer Relationship Management (CRM)</strong> web app designed for businesses to manage leads, follow-ups, and conversions — inspired by <a href="https://www.crm.365leadmanagement.com/dashboard" target="_blank">365LeadManagement</a>.
+  A powerful and modern <strong>Customer Relationship Management (CRM)</strong> web app designed for businesses to manage leads, follow-ups, and conversions.
 </p>
 
 <p align="center">
