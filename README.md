@@ -49,4 +49,8 @@ The **Lead Management CRM System** is built for sales teams, agencies, and telec
 
 - XAMPP / WAMP installed
 - Git / VS Code
+<<<<<<< HEAD
 - Browser (Chrome recommended)
+=======
+- Browser (Chrome recommended)
+>>>>>>> 70b43abf45d71a7f8add23693be8d0a140da3a65
