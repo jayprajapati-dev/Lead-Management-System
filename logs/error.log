@@ -376,3 +376,59 @@
 [24-May-2025 08:04:42 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
 [24-May-2025 08:06:16 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
 [24-May-2025 08:06:16 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:22:25 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:22:25 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:22:39 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:22:39 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:24:35 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:24:35 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:25:54 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:25:54 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:26:04 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[24-May-2025 08:26:04 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[24-May-2025 08:26:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:26:45 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:18 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:18 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:19 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:19 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:19 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:19 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:24 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:24 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:55 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:28:55 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:43 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:43 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:44 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:44 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:45 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:46 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:59 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:35:59 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:40:40 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:40:40 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:41:16 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:41:16 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:41:29 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:41:29 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:41:29 Europe/Berlin] Query execution error: Table 'crm_dashboard.leads' doesn't exist in engine
+[24-May-2025 08:41:29 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine

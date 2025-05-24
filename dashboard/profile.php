@@ -122,14 +122,50 @@ $userAvatar = "https://via.placeholder.com/100"; // Placeholder avatar image
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="change-password" role="tabpanel" aria-labelledby="change-password-tab">
-                                <!-- Content for Change Password Tab -->
-                                <h4 class="mt-4">Change Password</h4>
-                                <p>Content for changing password goes here.</p>
+                                <div class="row mt-4">
+                                    <div class="col-md-8 offset-md-2">
+                                        <form>
+                                            <div class="mb-3">
+                                                <label for="currentPassword" class="form-label">Current Password</label>
+                                                <input type="password" class="form-control" id="currentPassword">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="newPassword" class="form-label">New Password</label>
+                                                <input type="password" class="form-control" id="newPassword">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                                <input type="password" class="form-control" id="confirmPassword">
+                                            </div>
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                             <div class="tab-pane fade" id="store-authentication" role="tabpanel" aria-labelledby="store-authentication-tab">
-                                <!-- Content for Change Store Authentication Tab -->
-                                <h4 class="mt-4">Change Store Authentication</h4>
-                                <p>Content for changing store authentication settings goes here.</p>
+                                <div class="row mt-4">
+                                     <div class="col-md-8 offset-md-2">
+                                        <form>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="authEmail" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="authEmail" value="<?php echo htmlspecialchars($userEmail); ?>" disabled>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="authPhone" class="form-label">Phone</label>
+                                                    <input type="text" class="form-control" id="authPhone" value="<?php echo htmlspecialchars($userPhone); ?>">
+                                                </div>
+                                            </div>
+                                             <div class="row mt-4">
+                                                 <div class="col text-end">
+                                                    <button type="button" class="btn btn-primary">Send OTP</button>
+                                                 </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -140,5 +176,6 @@ $userAvatar = "https://via.placeholder.com/100"; // Placeholder avatar image
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<?php include '../includes/dashboard-footer.php'; ?>
 </body>
 </html> 

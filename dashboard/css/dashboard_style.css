@@ -621,17 +621,18 @@ body {
     color: #555;
     border: none;
     border-bottom: 2px solid transparent;
+    font-weight: 500; /* Adjusted font weight */
 }
 
 .nav-tabs .nav-link.active {
-    color: #007bff;
-    border-bottom-color: #007bff;
+    color: #6f42c1; /* Purple color for active tab */
+    border-bottom-color: #6f42c1; /* Purple underline for active tab */
     background-color: transparent;
 }
 
 .nav-tabs .nav-link:hover {
     border-color: transparent;
-    color: #007bff;
+    color: #6f42c1; /* Purple color on hover */
 }
 
 .tab-content .tab-pane {
@@ -670,14 +671,14 @@ body {
 }
 
 .profile-page-container .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #6f42c1; /* Purple button color */
+    border-color: #6f42c1;
     padding: 10px 20px;
     font-size: 1rem;
     border-radius: 4px;
 }
 
 .profile-page-container .btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #004085;
+    background-color: #563d7c; /* Darker purple on hover */
+    border-color: #563d7c;
 } 

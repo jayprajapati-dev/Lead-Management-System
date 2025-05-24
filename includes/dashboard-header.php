@@ -4,7 +4,7 @@
 
 // Assuming user data is available from the session or a previous query
 // For demonstration, let's assume user name is available as $_SESSION['user_name']
-$userName = $_SESSION['user_name'] ?? ($_SESSION['user_email'] ?? 'User');
+$userName = $_SESSION['user_first_name'] ?? 'User';
 $userProfileImage = 'https://via.placeholder.com/30'; // Placeholder for user image
 ?>
 
