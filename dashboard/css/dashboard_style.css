@@ -81,6 +81,12 @@ body {
     body.sidebar-open {
         overflow: hidden !important; /* Prevent body scrolling when sidebar is open */
     }
+
+    .header .user-profile .custom-dropdown-menu {
+        max-width: 250px; /* Set a max width for the dropdown on mobile */
+        left: auto !important; /* Override potential left positioning */
+        right: 0 !important; /* Align to the right */
+    }
 }
 
 /* Desktop Styles */
@@ -681,4 +687,302 @@ body {
 .profile-page-container .btn-primary:hover {
     background-color: #563d7c; /* Darker purple on hover */
     border-color: #563d7c;
+}
+
+/* Dashboard Cards Styling */
+.dashboard-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    background-color: #ffffff;
+}
+
+.dashboard-card .card-header {
+    background-color: #f8f9fa; /* Light background for header */
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px;
+}
+
+.dashboard-card .card-header h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0;
+    color: #3A3A3A; /* Dark text color */
+}
+
+.dashboard-card .card-body {
+    padding: 15px;
+}
+
+.dashboard-card .card-tabs.nav-tabs {
+    border-bottom: none; /* Remove default Bootstrap border */
+}
+
+.dashboard-card .card-tabs .nav-item {
+    margin-bottom: -1px; /* Adjust for border overlap */
+}
+
+.dashboard-card .card-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #5B5B5B; /* Grey text color */
+    font-weight: 500;
+    padding: 6px 10px; /* Further adjusted padding */
+    margin-right: 8px; /* Further adjusted space */
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    white-space: nowrap; /* Prevent text wrapping within the tab */
+}
+
+.dashboard-card .card-tabs .nav-link.active {
+    color: #ffffff; /* White text for active tab */
+    background: linear-gradient(to right, #6f42c1, #e83e8c); /* Gradient background */
+    border-bottom-color: transparent; /* Remove underline if gradient goes to the edge */
+    border-radius: 4px; /* Keep rounded corners */
+    padding: 6px 10px; /* Match padding with inactive state */
+}
+
+.dashboard-card .card-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #6f42c1; /* Deep purple on hover */
+}
+
+.dashboard-card .card-tabs .nav-link .badge {
+    background-color: #e91e63; /* Pink */
+    color: #ffffff;
+    font-size: 0.7rem;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.dashboard-card .tab-content {
+    padding-top: 15px;
+}
+
+/* Lead Item Styling */
+.lead-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee; /* Separator */
+}
+
+.lead-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.lead-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #6f42c1; /* Purple background */
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.lead-details {
+    flex-grow: 1;
+}
+
+.lead-details p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #5B5B5B;
+}
+
+.lead-details .lead-name i,
+.lead-details .lead-phone i {
+    color: #6c757d; /* Icon color */
+}
+
+.lead-details .lead-phone i.text-success {
+    color: #28a745 !important; /* Ensure phone icon is green */
+}
+
+/* Red dot icon */
+.status-dot.red {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #dc3545; /* Red color */
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Sticky Notes Section */
+.sticky-notes-section .card-body {
+    padding: 20px;
+}
+
+.sticky-notes-section .add-note-button {
+    background-color: #6f42c1; /* Purple button */
+    border-color: #6f42c1;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+    margin-bottom: 15px; /* Space below button */
+}
+
+.sticky-notes-section .add-note-button:hover {
+    background-color: #563d7c; /* Darker purple on hover */
+    border-color: #563d7c;
+}
+
+/* Add Note Modal Styling */
+#addNoteModal .modal-content {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+#addNoteModal .modal-header {
+    background-color: #6f42c1; /* Purple header */
+    color: #ffffff;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    padding: 15px;
+    border-bottom: none;
+}
+
+#addNoteModal .modal-header .modal-title {
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+#addNoteModal .modal-header .btn-close {
+    filter: invert(1);
+}
+
+#addNoteModal .modal-body {
+    padding: 20px;
+}
+
+#addNoteModal .form-label {
+    font-weight: 600;
+    color: #555;
+}
+
+#addNoteModal .form-control {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+#addNoteModal .modal-footer {
+    padding: 15px 20px;
+    border-top: none;
+}
+
+#addNoteModal .modal-footer .btn-primary {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+#addNoteModal .modal-footer .btn-primary:hover {
+    background-color: #563d7c;
+    border-color: #563d7c;
+}
+
+#addNoteModal .modal-footer .btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+#addNoteModal .modal-footer .btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+/* Sticky Note Styling */
+.sticky-note {
+    position: relative;
+    background-color: #28a745; /* Green color */
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 15px;
+    width: 100%; /* Ensure it takes full column width */
+    min-height: 120px; /* Minimum height */
+    display: flex;
+    flex-direction: column;
+    word-wrap: break-word; /* Prevent long words from overflowing */
+}
+
+.sticky-note .note-pin {
+    position: absolute;
+    top: 5px;
+    left: 10px;
+    width: 15px;
+    height: 15px;
+    background-color: #dc3545; /* Red color */
+    border-radius: 50%;
+    transform: rotate(45deg);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.sticky-note .delete-note {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #dc3545; /* Red color for delete */
+    font-size: 1.2em;
+    cursor: pointer;
+    z-index: 10;
+    transition: color 0.2s ease-in-out;
+}
+
+.sticky-note .delete-note:hover {
+    color: #c82333; /* Darker red on hover */
+}
+
+.sticky-note .note-content {
+    flex-grow: 1;
+    margin-top: 10px; /* Space below pin */
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Folded corner effect */
+.sticky-note::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-width: 0 0 15px 15px;
+    border-style: solid;
+    border-color: transparent transparent #0056b3 #0056b3; /* Blue folded corner */
+}
+
+/* Success Toast Styling */
+.toast.bg-success {
+    background-color: #28a745 !important; /* Green background */
+}
+
+.toast-body {
+    font-size: 1rem;
+}
+
+/* Style for the warning icon in the delete modal */
+.modal .warning-icon {
+    font-size: 3em;
+    color: #ffc107; /* Warning yellow color */
+}
+
+.modal-body h4 {
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.modal-footer.justify-content-center {
+    display: flex;
+    justify-content: center;
 } 

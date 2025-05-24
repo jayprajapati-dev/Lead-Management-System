@@ -71,7 +71,7 @@
                     <i class="fas fa-search"></i>
                 </button>
                 <!-- Login Button -->
-                <a href="<?php echo SITE_URL; ?>/login.php" class="btn btn-primary">Login</a>
+                <a href="<?php echo SITE_URL; ?>/public/login.php" class="btn btn-primary">Login</a>
             </div>
         </div>
     </div>
