@@ -1,49 +1,56 @@
-<header class="navbar navbar-expand-lg navbar-light bg-light">
+<?php
+// Include necessary functions or configuration
+// require_once '../includes/config.php'; // Assuming config is already included in dashboard.php
+
+// Assuming user data is available from the session or a previous query
+// For demonstration, let's assume user name is available as $_SESSION['user_name']
+$userName = $_SESSION['user_name'] ?? ($_SESSION['user_email'] ?? 'User');
+$userProfileImage = 'https://via.placeholder.com/30'; // Placeholder for user image
+?>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <div class="d-flex align-items-center">
-            <!-- Mobile Sidebar Toggle Button -->
-            <button class="btn d-lg-none me-2" type="button" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="/path/to/your/logo.png" alt="Lead Management" height="30" class="me-2">
-                <span class="fw-bold">LEAD MANAGEMENT</span>
+        <!-- Quick Action Buttons - Hidden on small devices, visible on large and up -->
+        <div class="d-none d-lg-flex align-items-center me-3">
+            <button class="btn btn-primary me-2 quick-action-btn">+ Lead</button>
+            <button class="btn btn-primary me-2 quick-action-btn">+ Task</button>
+            <button class="btn btn-primary me-2 quick-action-btn">+ Note</button>
+            <button class="btn btn-primary quick-action-btn">+ Reminder</button>
+        </div>
+
+        <div class="d-flex align-items-center ms-auto">
+            <!-- Search Icon -->
+            <a class="nav-link me-3" href="#">
+                <i class="fas fa-search"></i>
             </a>
-        </div>
-        <div class="d-flex ms-auto">
-            <button class="btn btn-primary me-2" style="background-color: #5b479d; border-color: #5b479d;">+ Lead</button>
-            <button class="btn btn-primary me-2" style="background-color: #5b479d; border-color: #5b479d;">+ Task</button>
-            <button class="btn btn-primary me-2" style="background-color: #5b479d; border-color: #5b479d;">+ Note</button>
-            <button class="btn btn-primary me-2" style="background-color: #5b479d; border-color: #5b479d;">+ Reminder</button>
-            <button class="btn btn-secondary dropdown-toggle me-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                ...
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-        </div>
-        <div class="d-flex align-items-center">
-            <i class="fas fa-search me-3"></i>
-            <i class="fas fa-bell me-3"></i>
+            
+            <!-- Notification Bell Icon -->
+            <a class="nav-link notification-badge me-3" href="#">
+                <i class="fas fa-bell"></i>
+            </a>
+            
+            <!-- User Profile Dropdown -->
             <div class="dropdown">
-                <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                    <div>
-                        <div class="fw-bold">Kavan Patel</div>
-                        <div class="text-muted" style="font-size: 0.8rem;">Store</div>
-                    </div>
+                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<?php echo $userProfileImage; ?>" alt="User Avatar" class="rounded-circle me-2" width="30" height="30">
+                    <span class="d-none d-md-inline-block"><?php echo htmlspecialchars($userName); ?></span>
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser1">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Sync Data</a></li>
-                    <li><a class="dropdown-item" href="#">Billing</a></li>
-                    <li><a class="dropdown-item" href="#">Packages</a></li>
+                <ul class="dropdown-menu dropdown-menu-end custom-dropdown-menu animate-dropdown" aria-labelledby="userDropdown">
+                    <li><a class="dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/profile.php"><i class="fas fa-user me-2"></i>Profile</a></li>
+                    <li><a class="dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/sync-data.php"><i class="fas fa-sync-alt me-2"></i>Sync Data</a></li>
+                    <li><a class="dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/billing.php"><i class="fas fa-dollar-sign me-2"></i>Billing</a></li>
+                    <li><a class="dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/packages.php"><i class="fas fa-box me-2"></i>Packages</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Logout</a></li>
+                    <li><a class="dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/logout.php"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="referral-link-section">
+                        <a class="dropdown-item d-flex align-items-center" href="#">
+                            <i class="fas fa-gift me-2"></i>
+                            <span>Set up a Referral Link and earn free Points</span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
     </div>
-</header> 
+</nav> 

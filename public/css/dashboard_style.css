@@ -1,0 +1,106 @@
+/* Mobile Responsiveness */
+@media (max-width: 992px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0; 
+        bottom: 0;
+        transform: translateX(-100%);
+        width: 280px;
+        transition: transform 0.3s ease-in-out; 
+        z-index: 9999; /* Ensure sidebar is on top */
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        background: linear-gradient(180deg, #1A1A40 0%, #2A2A60 100%); 
+        color: #fff; 
+    }
+
+    .sidebar.show {
+        transform: translateX(0); 
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar-toggle {
+        display: flex;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 10000; /* Ensure toggle button is above everything */
+        background: #fff;
+        color: #1A1A40;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        width: 40px;
+        height: 40px;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9998; /* Below sidebar, above content */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .sidebar-overlay.show {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .main-content-area {
+        margin-left: 0;
+        width: 100%;
+        padding-top: 70px; 
+        position: relative; 
+        z-index: 1; /* Ensure main content is below the sidebar */
+    }
+
+    body.sidebar-open {
+        overflow: hidden; 
+    }
+
+    .offcanvas-backdrop {
+        display: none !important; /* Hide Bootstrap's default backdrop if it interferes */
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 260px;
+    }
+
+    .sidebar .nav-link {
+        padding: 12px 20px;
+        font-size: 0.95rem;
+    }
+
+    .sidebar-header {
+        padding: 20px;
+    }
+
+    .sidebar-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .sidebar-toggle {
+        top: 10px;
+        left: 10px;
+        width: 35px;
+        height: 35px;
+        font-size: 0.9rem;
+    }
+    
+    .main-content-area {
+        padding-top: 60px;
+    }
+
+} 

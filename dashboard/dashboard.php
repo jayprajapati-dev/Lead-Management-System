@@ -48,6 +48,14 @@ try {
 <body>
     <div class="dashboard-container container-fluid">
         <div class="row">
+            <!-- Mobile Toggle Button -->
+            <button class="sidebar-toggle d-md-none" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Mobile Overlay -->
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
             <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
 <?php include '../includes/sidebar.php'; ?>
             </div>
@@ -101,26 +109,5 @@ try {
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebarToggle = document.querySelector('.btn.d-lg-none'); // Select the button by its classes
-            const sidebar = document.querySelector('.sidebar'); // Select the sidebar by its class
-            
-            if (sidebarToggle && sidebar) {
-                sidebarToggle.addEventListener('click', function() {
-                    sidebar.classList.toggle('show');
-                });
-            }
-            
-            // Optional: Close sidebar when clicking outside on mobile
-            document.addEventListener('click', function(event) {
-                if (window.innerWidth < 992) {
-                    if (sidebar && !sidebar.contains(event.target) && !sidebarToggle.contains(event.target)) {
-                        sidebar.classList.remove('show');
-                    }
-                }
-            });
-        });
-    </script>
 </body>
 </html> 

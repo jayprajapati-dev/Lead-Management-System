@@ -12,7 +12,7 @@ define('DB_NAME', 'crm_dashboard');
 
 // Application settings
 define('SITE_NAME', 'CRM Dashboard');
-define('SITE_URL', 'http://localhost/Lead-Management-System/public');
+define('SITE_URL', 'http://localhost/Lead-Management-System');
 define('TRIAL_DAYS', 7);
 define('MAX_LOGIN_ATTEMPTS', 5);
 define('LOGIN_LOCKOUT_TIME', 30); // minutes

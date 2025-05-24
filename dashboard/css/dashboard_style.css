@@ -18,11 +18,11 @@ body {
     top: 0;
     left: 0;
     width: 250px;
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     z-index: 1000;
-    overflow-y: auto; /* Add vertical scrolling if content exceeds height */
-    display: flex; /* Use flexbox for internal layout */
-    flex-direction: column; /* Stack content vertically */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar > * {
@@ -38,67 +38,60 @@ body {
 
 /* Mobile Styles */
 @media (max-width: 991.98px) {
+    .sidebar-toggle {
+        display: block !important;
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        z-index: 10000 !important; /* Increased z-index */
+        background: #007bff !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 4px !important;
+        padding: 8px 12px !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+    }
+    
     .sidebar {
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        left: -250px;
-        width: 250px;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        overflow-y: auto;
-        /* Ensure internal content is not hidden */
-        box-sizing: border-box;
-        padding: 20px 10px; /* Add some default padding */
+        transform: translateX(-100%) !important;
+        width: 280px !important;
+        left: 0 !important;
+        z-index: 9999 !important; /* Increased z-index */
+        position: fixed !important;
+        top: 0 !important;
+        height: 100vh !important;
     }
     
     .sidebar.show {
-        left: 0;
-        /* Ensure content inside is visible and laid out correctly */
-        display: flex; /* Use flexbox to manage children */
-        flex-direction: column;
-        overflow-y: auto;
-        width: 250px; /* Re-confirm width */
-        right: auto;
+        transform: translateX(0) !important;
     }
 
-    .main-content-area {
-        margin-left: 0;
+    .sidebar-overlay.show {
+        display: block !important;
+        opacity: 1 !important;
+        z-index: 9998 !important; /* Increased z-index below sidebar */
     }
     
-    /* Ensure direct children of the shown sidebar are visible and stack properly */
-    .sidebar.show > * {
-        display: block !important; /* Force block display */
-        visibility: visible !important;
-        opacity: 1 !important;
-        width: 100%; /* Make sure children take full width of the sidebar */
-        box-sizing: border-box; /* Include padding in width */
-        /* Clear any floats or other layout interference */
-        float: none !important;
-        position: static !important; /* Remove absolute/fixed positioning */
-        margin: 0; /* Reset margins */
-        padding: 0; /* Reset padding - individual components will add their own */
+    .main-content-area {
+        margin-left: 0 !important;
+        padding-top: 60px !important; /* Add space for the toggle button */
     }
-
-    /* Re-apply padding to specific components within the shown sidebar */
-    .sidebar.show .sidebar-header {
-        padding: 20px 10px;
+    
+    body.sidebar-open {
+        overflow: hidden !important; /* Prevent body scrolling when sidebar is open */
     }
+}
 
-    .sidebar.show .navigation-menu {
-        padding: 0 10px;
-        flex-grow: 1; /* Allow menu to take available space */
-        overflow-y: auto; /* Add scrolling if menu is long */
+/* Desktop Styles */
+@media (min-width: 992px) {
+    .sidebar {
+        transform: none;
     }
-
-    .sidebar.show .navigation-menu li {
-         padding: 10px 0; /* Padding for list items */
+    
+    .main-content-area {
+        margin-left: 250px;
     }
-
-    .sidebar.show .free-trial-info {
-        padding: 20px 10px;
-    }
-
 }
 
 .header {
@@ -129,6 +122,7 @@ body {
     margin-left: 15px;
     color: #666;
     cursor: pointer;
+    font-size: 1.1rem;
 }
 
 .header .user-profile {
@@ -137,9 +131,19 @@ body {
     margin-left: 15px;
 }
 
+.header .user-profile .dropdown-toggle {
+    text-decoration: none;
+}
+
+.header .user-profile img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 .header .user-profile span {
-    margin-right: 5px;
-    font-size: 14px;
+    font-size: 0.9rem;
     color: #333;
 }
 
@@ -149,10 +153,64 @@ body {
     margin-right: 5px;
 }
 
-.header .user-profile img {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+/* Custom Dropdown Menu Styling */
+.custom-dropdown-menu {
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 10px 0;
+}
+
+.custom-dropdown-menu .dropdown-item {
+    font-size: 0.9rem;
+    padding: 10px 15px;
+    color: #333;
+    display: flex;
+    align-items: center;
+}
+
+.custom-dropdown-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.custom-dropdown-menu .dropdown-item i {
+    margin-right: 10px;
+    color: #6c757d;
+}
+
+.custom-dropdown-menu .dropdown-item:hover i {
+     color: #007bff;
+}
+
+.custom-dropdown-menu .dropdown-divider {
+    margin: 10px 0;
+}
+
+.referral-link-section {
+    padding: 10px 15px;
+}
+
+.referral-link-section .dropdown-item {
+    background-color: #6f42c1; /* Purple background */
+    color: #ffffff;
+    border-radius: 4px;
+    text-align: center;
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.referral-link-section .dropdown-item:hover {
+    background-color: #563d7c; /* Darker purple on hover */
+    color: #ffffff;
+}
+
+.referral-link-section .dropdown-item i {
+    color: #ffffff; /* White icon */
+    margin-right: 0;
+    margin-bottom: 5px;
+    font-size: 1.2rem;
 }
 
 .dashboard-body {
@@ -343,8 +401,20 @@ body {
 
 /* Styles for the logo and text in the sidebar header */
 .sidebar .sidebar-header {
-    padding: 20px;
-    border-bottom: 1px solid #eee; /* Add a bottom border */
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 15px;
+}
+
+.sidebar .sidebar-header i {
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+.sidebar .sidebar-header span {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
 }
 
 .sidebar .sidebar-header img {
@@ -365,4 +435,249 @@ body {
     display: block; /* Ensure these are block elements by default */
     width: 100%; /* Take full width of the sidebar */
     box-sizing: border-box; /* Include padding in width calculation */
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle:hover {
+    background: #0056b3;
+}
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+}
+
+.sidebar-section {
+    padding: 0 15px;
+    margin-bottom: 20px;
+}
+
+.sidebar-section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 10px;
+    padding: 0 5px;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    color: #495057;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    transition: all 0.2s ease;
+}
+
+.nav-link i {
+    width: 20px;
+    margin-right: 10px;
+    transition: transform 0.2s ease;
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa;
+    color: #007bff;
+}
+
+.nav-link.active {
+    background-color: #e9ecef;
+    color: #007bff;
+}
+
+.nav-link.active i {
+    color: #007bff;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding: 20px 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-logo {
+    width: 150px; /* Adjust as needed based on your logo size */
+    height: auto;
+}
+
+.sidebar-header h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin-top: 10px;
+    margin-bottom: 0;
+}
+
+.sidebar-section-title {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 10px;
+    padding: 0 15px; /* Adjust padding to align with nav links */
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px; /* Adjust padding */
+    color: #495057;
+    border-radius: 0; /* Ensure no border-radius */
+    margin-bottom: 5px;
+    transition: all 0.2s ease;
+}
+
+.nav-link i {
+    width: 20px;
+    margin-right: 15px; /* Increased space between icon and text */
+    color: #6c757d; /* Icon color */
+    transition: transform 0.2s ease;
+}
+
+.nav-link span {
+    flex-grow: 1; /* Allow text to take available space */
+}
+
+.nav-link:hover {
+    background-color: #f8f9fa; /* Light hover background */
+    color: #007bff; /* Hover text color */
+}
+
+.nav-link.active {
+    background: linear-gradient(to right, #6f42c1, #e83e8c); /* Gradient background */
+    color: #ffffff; /* White text for active link */
+    font-weight: 600;
+}
+
+.nav-link.active i {
+    color: #ffffff; /* White icon for active link */
+}
+
+/* Adjust padding for main content when sidebar is open on desktop */
+@media (min-width: 992px) {
+    .main-content-area {
+        margin-left: 250px;
+        padding: 20px;
+    }
+}
+
+/* Free Trial Info */
+.free-trial-info {
+    font-size: 0.9rem;
+    text-align: center;
+    color: #dc3545; /* Red color for trial info */
+    padding: 15px;
+    border-top: 1px solid #eee;
+    margin-top: auto; /* Push to the bottom */
+}
+
+.free-trial-info p {
+    margin: 5px 0;
+}
+
+.free-trial-info a {
+    color: #007bff; /* Blue link color */
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.free-trial-info a:hover {
+    text-decoration: underline;
+}
+
+/* Profile Page Styling */
+.profile-page-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.profile-page-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.nav-tabs .nav-link {
+    color: #555;
+    border: none;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: #007bff;
+    border-bottom-color: #007bff;
+    background-color: transparent;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: #007bff;
+}
+
+.tab-content .tab-pane {
+    padding-top: 20px;
+}
+
+.avatar-upload-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.avatar-upload-area img {
+    border: 1px solid #eee;
+    padding: 5px;
+}
+
+.avatar-upload-area .btn {
+    margin-top: 10px;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #555;
+}
+
+.form-control {
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 0.9rem;
+}
+
+.form-control:disabled {
+    background-color: #e9ecef;
+}
+
+.profile-page-container .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 4px;
+}
+
+.profile-page-container .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
 } 
