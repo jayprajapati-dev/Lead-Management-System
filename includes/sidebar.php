@@ -39,39 +39,41 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-bell"></i>
             <span>Reminders</span>
         </a>
-    </nav>
-</div>
-
-<!-- Reports Section -->
-<div class="sidebar-section">
-    <div class="sidebar-section-title">Reports</div>
-    <nav class="nav flex-column">
-        <a class="nav-link <?php echo $current_page === 'reports.php' ? 'active' : ''; ?>" 
+        <!-- New navigation links -->
+         <a class="nav-link <?php echo $current_page === 'notes.php' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/notes.php">
+            <i class="fas fa-clipboard"></i> <!-- Using clipboard icon for notes -->
+            <span>Notes</span>
+        </a>
+         <a class="nav-link <?php echo $current_page === 'calendar.php' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/calendar.php">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Calendar</span>
+        </a>
+         <a class="nav-link <?php echo $current_page === 'hr.php' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/hr.php">
+            <i class="fas fa-users-cog"></i> <!-- Using users-cog for HR/Users -->
+            <span>HR</span>
+        </a>
+         <a class="nav-link <?php echo $current_page === 'storage.php' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/storage.php">
+            <i class="fas fa-database"></i> <!-- Using database icon for Storage -->
+            <span>Storage</span>
+        </a>
+         <a class="nav-link <?php echo $current_page === 'greetings.php' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/greetings.php">
+            <i class="fas fa-envelope"></i> <!-- Using envelope icon for Greetings -->
+            <span>Greetings</span>
+        </a>
+         <a class="nav-link <?php echo $current_page === 'reports.php' ? 'active' : ''; ?>" 
            href="<?php echo SITE_URL; ?>/dashboard/reports.php">
-            <i class="fas fa-chart-bar"></i>
-            <span>Analytics</span>
+            <i class="fas fa-chart-pie"></i> <!-- Using chart-pie for Reports -->
+            <span>Reports</span>
         </a>
-        <a class="nav-link <?php echo $current_page === 'performance.php' ? 'active' : ''; ?>" 
-           href="<?php echo SITE_URL; ?>/dashboard/performance.php">
-            <i class="fas fa-chart-line"></i>
-            <span>Performance</span>
-        </a>
-    </nav>
-</div>
-
-<!-- Settings Section -->
-<div class="sidebar-section">
-    <div class="sidebar-section-title">Settings</div>
-    <nav class="nav flex-column">
-        <a class="nav-link <?php echo $current_page === 'profile.php' ? 'active' : ''; ?>" 
-           href="<?php echo SITE_URL; ?>/dashboard/profile.php">
-            <i class="fas fa-user-cog"></i>
-            <span>Profile</span>
-        </a>
-        <a class="nav-link <?php echo $current_page === 'settings.php' ? 'active' : ''; ?>" 
-           href="<?php echo SITE_URL; ?>/dashboard/settings.php">
+         <a class="nav-link <?php echo $current_page === 'general-settings.php' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/general-settings.php">
             <i class="fas fa-cog"></i>
-            <span>Settings</span>
+            <span>General Settings</span>
         </a>
     </nav>
 </div>
