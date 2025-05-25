@@ -572,3 +572,5 @@
 [24-May-2025 10:43:29 Europe/Berlin] Dashboard statistics loading error: Table 'crm_dashboard.leads' doesn't exist in engine
 [24-May-2025 10:56:38 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
 [24-May-2025 10:56:38 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[25-May-2025 14:51:25 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\Lead-Management-System\dashboard\tasks.php:1) in C:\xampp\htdocs\Lead-Management-System\dashboard\tasks.php on line 181
+[25-May-2025 14:51:25 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\Lead-Management-System\dashboard\tasks.php:1) in C:\xampp\htdocs\Lead-Management-System\dashboard\tasks.php on line 181

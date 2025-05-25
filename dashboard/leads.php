@@ -1,9 +1,16 @@
 <?php
+// Start session if not already started - MUST be the first thing
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include configuration
 require_once '../includes/config.php';
 
 // Check if user is logged in
-if (!isLoggedIn()) {
-    redirect('index.php');
+if (!isset($_SESSION['user_id'])) {
+    header('Location: ' . SITE_URL . '/login.php');
+    exit();
 }
 
 // Fetch all active users for dropdowns
@@ -35,7 +42,7 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
     <title>Leads Dashboard</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome for icons (for future use, currently using emojis) -->
+    <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Link to your custom CSS file -->
     <link rel="stylesheet" href="css/dashboard_style.css">
@@ -45,10 +52,19 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         .card {
             border-radius: 15px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .crm-section-card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
         }
         .status-box {
             border-radius: 10px;
@@ -96,31 +112,108 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
              flex-grow: 1;
          }
 
+        /* Dashboard Layout Styles */
+        .dashboard-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar {
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            transition: all 0.3s;
+        }
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
+        .sidebar-overlay.show {
+            display: block;
+        }
+        .main-content-area {
+            margin-left: 16.666667%; /* col-md-2 width */
+            transition: all 0.3s;
+        }
+        @media (max-width: 767.98px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content-area {
+                margin-left: 0;
+            }
+        }
+        .sidebar-toggle {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .navbar {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        footer {
+            margin-top: auto;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+         /* Styles for active sidebar link */
+        .sidebar .nav-link.active {
+            color: #007bff; /* Bootstrap primary blue */
+            font-weight: 600;
+            /* Add other styles as needed, e.g., background-color */
+             background-color: #e9ecef; /* Light grey background */
+             border-radius: 5px;
+        }
+         .sidebar .nav-link.active i {
+             color: #007bff; /* Match icon color to text */
+         }
+
     </style>
 </head>
 <body>
-    <div class="dashboard-container container-fluid">
-        <div class="row">
-            <!-- Mobile Toggle Button -->
-            <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <!-- Mobile Overlay -->
-            <div class="sidebar-overlay" id="sidebarOverlay"></div>
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-                <?php include '../includes/sidebar.php'; ?>
-            </div>
 
-            <!-- Main Content Area -->
-            <div class="col-md-9 col-lg-10 main-content-area">
-                <!-- Header -->
-                <?php include '../includes/dashboard-header.php'; ?>
-                
-                <!-- Main Content Body -->
-                <div class="dashboard-body">
-                    <!-- Page content goes here -->
-                    <div class="container-fluid mt-4">
+<div class="dashboard-container">
+    <div class="row g-0">
+        <!-- Mobile Toggle Button -->
+        <button class="sidebar-toggle d-md-none" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <!-- Mobile Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
+            <?php include '../includes/sidebar.php'; ?>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="col-md-9 col-lg-10 main-content-area">
+            <!-- Header -->
+            <?php include '../includes/dashboard-header.php'; ?>
+
+            <!-- Main Content Body -->
+            <div class="dashboard-body">
+                <!-- Page content goes here -->
+                <div class="container-fluid py-4">
+                    <div class="crm-section-card">
                         <div class="d-flex justify-content-between align-items-center mb-4">
                             <div class="d-flex align-items-center">
                                 <!-- View Buttons (Grid and List) -->
@@ -130,18 +223,18 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
                             </div>
                              <!-- Right-side buttons for Board View -->
                              <div class="d-flex d-none" id="boardViewButtons">
-                                <button class="btn btn-primary me-2">➕ Add</button>
-                                <button class="btn btn-secondary me-2">⚙️ Settings</button>
-                                <button class="btn btn-info">⇅ Sort</button>
+                                <button class="btn btn-primary me-2">➕ <span class="d-none d-md-inline">Add</span></button>
+                                <button class="btn btn-secondary me-2">⚙️ <span class="d-none d-md-inline">Settings</span></button>
+                                <button class="btn btn-info">⇅ <span class="d-none d-md-inline">Sort</span></button>
                              </div>
                              <!-- Right-side buttons for List View -->
                              <div class="d-flex" id="listViewButtons">
-                                <button class="btn btn-primary me-2">➕ Add</button>
-                                <button class="btn btn-secondary me-2">⇅ Sort</button>
-                                <button class="btn btn-info me-2">⬇️ Download</button> <!-- Download -->
-                                <button class="btn btn-warning me-2">📊 Graph</button> <!-- Graph -->
-                                <button class="btn btn-dark me-2">🏷️ Tag</button> <!-- Tag -->
-                                <button class="btn btn-danger">🗑️ Delete</button> <!-- Delete -->
+                                <button class="btn btn-primary me-2">➕ <span class="d-none d-md-inline">Add</span></button>
+                                <button class="btn btn-secondary me-2">⇅ <span class="d-none d-md-inline">Sort</span></button>
+                                <button class="btn btn-info me-2">⬇️ <span class="d-none d-md-inline">Download</span></button> <!-- Download -->
+                                <button class="btn btn-warning me-2">📊 <span class="d-none d-md-inline">Graph</span></button> <!-- Graph -->
+                                <button class="btn btn-dark me-2">🏷️ <span class="d-none d-md-inline">Tag</span></button> <!-- Tag -->
+                                <button class="btn btn-danger">🗑️ <span class="d-none d-md-inline">Delete</span></button> <!-- Delete -->
                               </div>
                         </div>
 
@@ -279,7 +372,6 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
             </div>
             <!-- End Main Content Area -->
         </div>
-        <!-- End Row -->
     </div>
     <!-- End Dashboard Container -->
 
@@ -289,36 +381,6 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            // Mobile sidebar toggle functionality
-            const sidebarToggle = document.getElementById('sidebarToggle');
-            const sidebarMenu = document.getElementById('sidebarMenu');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-            if (sidebarToggle && sidebarMenu && sidebarOverlay) {
-                // Toggle sidebar on button click
-                sidebarToggle.addEventListener('click', function() {
-                    sidebarMenu.classList.toggle('show');
-                    sidebarOverlay.classList.toggle('show');
-                    document.body.classList.toggle('sidebar-open');
-                });
-
-                // Close sidebar when overlay is clicked
-                sidebarOverlay.addEventListener('click', function() {
-                    sidebarMenu.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                    document.body.classList.remove('sidebar-open');
-                });
-
-                // Close sidebar on window resize if screen becomes larger
-                window.addEventListener('resize', function() {
-                    if (window.innerWidth >= 768) { // md breakpoint
-                        sidebarMenu.classList.remove('show');
-                        sidebarOverlay.classList.remove('show');
-                        document.body.classList.remove('sidebar-open');
-                    }
-                });
-            }
-
             // Embed PHP variable containing users list into JavaScript
             const usersForDropdown = <?php echo json_encode($usersList); ?>;
 
