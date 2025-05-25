@@ -3,15 +3,20 @@
 // require_once '../includes/config.php'; // Assuming config is already included in dashboard.php
 
 // Assuming user data is available from the session or a previous query
-// For demonstration, let's assume user name is available as $_SESSION['user_name']
-$userName = $_SESSION['user_first_name'] ?? 'User';
+// For demonstration, let's assume user name is available as $_SESSION['user_first_name'] and $_SESSION['user_last_name']
+$userName = ($_SESSION['user_first_name'] ?? 'User') . ' ' . ($_SESSION['user_last_name'] ?? '');
 $userProfileImage = 'https://via.placeholder.com/30'; // Placeholder for user image
+
+// Get the current page filename
+$currentPage = basename($_SERVER['PHP_SELF']);
+
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <!-- Quick Action Buttons - Hidden on small devices, visible on large and up -->
         <div class="d-none d-lg-flex align-items-center me-3">
+            <!-- Buttons with data-bs-target pointing to the respective modal IDs -->
             <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addLeadModal">
                 + <span class="button-text">Lead</span> <i class="fas fa-filter"></i>
             </button>
@@ -61,4 +66,31 @@ $userProfileImage = 'https://via.placeholder.com/30'; // Placeholder for user im
             </div>
         </div>
     </div>
-</nav> 
+</nav>
+
+<?php
+// Conditionally include modals based on the current page
+switch ($currentPage) {
+    case 'dashboard.php':
+    case 'leads.php':
+    case 'tasks.php':
+        // Include all four modals on dashboard, leads, and tasks pages
+        include '../includes/modals/add-lead.php';
+        include '../includes/modals/add-task.php';
+        include '../includes/modals/add-note.php';
+        include '../includes/modals/add-reminder.php';
+        break;
+    case 'notes.php':
+        // Include the Add Note modal only on the notes page (if not included above)
+        // include '../includes/modals/add-note.php';
+        break;
+    case 'reminders.php':
+         // Include the Add Reminder modal only on the reminders page (if not included above)
+         // include '../includes/modals/add-reminder.php';
+         break;
+    // Add more cases for other pages and their respective modals
+    default:
+        // No specific modals included by default
+        break;
+}
+?> 
