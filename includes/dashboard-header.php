@@ -12,10 +12,18 @@ $userProfileImage = 'https://via.placeholder.com/30'; // Placeholder for user im
     <div class="container-fluid">
         <!-- Quick Action Buttons - Hidden on small devices, visible on large and up -->
         <div class="d-none d-lg-flex align-items-center me-3">
-            <button class="btn btn-primary me-2 quick-action-btn">+ Lead</button>
-            <button class="btn btn-primary me-2 quick-action-btn">+ Task</button>
-            <button class="btn btn-primary me-2 quick-action-btn">+ Note</button>
-            <button class="btn btn-primary quick-action-btn">+ Reminder</button>
+            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+                + <span class="button-text">Lead</span> <i class="fas fa-filter"></i>
+            </button>
+            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                + <span class="button-text">Task</span> <i class="fas fa-calendar-alt"></i>
+            </button>
+            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                + <span class="button-text">Note</span> <i class="fas fa-check-square"></i>
+            </button>
+            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addReminderModal">
+                + <span class="button-text">Reminder</span> <i class="fas fa-bell"></i>
+            </button>
         </div>
 
         <div class="d-flex align-items-center ms-auto">

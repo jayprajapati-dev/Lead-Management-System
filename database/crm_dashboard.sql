@@ -68,22 +68,7 @@ CREATE TABLE IF NOT EXISTS login_history (
     INDEX idx_user_login (user_id, login_time)
 ) ENGINE=InnoDB;
 
--- Leads table
-CREATE TABLE leads (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    phone VARCHAR(20),
-    company VARCHAR(100),
-    status ENUM('new', 'contacted', 'qualified', 'closed', 'lost') NOT NULL DEFAULT 'new',
-    assigned_to INT,
-    created_by INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (assigned_to) REFERENCES users(id),
-    FOREIGN KEY (created_by) REFERENCES users(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Lead sources table
+-- Lead sources table (defined before leads, as it's referenced by leads)
 CREATE TABLE IF NOT EXISTS lead_sources (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL UNIQUE,
@@ -94,7 +79,7 @@ CREATE TABLE IF NOT EXISTS lead_sources (
     INDEX idx_status (status)
 ) ENGINE=InnoDB;
 
--- Lead statuses table
+-- Lead statuses table (defined before leads, as its values are used in leads ENUM)
 CREATE TABLE IF NOT EXISTS lead_statuses (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(50) NOT NULL UNIQUE,
@@ -105,7 +90,30 @@ CREATE TABLE IF NOT EXISTS lead_statuses (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
--- Lead notes table
+-- Leads table
+CREATE TABLE leads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20),
+    country_code VARCHAR(10) NULL,
+    company VARCHAR(100),
+    lead_date DATE NULL,
+    reference VARCHAR(255) NULL,
+    address TEXT NULL,
+    comment TEXT NULL,
+    status ENUM('new', 'processing', 'close-by', 'confirm', 'cancel', 'contacted', 'qualified', 'closed', 'lost', 'proposal', 'negotiation', 'converted') NOT NULL DEFAULT 'new',
+    source_id INT NULL, -- Foreign key column
+    assigned_to INT NULL, -- Foreign key column (made NULLable to match modal)
+    created_by INT NOT NULL, -- Foreign key column
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (source_id) REFERENCES lead_sources(id) ON DELETE SET NULL, -- Added ON DELETE rule
+    FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL, -- Added ON DELETE rule
+    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE -- Added ON DELETE rule
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Lead notes table (existing structure is fine for comments)
 CREATE TABLE IF NOT EXISTS lead_notes (
     id INT PRIMARY KEY AUTO_INCREMENT,
     lead_id INT NOT NULL,
@@ -165,9 +173,13 @@ CREATE TABLE IF NOT EXISTS settings (
     INDEX idx_group (setting_group)
 ) ENGINE=InnoDB;
 
--- Insert default lead statuses
-INSERT INTO lead_statuses (name, color, description, is_system) VALUES
+-- Insert or ignore default lead statuses (combining original and modal statuses)
+INSERT IGNORE INTO lead_statuses (name, color, description, is_system) VALUES
 ('New', '#007bff', 'New leads that need initial contact', TRUE),
+('Processing', '#17a2b8', 'Leads currently being processed', FALSE),
+('Close-by', '#ffc107', 'Leads close to conversion', FALSE),
+('Confirm', '#28a745', 'Confirmed leads', FALSE), -- Using success color
+('Cancel', '#dc3545', 'Cancelled leads', FALSE), -- Using danger color
 ('Contacted', '#17a2b8', 'Leads that have been contacted', TRUE),
 ('Qualified', '#28a745', 'Leads that have been qualified', TRUE),
 ('Proposal', '#ffc107', 'Leads that have received a proposal', TRUE),
@@ -175,9 +187,16 @@ INSERT INTO lead_statuses (name, color, description, is_system) VALUES
 ('Converted', '#20c997', 'Successfully converted leads', TRUE),
 ('Lost', '#dc3545', 'Lost or unqualified leads', TRUE);
 
--- Insert default lead sources
-INSERT INTO lead_sources (name, description) VALUES
+-- Insert or ignore default lead sources (combining original and modal sources)
+INSERT IGNORE INTO lead_sources (name, description) VALUES
+('Online', 'Leads from online channels'),
+('Offline', 'Leads from offline activities'),
 ('Website', 'Leads from company website'),
+('Whatsapp', 'Leads from Whatsapp'),
+('Customer Reminder', 'Leads from customer reminders'),
+('Indiamart', 'Leads from Indiamart'),
+('Facebook', 'Leads from Facebook'),
+('Google Form', 'Leads from Google Forms'),
 ('Referral', 'Leads from customer referrals'),
 ('Social Media', 'Leads from social media platforms'),
 ('Email Campaign', 'Leads from email marketing campaigns'),
@@ -185,16 +204,16 @@ INSERT INTO lead_sources (name, description) VALUES
 ('Cold Call', 'Leads from cold calling'),
 ('Other', 'Leads from other sources');
 
--- Insert default tags
-INSERT INTO tags (name, color) VALUES
+-- Insert default tags (existing)
+INSERT IGNORE INTO tags (name, color) VALUES
 ('Hot Lead', '#dc3545'),
 ('VIP', '#ffc107'),
 ('Follow Up', '#17a2b8'),
 ('Potential', '#28a745'),
 ('Long Term', '#6c757d');
 
--- Insert some default settings
-INSERT INTO settings (setting_key, setting_value, setting_group, is_public) VALUES
+-- Insert some default settings (existing)
+INSERT IGNORE INTO settings (setting_key, setting_value, setting_group, is_public) VALUES
 ('company_name', 'CRM Dashboard', 'general', TRUE),
 ('company_email', 'contact@example.com', 'general', TRUE),
 ('company_phone', '+1 234 567 8900', 'general', TRUE),
@@ -205,7 +224,7 @@ INSERT INTO settings (setting_key, setting_value, setting_group, is_public) VALU
 ('date_format', 'Y-m-d', 'system', FALSE),
 ('time_format', 'H:i:s', 'system', FALSE);
 
--- Create lead statistics view
+-- Create lead statistics view (existing)
 CREATE OR REPLACE VIEW lead_statistics AS
 SELECT
     l.status,
@@ -221,7 +240,7 @@ SELECT
 FROM leads l
 GROUP BY l.status;
 
--- Create user performance view
+-- Create user performance view (existing)
 CREATE OR REPLACE VIEW user_performance AS
 SELECT
     u.id as user_id,

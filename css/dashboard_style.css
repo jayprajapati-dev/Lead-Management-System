@@ -1,0 +1,114 @@
+/* Add this to style quick action buttons */
+.quick-action-button {
+    display: inline-flex; /* Use flexbox to align items */
+    align-items: center; /* Vertically center items */
+    background-color: #4b3b90; /* Dark blue background */
+    color: #ffffff; /* White text color */
+    border: none;
+    border-radius: 25px; /* Rounded corners */
+    padding: 10px 20px; /* Add padding */
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none; /* Remove underline if it's a link */
+}
+
+.quick-action-button:hover {
+    background-color: #3a2e7a; /* Slightly darker blue on hover */
+    color: #ffffff; /* Keep text white on hover */
+}
+
+.quick-action-button .button-text {
+    margin-right: 8px; /* Space between text and icon, adjusted slightly */
+}
+
+.quick-action-button i {
+    color: #ffffff; /* White icon color */
+}
+
+/* Add this if you want some margin between buttons */
+.quick-action-button + .quick-action-button {
+    margin-left: 15px; /* Adjust spacing as needed */
+}
+
+/* Sticky Notes Styling */
+.sticky-note {
+    position: relative; /* Needed for positioning pin and delete icon */
+    background-color: #77dd77; /* Green color from screenshot */
+    padding: 15px; /* Adjust padding as needed */
+    border-radius: 5px; /* Slightly rounded corners */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    word-wrap: break-word; /* Prevent long words from overflowing */
+    min-height: 120px; /* Minimum height for notes */
+    text-align: left; /* Align text to the left */
+    color: #333; /* Dark text color */
+}
+
+.sticky-note .note-pin {
+    position: absolute;
+    top: -10px; /* Adjust vertical position */
+    left: 10px; /* Adjust horizontal position */
+    width: 20px; /* Size of the pin */
+    height: 20px; /* Size of the pin */
+    background-color: #ff6961; /* Red color for the pin */
+    border-radius: 50%; /* Make it round */
+    /* Add a pseudo-element for the pin 'needle' if desired */
+}
+
+.sticky-note .delete-note {
+    position: absolute;
+    top: 5px; /* Adjust vertical position */
+    right: 5px; /* Adjust horizontal position */
+    color: #ff0000; /* Red color for delete icon */
+    font-size: 1.2rem; /* Size of the delete icon */
+    cursor: pointer;
+    font-weight: bold;
+    padding: 2px;
+    z-index: 1; /* Ensure it's above note content */
+}
+
+.sticky-note .delete-note:hover {
+    color: #cc0000; /* Darker red on hover */
+}
+
+.sticky-note .note-content {
+    margin-top: 10px; /* Space below the pin area */
+    white-space: pre-wrap; /* Preserve whitespace and break lines */
+}
+
+/* Optional: Style for the no notes message */
+.no-notes-message {
+    font-style: italic;
+    color: #777; /* Grey color */
+}
+
+/* Optional: Basic styling for the legend if needed */
+.legend-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.legend-list li {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 15px;
+}
+
+.legend-list li:last-child {
+    margin-right: 0;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+    margin-right: 5px;
+    border: 1px solid #ccc; /* Optional border */
+}
+
+.legend-label {
+    font-size: 0.9rem;
+    color: #555;
+} 
