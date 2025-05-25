@@ -112,6 +112,65 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
              flex-grow: 1;
          }
 
+        /* Updated styles for action buttons header */
+        .action-buttons-top-bar {
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .action-buttons-top-bar .view-toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-buttons-top-bar .view-toggle-group .btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+
+        .action-buttons-top-bar .action-buttons-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons-top-bar .action-buttons-group .btn {
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .action-buttons-top-bar .page-title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons-top-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .action-buttons-top-bar .action-buttons-group {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .action-buttons-top-bar .btn span {
+                display: none;
+            }
+            .action-buttons-top-bar .btn {
+                padding: 0.5rem;
+            }
+        }
+
         /* Dashboard Layout Styles */
         .dashboard-container {
             min-height: 100vh;
@@ -144,6 +203,8 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
         .main-content-area {
             margin-left: 16.666667%; /* col-md-2 width */
             transition: all 0.3s;
+            margin-top: 0 !important;
+            padding-top: 1rem; /* Add consistent top padding to the main content area */
         }
         @media (max-width: 767.98px) {
             .sidebar {
@@ -193,49 +254,82 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
 
 <div class="dashboard-container">
     <div class="row g-0">
-        <!-- Mobile Toggle Button -->
-        <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <!-- Mobile Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-            <?php include '../includes/sidebar.php'; ?>
-        </div>
+            <!-- Mobile Toggle Button -->
+            <button class="sidebar-toggle d-md-none" id="sidebarToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <!-- Mobile Overlay -->
+            <div class="sidebar-overlay" id="sidebarOverlay"></div>
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
+                <?php include '../includes/sidebar.php'; ?>
+            </div>
 
-        <!-- Main Content Area -->
-        <div class="col-md-9 col-lg-10 main-content-area">
-            <!-- Header -->
-            <?php include '../includes/dashboard-header.php'; ?>
-
-            <!-- Main Content Body -->
-            <div class="dashboard-body">
-                <!-- Page content goes here -->
+            <!-- Main Content Area -->
+            <div class="col-md-9 col-lg-10 main-content-area">
+                <!-- Header -->
+                <?php include '../includes/dashboard-header.php'; ?>
+                
+                <!-- Main Content Body -->
+                <div class="dashboard-body">
+                    <!-- Page content goes here -->
                 <div class="container-fluid py-4">
-                    <div class="crm-section-card">
-                        <div class="d-flex justify-content-between align-items-center mb-4">
-                            <div class="d-flex align-items-center">
-                                <!-- View Buttons (Grid and List) -->
-                                <button type="button" class="btn btn-outline-secondary me-1" id="gridViewBtn">█</button>
-                                <button type="button" class="btn btn-outline-secondary me-2 active" id="listViewBtn">☰</button>
-                                <h2 class="mb-0">Leads</h2>
+                    <div class="crm-section-card pt-3">
+                        <!-- Action Buttons Top Bar -->
+                        <div class="d-flex justify-content-between align-items-center action-buttons-top-bar">
+                            <div class="d-flex align-items-center view-toggle-group">
+                                <button type="button" class="btn btn-outline-secondary" id="gridViewBtn" title="Grid View">
+                                    <i class="fas fa-th-large"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary active" id="listViewBtn" title="List View">
+                                    <i class="fas fa-list"></i>
+                                </button>
+                                <h2 class="page-title ms-3 mb-0">Leads</h2>
                             </div>
-                             <!-- Right-side buttons for Board View -->
-                             <div class="d-flex d-none" id="boardViewButtons">
-                                <button class="btn btn-primary me-2">➕ <span class="d-none d-md-inline">Add</span></button>
-                                <button class="btn btn-secondary me-2">⚙️ <span class="d-none d-md-inline">Settings</span></button>
-                                <button class="btn btn-info">⇅ <span class="d-none d-md-inline">Sort</span></button>
-                             </div>
-                             <!-- Right-side buttons for List View -->
-                             <div class="d-flex" id="listViewButtons">
-                                <button class="btn btn-primary me-2">➕ <span class="d-none d-md-inline">Add</span></button>
-                                <button class="btn btn-secondary me-2">⇅ <span class="d-none d-md-inline">Sort</span></button>
-                                <button class="btn btn-info me-2">⬇️ <span class="d-none d-md-inline">Download</span></button> <!-- Download -->
-                                <button class="btn btn-warning me-2">📊 <span class="d-none d-md-inline">Graph</span></button> <!-- Graph -->
-                                <button class="btn btn-dark me-2">🏷️ <span class="d-none d-md-inline">Tag</span></button> <!-- Tag -->
-                                <button class="btn btn-danger">🗑️ <span class="d-none d-md-inline">Delete</span></button> <!-- Delete -->
-                              </div>
+                            
+                            <!-- Board View Buttons -->
+                            <div class="action-buttons-group d-none" id="boardViewButtons">
+                                <button class="btn btn-primary" title="Add New Lead">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add</span>
+                                </button>
+                                <button class="btn btn-secondary" title="Board Settings">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Settings</span>
+                                </button>
+                                <button class="btn btn-info" title="Sort Leads">
+                                    <i class="fas fa-sort"></i>
+                                    <span>Sort</span>
+                                </button>
+                            </div>
+
+                            <!-- List View Buttons -->
+                            <div class="action-buttons-group" id="listViewButtons">
+                                <button class="btn btn-primary" title="Add New Lead">
+                                    <i class="fas fa-plus"></i>
+                                    <span>Add</span>
+                                </button>
+                                <button class="btn btn-secondary" title="Sort Leads">
+                                    <i class="fas fa-sort"></i>
+                                    <span>Sort</span>
+                                </button>
+                                <button class="btn btn-info" title="Download Leads">
+                                    <i class="fas fa-download"></i>
+                                    <span>Download</span>
+                                </button>
+                                <button class="btn btn-warning" title="View Analytics">
+                                    <i class="fas fa-chart-bar"></i>
+                                    <span>Graph</span>
+                                </button>
+                                <button class="btn btn-dark" title="Manage Tags">
+                                    <i class="fas fa-tags"></i>
+                                    <span>Tag</span>
+                                </button>
+                                <button class="btn btn-danger" title="Delete Selected">
+                                    <i class="fas fa-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- Top Filter Section -->

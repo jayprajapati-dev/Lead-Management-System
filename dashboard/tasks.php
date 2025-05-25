@@ -194,6 +194,65 @@ if (!isset($_SESSION['user_id'])) {
              color: #007bff; /* Match icon color to text */
          }
 
+        /* Updated styles for action buttons header */
+        .action-buttons-top-bar {
+            background-color: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .action-buttons-top-bar .view-toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .action-buttons-top-bar .view-toggle-group .btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+
+        .action-buttons-top-bar .action-buttons-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .action-buttons-top-bar .action-buttons-group .btn {
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .action-buttons-top-bar .page-title {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .action-buttons-top-bar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .action-buttons-top-bar .action-buttons-group {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .action-buttons-top-bar .btn span {
+                display: none;
+            }
+            .action-buttons-top-bar .btn {
+                padding: 0.5rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -220,27 +279,43 @@ if (!isset($_SESSION['user_id'])) {
             <div class="container-fluid py-4">
                 <div class="crm-section-card">
                     <!-- Top Bar -->
-                    <div class="d-flex justify-content-between align-items-center mb-4">
-                        <div class="d-flex align-items-center">
-                            <!-- View Toggle Buttons -->
-                            <div class="btn-group view-toggle-buttons me-3" role="group" aria-label="View toggle">
-                                <button type="button" class="btn btn-outline-secondary active" id="kanbanViewBtn">█</button>
-                                <button type="button" class="btn btn-outline-secondary" id="listViewBtn">☰</button>
-                            </div>
-                            <h2 class="mb-0">Tasks</h2>
+                    <div class="d-flex justify-content-between align-items-center action-buttons-top-bar">
+                        <div class="d-flex align-items-center view-toggle-group">
+                            <button type="button" class="btn btn-outline-secondary active" id="kanbanViewBtn" title="Kanban View">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" id="listViewBtn" title="List View">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <h2 class="page-title ms-3 mb-0">Tasks</h2>
                         </div>
 
-                        <!-- Dynamic Right-side Action Buttons -->
-                        <!-- Buttons for Kanban View -->
-                        <div class="d-flex action-buttons-container" id="kanbanViewButtons">
-                             <button class="btn btn-primary me-2">➕ Add Task</button>
-                             <button class="btn btn-secondary">📅 Calendar</button>
+                        <!-- Kanban View Buttons -->
+                        <div class="action-buttons-group" id="kanbanViewButtons">
+                            <button class="btn btn-primary" title="Add New Task">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Task</span>
+                            </button>
+                            <button class="btn btn-secondary" title="View Calendar">
+                                <i class="fas fa-calendar"></i>
+                                <span>Calendar</span>
+                            </button>
                         </div>
-                        <!-- Buttons for List View -->
-                        <div class="d-flex action-buttons-container d-none" id="listViewButtons">
-                             <button class="btn btn-danger me-2">🗑️ Trash</button>
-                             <button class="btn btn-primary me-2">➕ Add Task</button>
-                             <button class="btn btn-secondary">📅 Calendar</button>
+
+                        <!-- List View Buttons -->
+                        <div class="action-buttons-group d-none" id="listViewButtons">
+                            <button class="btn btn-danger" title="View Trash">
+                                <i class="fas fa-trash"></i>
+                                <span>Trash</span>
+                            </button>
+                            <button class="btn btn-primary" title="Add New Task">
+                                <i class="fas fa-plus"></i>
+                                <span>Add Task</span>
+                            </button>
+                            <button class="btn btn-secondary" title="View Calendar">
+                                <i class="fas fa-calendar"></i>
+                                <span>Calendar</span>
+                            </button>
                         </div>
                     </div>
 
