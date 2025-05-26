@@ -10,25 +10,45 @@ $userProfileImage = 'https://via.placeholder.com/30'; // Placeholder for user im
 // Get the current page filename
 $currentPage = basename($_SERVER['PHP_SELF']);
 
+// Define all modal configurations
+$modalConfigs = [
+    'lead' => [
+        'modalId' => 'addLeadModal',
+        'buttonText' => 'Lead',
+        'icon' => 'filter',
+        'modalFile' => 'add-lead.php'
+    ],
+    'task' => [
+        'modalId' => 'addTaskModal',
+        'buttonText' => 'Task',
+        'icon' => 'calendar-alt',
+        'modalFile' => 'add-task.php'
+    ],
+    'note' => [
+        'modalId' => 'addNoteModal',
+        'buttonText' => 'Note',
+        'icon' => 'check-square',
+        'modalFile' => 'add-note.php'
+    ],
+    'reminder' => [
+        'modalId' => 'addReminderModal',
+        'buttonText' => 'Reminder',
+        'icon' => 'bell',
+        'modalFile' => 'add-reminder.php'
+    ]
+];
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <!-- Quick Action Buttons - Hidden on small devices, visible on large and up -->
         <div class="d-none d-lg-flex align-items-center me-3">
-            <!-- Buttons with data-bs-target pointing to the respective modal IDs -->
-            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addLeadModal">
-                + <span class="button-text">Lead</span> <i class="fas fa-filter"></i>
+            <?php foreach ($modalConfigs as $type => $config): ?>
+            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#<?php echo $config['modalId']; ?>">
+                + <span class="button-text"><?php echo $config['buttonText']; ?></span>
+                <i class="fas fa-<?php echo $config['icon']; ?>"></i>
             </button>
-            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                + <span class="button-text">Task</span> <i class="fas fa-calendar-alt"></i>
-            </button>
-            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                + <span class="button-text">Note</span> <i class="fas fa-check-square"></i>
-            </button>
-            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addReminderModal">
-                + <span class="button-text">Reminder</span> <i class="fas fa-bell"></i>
-            </button>
+            <?php endforeach; ?>
         </div>
 
         <div class="d-flex align-items-center ms-auto">
@@ -69,28 +89,115 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 </nav>
 
 <?php
-// Conditionally include modals based on the current page
-switch ($currentPage) {
-    case 'dashboard.php':
-    case 'leads.php':
-    case 'tasks.php':
-        // Include all four modals on dashboard, leads, and tasks pages
-        include '../includes/modals/add-lead.php';
-        include '../includes/modals/add-task.php';
-        include '../includes/modals/add-note.php';
-        include '../includes/modals/add-reminder.php';
-        break;
-    case 'notes.php':
-        // Include the Add Note modal only on the notes page (if not included above)
-        // include '../includes/modals/add-note.php';
-        break;
-    case 'reminders.php':
-         // Include the Add Reminder modal only on the reminders page (if not included above)
-         // include '../includes/modals/add-reminder.php';
-         break;
-    // Add more cases for other pages and their respective modals
-    default:
-        // No specific modals included by default
-        break;
+// Include all modals on all pages
+foreach ($modalConfigs as $config) {
+    $modalPath = "../includes/modals/" . $config['modalFile'];
+    if (file_exists($modalPath)) {
+        include $modalPath;
+    }
 }
-?> 
+?>
+
+<style>
+/* Quick Action Button Styles */
+.quick-action-button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    margin-right: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quick-action-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.quick-action-button i {
+    font-size: 12px;
+}
+
+/* Notification Badge Styles */
+.notification-badge {
+    position: relative;
+}
+
+.notification-badge::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    border: 2px solid #fff;
+}
+
+/* Dropdown Menu Animation */
+.custom-dropdown-menu {
+    animation: dropdownFade 0.2s ease-in-out;
+}
+
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 991.98px) {
+    .quick-action-button .button-text {
+        display: none;
+    }
+    .quick-action-button {
+        padding: 8px;
+        margin-right: 4px;
+    }
+    .quick-action-button i {
+        font-size: 14px;
+    }
+}
+
+/* Active Button State */
+.quick-action-button.active {
+    background-color: #0056b3;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize all modals
+    const modals = {};
+    <?php foreach ($modalConfigs as $type => $config): ?>
+    modals['<?php echo $type; ?>'] = new bootstrap.Modal(document.getElementById('<?php echo $config['modalId']; ?>'));
+    <?php endforeach; ?>
+
+    // Add click handlers for all quick action buttons
+    document.querySelectorAll('.quick-action-button').forEach(button => {
+        button.addEventListener('click', function() {
+            const modalId = this.getAttribute('data-bs-target').substring(1);
+            const modalType = Object.keys(modals).find(key => 
+                modalConfigs[key].modalId === modalId
+            );
+            if (modalType && modals[modalType]) {
+                modals[modalType].show();
+            }
+        });
+    });
+});
+</script> 

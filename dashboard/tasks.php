@@ -12,6 +12,22 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: ' . SITE_URL . '/login.php');
     exit();
 }
+
+// Fetch users for the assign to dropdown
+$usersList = [];
+try {
+    $usersResult = executeQuery("SELECT id, first_name, last_name FROM users WHERE status = 'active' ORDER BY first_name")->get_result();
+    if ($usersResult) {
+        while ($user = $usersResult->fetch_assoc()) {
+            $usersList[] = [
+                'id' => $user['id'],
+                'name' => htmlspecialchars($user['first_name'] . ' ' . $user['last_name'])
+            ];
+        }
+    }
+} catch (Exception $e) {
+    error_log("Error fetching users for dropdown: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -292,7 +308,7 @@ if (!isset($_SESSION['user_id'])) {
 
                         <!-- Kanban View Buttons -->
                         <div class="action-buttons-group" id="kanbanViewButtons">
-                            <button class="btn btn-primary" title="Add New Task">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                 <i class="fas fa-plus"></i>
                                 <span>Add Task</span>
                             </button>
@@ -308,7 +324,7 @@ if (!isset($_SESSION['user_id'])) {
                                 <i class="fas fa-trash"></i>
                                 <span>Trash</span>
                             </button>
-                            <button class="btn btn-primary" title="Add New Task">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                                 <i class="fas fa-plus"></i>
                                 <span>Add Task</span>
                             </button>
@@ -414,77 +430,72 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 </div>
 
+<!-- Include Add Task Modal -->
+<?php include '../includes/modals/add-task.php'; ?>
+
 <!-- Bootstrap 5 JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
+<!-- Custom JavaScript for Tasks Page -->
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const kanbanViewBtn = document.getElementById('kanbanViewBtn');
-        const listViewBtn = document.getElementById('listViewBtn');
-        const kanbanViewButtons = document.getElementById('kanbanViewButtons');
-        const listViewButtons = document.getElementById('listViewButtons');
-        const statusFilterRow = document.getElementById('statusFilterRow');
-        const emptyStateMessage = document.querySelector('#tasksContentArea .empty-state-message');
-        const tasksDataDisplay = document.getElementById('tasksDataDisplay');
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Bootstrap Modal
+    const addTaskModal = new bootstrap.Modal(document.getElementById('addTaskModal'));
+    
+    // View Toggle Functionality
+    const kanbanViewBtn = document.getElementById('kanbanViewBtn');
+    const listViewBtn = document.getElementById('listViewBtn');
+    const kanbanViewButtons = document.getElementById('kanbanViewButtons');
+    const listViewButtons = document.getElementById('listViewButtons');
+    const statusFilterRow = document.getElementById('statusFilterRow');
 
-        // Function to update view based on button click
-        function updateView(activeView) {
-            // Toggle active class on view buttons
-            if (activeView === 'kanban') {
-                listViewBtn.classList.remove('active');
-                kanbanViewBtn.classList.add('active');
-                listViewButtons.classList.add('d-none');
-                kanbanViewButtons.classList.remove('d-none');
-                 console.log('Switched to Kanban View');
-                // Show status filter in Kanban View
-                if (statusFilterRow) statusFilterRow.classList.remove('d-none');
-
-            } else { // list view
-                kanbanViewBtn.classList.remove('active');
-                listViewBtn.classList.add('active');
-                kanbanViewButtons.classList.add('d-none');
-                listViewButtons.classList.remove('d-none');
-                 console.log('Switched to List View');
-                 // Hide status filter in List View
-                 if (statusFilterRow) statusFilterRow.classList.add('d-none');
-            }
-
-            // In this version with no data, always show the empty state message
-            // and hide the data display area, regardless of view.
-             if (emptyStateMessage) emptyStateMessage.classList.remove('d-none');
-             if (tasksDataDisplay) tasksDataDisplay.classList.add('d-none');
-
-        }
-
-        // Initial setup: Set Kanban View as default active and update view display
-        // Check if elements exist before adding listeners or modifying classes
-        if (kanbanViewBtn && listViewBtn && kanbanViewButtons && listViewButtons && statusFilterRow && emptyStateMessage && tasksDataDisplay) {
-
-             // Set Kanban View as default active state
-             kanbanViewBtn.classList.add('active');
-             listViewBtn.classList.remove('active');
-             kanbanViewButtons.classList.remove('d-none'); // Show kanban buttons initially
-             listViewButtons.classList.add('d-none'); // Hide list buttons initially
-             // Show status filter initially for the default Kanban View
-             statusFilterRow.classList.remove('d-none');
-
-
-            // Add click listeners
-            kanbanViewBtn.addEventListener('click', function() {
-                updateView('kanban');
-            });
-
-            listViewBtn.addEventListener('click', function() {
-                updateView('list');
-            });
-
-            console.log('Script initialized. Event listeners attached.');
-
-        } else {
-            console.error('Could not find one or more required elements for view toggle or empty state.');
-        }
+    kanbanViewBtn.addEventListener('click', function() {
+        this.classList.add('active');
+        listViewBtn.classList.remove('active');
+        kanbanViewButtons.classList.remove('d-none');
+        listViewButtons.classList.add('d-none');
+        statusFilterRow.classList.remove('d-none');
     });
+
+    listViewBtn.addEventListener('click', function() {
+        this.classList.add('active');
+        kanbanViewBtn.classList.remove('active');
+        listViewButtons.classList.remove('d-none');
+        kanbanViewButtons.classList.add('d-none');
+        statusFilterRow.classList.add('d-none');
+    });
+
+    // Handle Add Task button clicks (both in header and content area)
+    document.querySelectorAll('[data-bs-target="#addTaskModal"]').forEach(button => {
+        button.addEventListener('click', function() {
+            addTaskModal.show();
+        });
+    });
+
+    // Handle form submission
+    const addTaskForm = document.getElementById('addTaskForm');
+    if (addTaskForm) {
+        addTaskForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your form submission logic here
+            // After successful submission:
+            addTaskModal.hide();
+        });
+    }
+
+    // Populate Assign To dropdown with users
+    const assignToSelect = document.getElementById('taskAssignTo');
+    if (assignToSelect) {
+        const users = <?php echo json_encode($usersList); ?>;
+        users.forEach(user => {
+            const option = document.createElement('option');
+            option.value = user.id;
+            option.textContent = user.name;
+            assignToSelect.appendChild(option);
+        });
+    }
+});
 </script>
 
 </body>
