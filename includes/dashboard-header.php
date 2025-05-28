@@ -13,12 +13,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-        <!-- Mobile Left Sidebar Toggle - Visible only on small devices -->
-        <button class="btn btn-light d-lg-none me-2" id="mobileLeftSidebarToggleInHeader">
-            <i class="fas fa-bars"></i>
-        </button>
-
+    <div class="header-content">
         <!-- Quick Action Buttons - Hidden on small devices, visible on large and up -->
         <div class="d-none d-lg-flex align-items-center me-3">
             <!-- Buttons with data-bs-target pointing to the respective modal IDs -->

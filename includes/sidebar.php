@@ -50,8 +50,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-calendar-alt"></i>
             <span>Calendar</span>
         </a>
-         <a class="nav-link <?php echo $current_page === 'hr.php' ? 'active' : ''; ?>" 
-           href="<?php echo SITE_URL; ?>/dashboard/hr.php">
+         <a class="nav-link <?php echo $current_page === '' ? 'active' : ''; ?>" 
+           href="<?php echo SITE_URL; ?>/dashboard/dashboard.php">
             <i class="fas fa-users-cog"></i> <!-- Using users-cog for HR/Users -->
             <span>HR</span>
         </a>
