@@ -301,7 +301,7 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
                                     <i class="fas fa-sort"></i>
                                     <span>Sort</span>
                                 </button>
-                            </div>
+                             </div>
 
                             <!-- List View Buttons -->
                             <div class="action-buttons-group" id="listViewButtons">
@@ -329,7 +329,7 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
                                     <i class="fas fa-trash"></i>
                                     <span>Delete</span>
                                 </button>
-                            </div>
+                              </div>
                         </div>
 
                         <!-- Top Filter Section -->

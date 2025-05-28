@@ -111,4 +111,57 @@
 .legend-label {
     font-size: 0.9rem;
     color: #555;
-} 
+}
+
+/* Calendar Styles */
+.calendar-header h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.calendar-header h5 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.calendar-header small {
+    font-size: 0.8rem;
+}
+
+.time-slots-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+}
+
+.time-slot {
+    align-items: start;
+    border-bottom: 1px solid #eee; /* Lighter border */
+    padding: 0; /* Remove padding here */
+    display: flex; /* Use flexbox for horizontal layout of time and content */
+    align-items: stretch; /* Stretch items to fill height */
+}
+
+.time-slot:last-child {
+    border-bottom: none; /* Remove border from the last slot */
+}
+
+.time-label {
+    font-weight: 500;
+    text-align: left; /* Align time label to the left */
+    padding: 10px; /* Padding inside the time label */
+    width: 80px; /* Fixed width for time label */
+    flex-shrink: 0;
+    border-right: 1px solid #eee; /* Separator line */
+    background-color: #f8f9fa; /* Light background */
+    font-size: 0.9rem;
+}
+
+.slot-content {
+    min-height: 40px; /* Adjust as needed for visual spacing */
+    flex-grow: 1;
+    padding: 10px; /* Padding inside the content area */
+}
+
+/* Add more specific styles for calendar elements as needed */ 
