@@ -1053,37 +1053,131 @@ $greetings = [];
             return false;
         });
         
-        // Button click handlers
+        // Button click handlers - all 4 buttons
+        
+        // 1. Date Range Button (already working)
         document.getElementById('dateRangeBtn').addEventListener('click', function() {
             dateRangeModal.show();
+            console.log('Date Range button clicked');
         });
         
-        document.getElementById('refreshBtn').addEventListener('click', function() {
-            // Refresh functionality would be implemented here
-            console.log('Refreshing data...');
-            // In a real implementation, you would fetch fresh data from the server
-        });
-        
-        // Upload button in header
+        // 2. Upload Button
         document.getElementById('uploadBtn').addEventListener('click', function() {
-            // For now, let's just log a message instead of showing the modal
+            // Custom functionality for upload button
             console.log('Upload button clicked');
-            // importModal.show(); // Commented out to prevent showing the form
+            // Show a notification instead of modal
+            showNotification('Upload feature', 'Upload functionality will be implemented soon');
         });
         
-        // Add New button in header
+        // 3. Add New Button
         document.getElementById('addNewBtn').addEventListener('click', function() {
-            // For now, let's just log a message instead of showing the modal
+            // Custom functionality for add new button
             console.log('Add New button clicked');
-            // addGreetingModal.show(); // Commented out to prevent showing the form
+            // Show a notification instead of modal
+            showNotification('Add greeting', 'Add greeting functionality will be implemented soon');
         });
         
-        // Delete button in header
+        // 4. Delete Button
         document.getElementById('deleteBtn').addEventListener('click', function() {
-            // In a real implementation, you would check if any greetings are selected
-            // For now, we'll just show the confirmation modal
+            // Show delete confirmation modal
             deleteConfirmModal.show();
+            console.log('Delete button clicked');
         });
+        
+        // Helper function to show notifications
+        function showNotification(title, message) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="notification-header">
+                    <h5>${title}</h5>
+                    <button type="button" class="close-notification">&times;</button>
+                </div>
+                <div class="notification-body">
+                    <p>${message}</p>
+                </div>
+            `;
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Show with animation
+            setTimeout(() => notification.classList.add('show'), 10);
+            
+            // Add close button functionality
+            notification.querySelector('.close-notification').addEventListener('click', function() {
+                notification.classList.remove('show');
+                setTimeout(() => notification.remove(), 300);
+            });
+            
+            // Auto-close after 3 seconds
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    notification.classList.remove('show');
+                    setTimeout(() => notification.remove(), 300);
+                }
+            }, 3000);
+        }
+        
+        // CSS for notifications
+        const notificationStyle = document.createElement('style');
+        notificationStyle.textContent = `
+            .notification {
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: white;
+                border-left: 4px solid #6366f1;
+                border-radius: 4px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                width: 300px;
+                max-width: 90%;
+                z-index: 9999;
+                overflow: hidden;
+                transform: translateX(110%);
+                transition: transform 0.3s ease;
+            }
+            
+            .notification.show {
+                transform: translateX(0);
+            }
+            
+            .notification-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 12px 15px;
+                background: #f8fafc;
+                border-bottom: 1px solid #e2e8f0;
+            }
+            
+            .notification-header h5 {
+                margin: 0;
+                font-size: 16px;
+                font-weight: 600;
+                color: #1e293b;
+            }
+            
+            .close-notification {
+                background: none;
+                border: none;
+                font-size: 20px;
+                line-height: 1;
+                color: #64748b;
+                cursor: pointer;
+            }
+            
+            .notification-body {
+                padding: 15px;
+            }
+            
+            .notification-body p {
+                margin: 0;
+                color: #334155;
+            }
+        `;
+        document.head.appendChild(notificationStyle);
         
         // Import button in modal
         document.querySelector('.modal-footer #importBtn').addEventListener('click', function() {

@@ -154,60 +154,151 @@ if (!isset($_SESSION['user_id'])) {
          }
 
         @media (max-width: 767.98px) {
-            /* Mobile adjustments - may need more specific rules */
-             .dashboard-container {
-                 flex-direction: column; /* Stack sidebar and main content */
-             }
-             .left-sidebar {
-                 width: 100%; /* Full width on mobile */
-                 position: static; /* Don't fix position on mobile */
-                 height: auto; /* Auto height */
-                 box-shadow: none;
-             }
-             .main-content-area {
-                 margin-left: 0; /* Remove margin */
-                 padding-top: 0; /* Remove padding top if header is not fixed */
-             }
-             .fixed-header {
-                 position: static; /* Don't fix header on mobile */
-                 left: 0;
-                 width: 100%;
-             }
-             .content-below-header {
-                 flex-direction: column; /* Stack calendar and right sidebar */
-                 padding-top: 0; /* Remove padding top */
-             }
-             .calendar-main-area {
-                 width: 100%; /* Full width */
-                 padding: 10px;
-             }
-             .right-filter-sidebar {
-                 width: 100%; /* Full width on mobile */
-                 box-shadow: none;
-                 padding: 10px;
-                 /* Styles for mobile toggle */
-                 position: fixed; /* Fix position on mobile */
-                 top: 0; /* Align to top */
-                 right: -280px; /* Hide off-screen by default (match its width) */
-                 bottom: 0; /* Span full height */
-                 z-index: 1000; /* Ensure it's above main content */
-                 background-color: #fff; /* Add background */
-                 transition: right 0.3s ease-in-out; /* Smooth transition */
-                 box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1); /* Shadow on the left when open */
-             }
-             .right-filter-sidebar.show {
-                 right: 0; /* Slide in when 'show' class is added */
-             }
-             .sidebar-toggle {
-                 /* Adjust mobile toggle position if necessary */
-             }
-             /* Hide the main navigation sidebar content on mobile by default, show with toggle */
-             .left-sidebar .sidebar-content {
-                 display: none;
-             }
-             .left-sidebar.show .sidebar-content {
-                 display: block;
-             }
+            /* Mobile adjustments - professional mobile experience */
+            .dashboard-container {
+                flex-direction: column; /* Stack sidebar and main content */
+            }
+            
+            .left-sidebar {
+                width: 100%; /* Full width on mobile */
+                position: static; /* Don't fix position on mobile */
+                height: auto; /* Auto height */
+                box-shadow: none;
+            }
+            
+            .main-content-area {
+                margin-left: 0; /* Remove margin */
+                width: 100%;
+            }
+            
+            .fixed-header {
+                position: fixed; /* Keep header fixed on mobile */
+                left: 0;
+                width: 100%;
+                z-index: 1010;
+            }
+            
+            .content-below-header {
+                flex-direction: column; /* Stack calendar and right sidebar */
+                padding-top: 110px; /* Add padding for fixed header and toggle button */
+            }
+            
+            .calendar-main-area {
+                width: 100%; /* Full width */
+                padding: 10px;
+            }
+            
+            /* Right filter sidebar - slide in panel */
+            .right-filter-sidebar {
+                position: fixed;
+                top: 60px; /* Position below fixed header */
+                right: -280px; /* Hide off-screen by default */
+                width: 280px; /* Fixed width */
+                height: calc(100vh - 60px); /* Full height minus header */
+                background-color: #fff;
+                z-index: 1050;
+                transition: right 0.3s ease;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+                padding: 15px;
+                overflow-y: auto;
+            }
+            
+            .right-filter-sidebar.show {
+                right: 0; /* Slide in when 'show' class is added */
+            }
+            
+            /* Sidebar toggle button for mobile (left side) */
+            .sidebar-toggle-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 4px;
+                background: #5B47B3;
+                color: white;
+                border: none;
+                position: fixed;
+                top: 15px;
+                left: 15px;
+                z-index: 1060;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                transition: all 0.2s ease;
+                font-size: 1.2rem;
+            }
+            
+            .sidebar-toggle-btn:hover {
+                background: #4a3a9c;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            }
+            
+            .sidebar-toggle-btn:active {
+                transform: scale(0.95);
+            }
+            
+            /* Filter toggle button for mobile */
+            .filter-toggle-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                border-radius: 4px;
+                background: #5B47B3;
+                color: white;
+                border: none;
+                position: fixed;
+                top: 15px;
+                right: 15px;
+                z-index: 1060;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                transition: all 0.2s ease;
+                font-size: 1.2rem;
+            }
+            
+            .filter-toggle-btn:hover {
+                background: #4a3a9c;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+            }
+            
+            .filter-toggle-btn:active {
+                transform: scale(0.95);
+            }
+            
+            /* Hide text labels on mobile, show only icons */
+            .btn-text {
+                display: none;
+            }
+            
+            /* Left sidebar mobile adjustments */
+            .left-sidebar .sidebar-content {
+                display: none;
+            }
+            
+            .left-sidebar.show .sidebar-content {
+                display: block;
+            }
+            
+            /* Mobile overlay for both sidebars */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+                opacity: 1;
+            }
         }
 
         /* Mobile Overlay */
@@ -562,17 +653,15 @@ if (!isset($_SESSION['user_id'])) {
 
 <div class="dashboard-container">
 
-    <!-- Left Navigation Sidebar (includes ../includes/sidebar.php) -->
-    <div class="left-sidebar sidebar" id="sidebarMenu">
+    <!-- Left Navigation Sidebar -->
+    <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
         <?php include '../includes/sidebar.php'; ?>
-        <!-- Mobile Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
     </div>
+    
+    <!-- Mobile Overlay for Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Right Filter Sidebar Mobile Toggle Button -->
-    <button class="btn btn-secondary d-md-none" id="filterSidebarToggle" style="position: fixed; top: 1rem; right: 1rem; z-index: 1001;">
-        <i class="fas fa-filter"></i>
-    </button>
+    <!-- No duplicate filter button here -->
 
     <!-- Main Content Area -->
     <div class="col-md-9 col-lg-10 main-content-area">
@@ -593,9 +682,18 @@ if (!isset($_SESSION['user_id'])) {
                      </div>
 
                      <div class="view-toggle btn-group" role="group">
-                         <button type="button" class="btn btn-outline-secondary active" data-view="month">Month</button>
-                         <button type="button" class="btn btn-outline-secondary" data-view="day">Day</button>
-                         <button type="button" class="btn btn-outline-secondary" data-view="list">List</button>
+                         <button type="button" class="btn btn-outline-secondary active" data-view="month">
+                             <span class="d-none d-md-inline">Month</span>
+                             <i class="fas fa-calendar-alt d-md-none"></i>
+                         </button>
+                         <button type="button" class="btn btn-outline-secondary" data-view="day">
+                             <span class="d-none d-md-inline">Day</span>
+                             <i class="fas fa-calendar-day d-md-none"></i>
+                         </button>
+                         <button type="button" class="btn btn-outline-secondary" data-view="list">
+                             <span class="d-none d-md-inline">List</span>
+                             <i class="fas fa-list d-md-none"></i>
+                         </button>
                      </div>
                  </div>
 
@@ -644,7 +742,8 @@ if (!isset($_SESSION['user_id'])) {
              <!-- Right Filter Sidebar -->
              <div class="right-filter-sidebar">
                   <button class="add-event-btn" data-bs-toggle="modal" data-bs-target="#addEventModal">
-                     Add Event
+                     <span class="d-none d-md-inline">Add Event</span>
+                     <i class="fas fa-plus d-md-none"></i>
                  </button>
 
                  <div class="filter-section">
@@ -754,22 +853,41 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- Right Filter Sidebar Mobile Toggle ---
-    const filterSidebarToggle = document.getElementById('filterSidebarToggle');
+    // --- Mobile Toggles ---
+    // Get both sidebar toggle buttons
+    const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+    const filterToggleBtn = document.getElementById('filterToggleBtn');
+    const sidebar = document.getElementById('sidebarMenu');
     const rightFilterSidebar = document.querySelector('.right-filter-sidebar');
-
-    if (filterSidebarToggle && rightFilterSidebar) {
-        filterSidebarToggle.addEventListener('click', function() {
-            rightFilterSidebar.classList.toggle('show');
-            // Optional: Add an overlay for the right sidebar as well if needed
-            // sidebarOverlay.classList.toggle('show');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    // Sidebar Toggle (Left side hamburger menu)
+    if (sidebarToggleBtn && sidebar && sidebarOverlay) {
+        sidebarToggleBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+            // Close filter sidebar if open
+            rightFilterSidebar.classList.remove('show');
         });
-         // Optional: Hide right sidebar when overlay is clicked
-        // if(sidebarOverlay) {
-        //     sidebarOverlay.addEventListener('click', function() {
-        //         rightFilterSidebar.classList.remove('show');
-        //     });
-        // }
+    }
+    
+    // Filter Toggle Button
+    if (filterToggleBtn && rightFilterSidebar && sidebarOverlay) {
+        filterToggleBtn.addEventListener('click', function() {
+            rightFilterSidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+            // Close main sidebar if open
+            sidebar.classList.remove('show');
+        });
+    }
+    
+    // Close both sidebars when overlay is clicked
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.remove('show');
+            rightFilterSidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+        });
     }
 
     // --- Calendar Functionality ---

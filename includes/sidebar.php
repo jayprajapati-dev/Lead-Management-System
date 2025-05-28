@@ -15,8 +15,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             --success-color: #10b981;
             --danger-color: #ef4444;
             --warning-color: #f59e0b;
-            --sidebar-width: 280px;
-            --sidebar-collapsed-width: 80px;
+            --sidebar-width: 240px;
+            --sidebar-collapsed-width: 70px;
         }
 
         * {
@@ -45,6 +45,8 @@ $current_page = basename($_SERVER['PHP_SELF']);
             display: flex;
             flex-direction: column;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .sidebar-container.collapsed {
@@ -174,14 +176,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
         .nav-link {
             display: flex;
             align-items: center;
-            padding: 12px 16px;
+            padding: 10px 16px;
             color: var(--text-secondary);
             text-decoration: none;
             border-radius: 8px;
-            margin-bottom: 4px;
+            margin: 2px 8px;
             transition: all 0.2s ease;
-            position: relative;
-            overflow: hidden;
         }
 
         .nav-link:hover {
@@ -403,6 +403,77 @@ $current_page = basename($_SERVER['PHP_SELF']);
             opacity: 1;
             visibility: visible;
         }
+            /* Dropdown Styles */
+        .dropdown-container {
+            position: relative;
+            margin: 2px 8px;
+        }
+        
+        .dropdown-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .dropdown-icon {
+            font-size: 10px;
+            margin-left: auto;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-toggle.open .dropdown-icon {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            display: none;
+            padding: 5px 0;
+            margin-left: 20px;
+        }
+        
+        .dropdown-menu.show {
+            display: block;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 2px 0;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+        
+        .dropdown-item:hover {
+            background: var(--secondary-color);
+            color: var(--text-primary);
+            transform: translateX(4px);
+        }
+        
+        .dropdown-item.active {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            color: white;
+            font-weight: 500;
+        }
+        
+        .dropdown-item i.nav-icon {
+            font-size: 8px;
+            margin-right: 8px;
+        }
+        
+        .dropdown-item i.ml-auto {
+            margin-left: auto;
+            font-size: 10px;
+        }
+        
+        /* Web Settings special styling */
+        .dropdown-item:first-child.active {
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+        }
     </style>
 <!-- Mobile Toggle Button -->
 <button class="sidebar-toggle d-md-none" id="sidebarToggle">
@@ -472,11 +543,39 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <i class="fas fa-chart-pie"></i> <!-- Using chart-pie for Reports -->
             <span>Reports</span>
         </a>
-         <a class="nav-link <?php echo $current_page === 'general-settings.php' ? 'active' : ''; ?>" 
-           href="<?php echo SITE_URL; ?>/dashboard/general-settings.php">
-            <i class="fas fa-cog"></i>
-            <span>General Settings</span>
-        </a>
+         <!-- General Settings Dropdown -->
+         <div class="dropdown-container">
+             <a class="nav-link dropdown-toggle <?php echo in_array($current_page, ['general-settings.php', 'web-settings.php', 'lead-trash.php', 'attributes.php', 'templates.php', 'automation-rules.php']) ? 'active' : ''; ?>" href="#">
+                 <i class="fas fa-cog"></i>
+                 <span>General Settings</span>
+                 <i class="fas fa-chevron-down dropdown-icon"></i>
+             </a>
+             <div class="dropdown-menu">
+                 <a class="dropdown-item <?php echo $current_page === 'web-settings.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/web-settings.php">
+                     <i class="fas fa-circle nav-icon"></i>
+                     <span>Web Settings</span>
+                 </a>
+                 <a class="dropdown-item <?php echo $current_page === 'lead-trash.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/lead-trash.php">
+                     <i class="fas fa-circle nav-icon"></i>
+                     <span>Lead Trash</span>
+                 </a>
+                 <a class="dropdown-item <?php echo $current_page === 'attributes.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/attributes.php">
+                     <i class="fas fa-circle nav-icon"></i>
+                     <span>Attributes</span>
+                     <i class="fas fa-chevron-right ml-auto"></i>
+                 </a>
+                 <a class="dropdown-item <?php echo $current_page === 'templates.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/templates.php">
+                     <i class="fas fa-circle nav-icon"></i>
+                     <span>Templates</span>
+                     <i class="fas fa-chevron-right ml-auto"></i>
+                 </a>
+                 <a class="dropdown-item <?php echo $current_page === 'automation-rules.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/automation-rules.php">
+                     <i class="fas fa-circle nav-icon"></i>
+                     <span>Automation Rules</span>
+                     <i class="fas fa-chevron-right ml-auto"></i>
+                 </a>
+             </div>
+         </div>
     </nav>
 </div>
 
@@ -487,6 +586,33 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </div>
 
 <script>
+    // Add dropdown functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+        
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.classList.toggle('open');
+                const dropdownMenu = this.nextElementSibling;
+                dropdownMenu.classList.toggle('show');
+            });
+        });
+        
+        // Auto-open dropdown if a child is active
+        const activeDropdownItem = document.querySelector('.dropdown-item.active');
+        if (activeDropdownItem) {
+            const parentDropdown = activeDropdownItem.closest('.dropdown-container');
+            if (parentDropdown) {
+                const dropdownToggle = parentDropdown.querySelector('.dropdown-toggle');
+                const dropdownMenu = parentDropdown.querySelector('.dropdown-menu');
+                if (dropdownToggle && dropdownMenu) {
+                    dropdownToggle.classList.add('open');
+                    dropdownMenu.classList.add('show');
+                }
+            }
+        }
+    });
 document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebarMenu');
     const sidebarToggle = document.getElementById('sidebarToggle');
