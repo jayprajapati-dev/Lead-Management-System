@@ -95,16 +95,119 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         }
         
         .menu-toggle {
-            background: transparent;
-            border: none;
-            color: #6b7280;
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: color 0.2s ease;
+            background: transparent;
+            border: none;
+            color: #6B7280;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        /* Hide toggle button when sidebar is visible on desktop */
+        @media (min-width: 992px) {
+            .menu-toggle {
+                display: none;
+            }
+        }
+        
+        /* Show back icon when sidebar is open on mobile */
+        body.sidebar-open .menu-toggle {
+            background: transparent !important;
+            color: #6B7280 !important;
+            box-shadow: none !important;
+            border: none !important;
+        }
+        
+        /* Completely redesigned sidebar for mobile view */
+        @media (max-width: 991.98px) {
+            /* Hide sidebar by default and position it on the right */
+            #sidebarMenu {
+                position: fixed;
+                top: 0;
+                right: -80%; /* Start off-screen */
+                width: 80%; /* Take up 80% of screen width */
+                height: 100vh;
+                background-color: white !important;
+                transition: all 0.3s ease;
+                z-index: 1050;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+                overflow-y: auto;
+            }
+            
+            /* When sidebar is shown */
+            #sidebarMenu.show {
+                right: 0; /* Slide in from right */
+            }
+            
+            /* Add back button to sidebar header */
+            .sidebar-header {
+                display: flex;
+                align-items: center;
+                padding: 15px;
+                border-bottom: 1px solid #e5e7eb;
+            }
+            
+            .sidebar-back-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: transparent;
+                border: none;
+                color: #6B7280;
+                font-size: 16px;
+                cursor: pointer;
+                padding: 8px;
+                margin-right: 10px;
+            }
+            
+            /* Push main content when sidebar is open */
+            body.sidebar-open .main-content-area {
+                transform: translateX(-60%);
+            }
+            
+            /* Ensure smooth transition for main content */
+            .main-content-area {
+                transition: transform 0.3s ease;
+            }
+            
+            /* Style sidebar elements */
+            #sidebarMenu .sidebar-header,
+            #sidebarMenu .sidebar-brand,
+            #sidebarMenu .nav-link,
+            #sidebarMenu .nav-item {
+                background-color: transparent !important;
+            }
+            
+            #sidebarMenu .nav-link.active {
+                background-color: #4a3f8c !important;
+                color: white !important;
+            }
+            
+            /* Overlay for background when sidebar is open */
+            .sidebar-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1040;
+                display: none;
+                transition: opacity 0.3s ease;
+            }
+            
+            .sidebar-overlay.show {
+                display: block;
+            }
+        }
+        
+        body.sidebar-open .menu-toggle .fa-bars:before {
+            content: "\f053"; /* fa-arrow-left */
         }
         
         .menu-toggle:hover {
@@ -744,12 +847,82 @@ document.addEventListener('DOMContentLoaded', function() {
         // Add your search functionality here
         console.log('Search clicked');
     });
+    
+    // New mobile sidebar functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebarMenu');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    // First, let's add a back button to the sidebar if it doesn't exist
+    if (sidebar && window.innerWidth < 992) {
+        // Check if sidebar header exists, if not create one
+        let sidebarHeader = sidebar.querySelector('.sidebar-header');
+        if (!sidebarHeader) {
+            sidebarHeader = document.createElement('div');
+            sidebarHeader.className = 'sidebar-header';
+            
+            // Create back button
+            const backButton = document.createElement('button');
+            backButton.className = 'sidebar-back-btn';
+            backButton.innerHTML = '<i class="fas fa-arrow-left"></i>';
+            backButton.setAttribute('aria-label', 'Back to Dashboard');
+            
+            // Add back button to header
+            sidebarHeader.appendChild(backButton);
+            
+            // Add title to header
+            const headerTitle = document.createElement('div');
+            headerTitle.className = 'sidebar-title';
+            headerTitle.textContent = 'Menu';
+            sidebarHeader.appendChild(headerTitle);
+            
+            // Insert header at the beginning of sidebar
+            if (sidebar.firstChild) {
+                sidebar.insertBefore(sidebarHeader, sidebar.firstChild);
+            } else {
+                sidebar.appendChild(sidebarHeader);
+            }
+            
+            // Add event listener to back button
+            backButton.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                if (sidebarOverlay) sidebarOverlay.classList.remove('show');
+                document.body.classList.remove('sidebar-open');
+            });
+        }
+    }
+    
+    if (sidebarToggle && sidebar && sidebarOverlay) {
+        // Open sidebar on mobile
+        sidebarToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.add('show');
+            sidebarOverlay.classList.add('show');
+            document.body.classList.add('sidebar-open');
+        });
+        
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+            document.body.classList.remove('sidebar-open');
+        });
+        
+        // Close sidebar when clicking on any nav link on mobile
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            });
+        });
+    }
 
-    // Copy/Duplicate functionality
-    document.getElementById('copyBtn').addEventListener('click', function() {
-        // Add your copy functionality here
-        console.log('Copy clicked');
-    });
+    // Add any additional functionality here
 
     // Notification functionality
     document.getElementById('notificationBtn').addEventListener('click', function() {

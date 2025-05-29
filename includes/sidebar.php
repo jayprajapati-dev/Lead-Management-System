@@ -609,10 +609,6 @@ $current_page = basename($_SERVER['PHP_SELF']);
         transform: translateX(2px);
     }
     </style>
-<!-- Mobile Toggle Button -->
-<button class="sidebar-toggle d-md-none" id="sidebarToggle">
-    <i class="fas fa-bars"></i>
-</button>
 
 <!-- Mobile Overlay -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>

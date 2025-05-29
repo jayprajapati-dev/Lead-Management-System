@@ -1212,69 +1212,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<!-- Sidebar toggle functionality is now handled in dashboard-header.php -->
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Sidebar toggle functionality
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebarMenu');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    
-    if (sidebarToggle && sidebar && sidebarOverlay) {
-        // Toggle sidebar on mobile
-        sidebarToggle.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent event from bubbling up
-            sidebar.classList.toggle('show');
-            sidebarOverlay.classList.toggle('show');
-            document.body.classList.toggle('sidebar-open');
-        });
-        
-        // Close sidebar when clicking overlay
-        sidebarOverlay.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent event from bubbling up
-            sidebar.classList.remove('show');
-            sidebarOverlay.classList.remove('show');
-            document.body.classList.remove('sidebar-open');
-        });
-        
-        // Close sidebar when clicking on any nav link on mobile
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
-                if (window.innerWidth < 992) {
-                    sidebar.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                    document.body.classList.remove('sidebar-open');
-                }
-            });
-        });
-        
-        // Also handle dropdown items to close sidebar on mobile
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
-        dropdownItems.forEach(item => {
-            item.addEventListener('click', function(e) {
-                if (window.innerWidth < 992) {
-                    sidebar.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                    document.body.classList.remove('sidebar-open');
-                }
-            });
-        });
-        
-        // Ensure the sidebar doesn't block clicks on the main content
-        document.addEventListener('click', function(e) {
-            // If sidebar is open and click is outside sidebar and toggle button
-            if (document.body.classList.contains('sidebar-open')) {
-                const isClickInsideSidebar = sidebar.contains(e.target);
-                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(e.target);
-                
-                if (!isClickInsideSidebar && !isClickOnToggle) {
-                    sidebar.classList.remove('show');
-                    sidebarOverlay.classList.remove('show');
-                    document.body.classList.remove('sidebar-open');
-                }
-            }
-        });
-    }
+    // Add any calendar-specific JavaScript here
 });
 </script>
 </body>
