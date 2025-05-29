@@ -1,7 +1,7 @@
 # Lead Management System
 
 <p align="center">
-  A comprehensive <strong>Customer Relationship Management (CRM)</strong> solution designed to streamline lead tracking, follow-ups, and conversions for businesses of all sizes.
+  A comprehensive <strong>Customer Relationship Management (CRM)</strong> solution designed to streamline lead tracking, follow-ups and conversions for businesses of all sizes.
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
 
 ## 📋 Overview
 
-The **Lead Management System** is a powerful web application built for sales teams, marketing agencies, and businesses to efficiently manage their customer acquisition pipeline. With a focus on usability and performance, this CRM helps you convert more leads into customers through organized tracking and timely follow-ups.
+The **Lead Management System** is a powerful web application built for sales teams, marketing agencies and businesses to efficiently manage their customer acquisition pipeline. With a focus on usability and performance, this CRM helps you convert more leads into customers through organized tracking and timely follow-ups.
 
 ## 🚀 Key Features
 
@@ -22,7 +22,7 @@ The **Lead Management System** is a powerful web application built for sales tea
   - Capture and organize leads from multiple sources
   - Track lead status through customizable sales pipelines
   - Assign leads to team members with role-based permissions
-  - Add notes, attachments, and follow-up activities
+  - Add notes, attachments and follow-up activities
 
 - **User Management**
   - Secure authentication with password strength enforcement
@@ -33,7 +33,7 @@ The **Lead Management System** is a powerful web application built for sales tea
 - **Dashboard & Analytics**
   - Real-time overview of sales pipeline
   - Performance metrics and conversion rates
-  - Visual charts for lead sources, statuses, and team performance
+  - Visual charts for lead sources, statuses and team performance
   - Customizable date ranges for reporting
 - **Task & Reminder Management**
   - Create and assign tasks with priorities and due dates
