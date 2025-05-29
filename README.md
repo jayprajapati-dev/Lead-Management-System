@@ -1,10 +1,6 @@
 # Lead Management System
 
 <p align="center">
-  <img src="public/assets/images/logo.png" alt="Lead Management System Logo" width="200"/>
-</p>
-
-<p align="center">
   A comprehensive <strong>Customer Relationship Management (CRM)</strong> solution designed to streamline lead tracking, follow-ups, and conversions for businesses of all sizes.
 </p>
 
