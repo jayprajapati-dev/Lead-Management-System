@@ -1,6 +1,38 @@
 <?php
 // Get current page for active state
 $current_page = basename($_SERVER['PHP_SELF']);
+
+// Include trial functions if not already included
+if (!function_exists('getTrialDaysRemaining')) {
+    require_once __DIR__ . '/trial_functions.php';
+}
+
+// Get trial information if user is logged in
+$trial_days_remaining = 0;
+$is_trial_expired = false;
+$user_status = '';
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    
+    // Get user status
+    $status_sql = "SELECT status FROM users WHERE id = ?";
+    $status_stmt = $conn->prepare($status_sql);
+    $status_stmt->bind_param("i", $user_id);
+    $status_stmt->execute();
+    $status_result = $status_stmt->get_result();
+    
+    if ($status_row = $status_result->fetch_assoc()) {
+        $user_status = $status_row['status'];
+    }
+    
+    // Get trial days remaining
+    $trial_days_remaining = getTrialDaysRemaining($user_id);
+    $is_trial_expired = isTrialExpired($user_id);
+    
+    // Enforce trial restrictions
+    enforceTrialRestrictions($user_id);
+}
 ?>
 <style>
     :root {
@@ -306,14 +338,32 @@ $current_page = basename($_SERVER['PHP_SELF']);
     /* Free Trial Section */
     .free-trial-section {
         margin-top: auto;
-        padding: 12px 10px;
-        background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-        margin: 10px;
+        padding: 15px;
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: var(--text-active);
         border-radius: 10px;
-        border: 1px solid #cbd5e1;
+        margin: 15px;
         text-align: center;
         transition: all var(--transition-normal);
         box-shadow: var(--shadow-sm);
+    }
+    
+    /* Premium section styling */
+    .premium-section {
+        background: linear-gradient(135deg, #20c997 0%, #0ca678 100%);
+    }
+    
+    .premium-icon {
+        background: rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Expired section styling */
+    .expired-section {
+        background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
+    }
+    
+    .expired-icon {
+        background: rgba(255, 255, 255, 0.2);
     }
 
     .sidebar-container.collapsed .free-trial-section {
@@ -710,14 +760,33 @@ $current_page = basename($_SERVER['PHP_SELF']);
 </div>
 
 <!-- Free Trial Info -->
-<div class="free-trial-section">
-    <div class="trial-icon">
-        <i class="fas fa-crown"></i>
+<?php if ($user_status === 'active'): ?>
+    <div class="free-trial-section premium-section">
+        <div class="trial-icon premium-icon">
+            <i class="fas fa-gem"></i>
+        </div>
+        <div class="trial-text">Premium Plan</div>
+        <div class="trial-days"><?php echo ucfirst($user_status); ?></div>
     </div>
-    <div class="trial-text">Free Trial</div>
-    <div class="trial-days">6 Days Left</div>
-    <a href="#" class="upgrade-btn">Upgrade Now</a>
-</div>
+<?php elseif ($is_trial_expired): ?>
+    <div class="free-trial-section expired-section">
+        <div class="trial-icon expired-icon">
+            <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <div class="trial-text">Trial Expired</div>
+        <div class="trial-days">Upgrade Now</div>
+        <a href="<?php echo SITE_URL; ?>/dashboard/upgrade.php" class="upgrade-btn">Upgrade Now</a>
+    </div>
+<?php else: ?>
+    <div class="free-trial-section">
+        <div class="trial-icon">
+            <i class="fas fa-crown"></i>
+        </div>
+        <div class="trial-text">Free Trial</div>
+        <div class="trial-days"><?php echo $trial_days_remaining; ?> Day<?php echo $trial_days_remaining !== 1 ? 's' : ''; ?> Left</div>
+        <a href="<?php echo SITE_URL; ?>/dashboard/upgrade.php" class="upgrade-btn">Upgrade Now</a>
+    </div>
+<?php endif; ?>
 
 <script>
     // Add dropdown functionality

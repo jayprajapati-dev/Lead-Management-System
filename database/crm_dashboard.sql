@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS users (
     package ENUM('basic', 'silver', 'gold', 'platinum', 'diamond', 'diamond_pro') DEFAULT 'basic',
     status ENUM('trial', 'active', 'expired', 'suspended') DEFAULT 'trial',
     trial_end_date DATETIME,
+    profile_image VARCHAR(255) DEFAULT NULL,
+    profile_image_updated_at TIMESTAMP NULL DEFAULT NULL,
     last_login DATETIME,
     login_attempts INT DEFAULT 0,
     is_locked BOOLEAN DEFAULT FALSE,

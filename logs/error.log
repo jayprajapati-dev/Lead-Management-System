@@ -589,3 +589,31 @@
 [29-May-2025 12:10:31 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
 [29-May-2025 12:10:40 Europe/Berlin] PHP Warning:  Undefined array key "user_first_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
 [29-May-2025 12:10:40 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 21:14:01 Europe/Berlin] PHP Warning:  require_once(../includes/auth_check.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Lead-Management-System\dashboard\upgrade.php on line 3
+[29-May-2025 21:14:01 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../includes/auth_check.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Lead-Management-System\dashboard\upgrade.php:3
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\dashboard\upgrade.php on line 3
+[29-May-2025 21:14:15 Europe/Berlin] PHP Warning:  require_once(../includes/auth_check.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\Lead-Management-System\dashboard\upgrade.php on line 3
+[29-May-2025 21:14:15 Europe/Berlin] PHP Fatal error:  Uncaught Error: Failed opening required '../includes/auth_check.php' (include_path='C:\xampp\php\PEAR') in C:\xampp\htdocs\Lead-Management-System\dashboard\upgrade.php:3
+Stack trace:
+#0 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\dashboard\upgrade.php on line 3
+[29-May-2025 21:23:58 Europe/Berlin] PHP Warning:  Undefined variable $userBirthday in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:23:58 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:23:58 Europe/Berlin] PHP Warning:  Undefined variable $userStoreStatus in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:23:58 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:24:01 Europe/Berlin] PHP Warning:  Undefined variable $userBirthday in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:24:01 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:24:01 Europe/Berlin] PHP Warning:  Undefined variable $userStoreStatus in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:24:01 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:24:05 Europe/Berlin] PHP Warning:  Undefined variable $userBirthday in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:24:05 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:24:05 Europe/Berlin] PHP Warning:  Undefined variable $userStoreStatus in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:24:05 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:24:17 Europe/Berlin] PHP Warning:  Undefined variable $userBirthday in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:24:17 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 192
+[29-May-2025 21:24:17 Europe/Berlin] PHP Warning:  Undefined variable $userStoreStatus in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:24:17 Europe/Berlin] PHP Deprecated:  htmlspecialchars(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 198
+[29-May-2025 21:25:00 Europe/Berlin] PHP Warning:  Undefined variable $timezones in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 241
+[29-May-2025 21:25:00 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 241

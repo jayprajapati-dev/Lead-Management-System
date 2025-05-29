@@ -11,6 +11,7 @@ if (isset($_SESSION['user_id'])) {
 }
 
 require_once '../includes/config.php';
+require_once '../includes/trial_functions.php';
 
 $error = '';
 $success = '';
@@ -88,7 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'This email address is already registered.';
             } else {
                 // Set trial period end date if it's a trial registration
-                $trial_end_date = $formData['is_trial'] ? date('Y-m-d H:i:s', strtotime('+7 days')) : null;
+                $now = new DateTime();
+                $trial_end = clone $now;
+                $trial_end->modify('+7 days');
+                $trial_end_date = $formData['is_trial'] ? $trial_end->format('Y-m-d H:i:s') : null;
                 $status = $formData['is_trial'] ? 'trial' : 'active';
                 
                 // Create new user

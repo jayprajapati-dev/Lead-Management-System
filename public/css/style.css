@@ -7,12 +7,17 @@
 
 :root {
     /* Base colors - updated for more professional look */
-    --primary-color: #2563eb;
-    --primary-dark: #1d4ed8;
-    --primary-light: #60a5fa;
-    --success-color: #10b981;
-    --danger-color: #ef4444;
-    --warning-color: #f59e0b;
+    --primary-color: #007bff;
+    --secondary-color: #6c757d;
+    --success-color: #28a745;
+    --info-color: #17a2b8;
+    --warning-color: #ffc107;
+    --danger-color: #dc3545;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --border-radius: 0.5rem;
+    --box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --transition: all 0.3s ease;
     
     /* Default colors */
     --bg-main: #ffffff;
@@ -379,6 +384,229 @@ footer hr {
 .badge {
     font-weight: 500;
     letter-spacing: 0.5px;
+}
+
+/* Pricing Page Styles */
+.pricing-header {
+    padding: 2rem 0;
+}
+
+.pricing-header .badge {
+    font-size: 0.8rem;
+    padding: 0.5rem 1rem;
+    letter-spacing: 1px;
+}
+
+/* Pricing Cards */
+.pricing-cards {
+    margin-top: 2rem;
+}
+
+.pricing-card {
+    border-radius: var(--border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: var(--transition);
+    position: relative;
+    background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.pricing-card.popular {
+    transform: scale(1.03);
+    border-color: var(--primary-color);
+    z-index: 1;
+}
+
+.pricing-card.highlight {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.popular-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    border-bottom-left-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.pricing-card-header {
+    padding: 1.5rem;
+    background-color: rgba(0, 123, 255, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.pricing-card.popular .pricing-card-header {
+    background-color: rgba(0, 123, 255, 0.1);
+}
+
+.plan-name {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.pricing-card-body {
+    padding: 1.5rem;
+}
+
+.price-container {
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.price {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.price .currency {
+    font-size: 1.5rem;
+    vertical-align: super;
+    font-weight: 400;
+    margin-right: 0.2rem;
+}
+
+.price .period {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    font-weight: 400;
+}
+
+.original-price {
+    font-size: 1rem;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.discount-badge {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: var(--danger-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.features-container {
+    margin-bottom: 1.5rem;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.feature-item {
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.feature-item:last-child {
+    border-bottom: none;
+}
+
+.see-all-features {
+    margin-top: 1rem;
+}
+
+.see-all-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.see-all-link:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    text-decoration: none;
+}
+
+.see-all-link .show-text,
+.see-all-link .hide-text {
+    display: inline-flex;
+    align-items: center;
+}
+
+.see-all-link .d-none {
+    display: none !important;
+}
+
+.pricing-card-footer {
+    margin-top: 1.5rem;
+}
+
+/* Add-on Services */
+.addon-services-section {
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    margin-top: 3rem;
+}
+
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.addon-card {
+    background-color: #fff;
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    text-align: center;
+    transition: var(--transition);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.addon-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.addon-icon {
+    margin-bottom: 1rem;
+}
+
+.addon-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.addon-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.addon-price .currency {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.addon-price .unit {
+    font-size: 0.8rem;
+    color: var(--secondary-color);
+    font-weight: 400;
 }
 
 /* Accordion styling */
