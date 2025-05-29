@@ -1,3 +1,6 @@
+// Add js-enabled class to body immediately to prevent FOUC (Flash of Unstyled Content)
+document.body.classList.add('js-enabled');
+
 // Intersection Observer for fade-in animations
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize fade-in animations
@@ -15,11 +18,30 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }, observerOptions);
+    
+    // Animate-on-scroll elements observer
+    const scrollObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                // Don't unobserve to allow re-animation when scrolling back up
+            }
+        });
+    }, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    });
 
     // Observe all sections and cards
     document.querySelectorAll('section, .card, .feature-item, .testimonial-card, .pricing-card').forEach(el => {
         el.classList.add('animate-fade-in');
         observer.observe(el);
+    });
+    
+    // Observe all animate-on-scroll elements
+    document.querySelectorAll('.animate-on-scroll').forEach(el => {
+        scrollObserver.observe(el);
     });
 
     // Back to top button functionality
@@ -58,13 +80,23 @@ document.addEventListener('DOMContentLoaded', function() {
     // Smooth scroll for anchor links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            // Skip empty anchors or just '#'
+            if (!href || href === '#') {
+                return;
+            }
+            
             e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
+            try {
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            } catch (error) {
+                console.error('Error with smooth scroll:', error);
             }
         });
     });

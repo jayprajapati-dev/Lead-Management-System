@@ -20,15 +20,69 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
+            /* Base colors */
             --primary-color: #6366f1;
             --primary-dark: #4f46e5;
-            --secondary-color: #f8fafc;
-            --border-color: #e2e8f0;
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
+            --primary-light: #818cf8;
             --success-color: #10b981;
             --danger-color: #ef4444;
             --warning-color: #f59e0b;
+            
+            /* Light theme colors (default) */
+            --bg-main: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --bg-sidebar: #ffffff;
+            --bg-card: #ffffff;
+            --bg-dropdown: #ffffff;
+            --bg-input: #ffffff;
+            --bg-button: #6366f1;
+            --bg-hover: #f1f5f9;
+            
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --text-tertiary: #94a3b8;
+            --text-on-primary: #ffffff;
+            --text-on-success: #ffffff;
+            --text-on-danger: #ffffff;
+            --text-on-warning: #ffffff;
+            
+            --border-color: #e2e8f0;
+            --border-secondary: #f1f5f9;
+            --divider-color: #e2e8f0;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Dark theme colors */
+        [data-theme="dark"] {
+            --bg-main: #121212;
+            --bg-secondary: #1e1e1e;
+            --bg-tertiary: #2d2d2d;
+            --bg-sidebar: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --bg-dropdown: #2d2d2d;
+            --bg-input: #2d2d2d;
+            --bg-button: #4f46e5;
+            --bg-hover: #3a3a3a;
+            
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-tertiary: #94a3b8;
+            --text-on-primary: #ffffff;
+            --text-on-success: #ffffff;
+            --text-on-danger: #ffffff;
+            --text-on-warning: #ffffff;
+            
+            --border-color: #3a3a3a;
+            --border-secondary: #3a3a3a;
+            --divider-color: #3a3a3a;
+            
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
         }
 
         * {
@@ -39,16 +93,17 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8fafc;
+            background-color: var(--bg-main);
             color: var(--text-primary);
             line-height: 1.5;
             font-size: 14px;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Modern Header Styles */
         .header-container {
-            background-color: #fff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+            background-color: var(--bg-main);
+            box-shadow: var(--shadow-sm);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -57,6 +112,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             height: auto;
             min-height: 60px;
             overflow: visible;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .header-content {
@@ -100,7 +156,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             justify-content: center;
             background: transparent;
             border: none;
-            color: #6B7280;
+            color: var(--text-secondary);
             font-size: 20px;
             cursor: pointer;
             padding: 8px;
@@ -118,7 +174,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         /* Show back icon when sidebar is open on mobile */
         body.sidebar-open .menu-toggle {
             background: transparent !important;
-            color: #6B7280 !important;
+            color: var(--text-secondary) !important;
             box-shadow: none !important;
             border: none !important;
         }
@@ -132,8 +188,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 right: -80%; /* Start off-screen */
                 width: 80%; /* Take up 80% of screen width */
                 height: 100vh;
-                background-color: white !important;
-                transition: all 0.3s ease;
+                background-color: var(--bg-sidebar) !important;
+                transition: all 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
                 z-index: 1050;
                 box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
                 overflow-y: auto;
@@ -149,7 +205,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 display: flex;
                 align-items: center;
                 padding: 15px;
-                border-bottom: 1px solid #e5e7eb;
+                border-bottom: 1px solid var(--divider-color);
             }
             
             .sidebar-back-btn {
@@ -158,7 +214,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                 justify-content: center;
                 background: transparent;
                 border: none;
-                color: #6B7280;
+                color: var(--text-secondary);
                 font-size: 16px;
                 cursor: pointer;
                 padding: 8px;
@@ -184,8 +240,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             }
             
             #sidebarMenu .nav-link.active {
-                background-color: #4a3f8c !important;
-                color: white !important;
+                background-color: var(--primary-dark) !important;
+                color: var(--text-on-primary) !important;
             }
             
             /* Overlay for background when sidebar is open */
@@ -211,7 +267,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         }
         
         .menu-toggle:hover {
-            color: #374151;
+            color: var(--text-primary);
         }
 
         /* Quick Action Buttons Styles */
@@ -256,22 +312,22 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #4a3f8c; /* Dark purple/indigo */
+            background-color: var(--bg-button);
             border: none;
             border-radius: 50px; /* Full pill shape */
-            color: white;
+            color: var(--text-on-primary);
             font-size: 14px;
             font-weight: 500;
             padding: 8px 18px;
             transition: all 0.2s ease;
             cursor: pointer;
             white-space: nowrap;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-sm);
         }
         
         .action-button:hover {
-            background-color: #5a4da6; /* Slightly lighter on hover */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            background-color: var(--primary-dark);
+            box-shadow: var(--shadow-md);
         }
         
         .action-button i {
@@ -306,7 +362,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             border-radius: 6px;
             background: transparent;
             border: none;
-            color: #6b7280;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
@@ -314,8 +370,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         }
 
         .header-icon:hover {
-            color: #374151;
-            background-color: #f9fafb;
+            color: var(--text-primary);
+            background-color: var(--bg-hover);
         }
 
         .header-icon i {
@@ -327,8 +383,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             position: absolute;
             top: 4px;
             right: 4px;
-            background-color: #ef4444;
-            color: white;
+            background-color: var(--danger-color);
+            color: var(--text-on-danger);
             border-radius: 50%;
             font-size: 10px;
             width: 16px;
@@ -337,6 +393,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             align-items: center;
             justify-content: center;
             font-weight: 600;
+            transition: background-color 0.3s ease;
         }
 
         .notification-btn {
@@ -370,7 +427,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             height: 36px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid #f3f4f6;
+            border: 2px solid var(--border-secondary);
+            transition: border-color 0.3s ease;
         }
         
         .status-indicator {
@@ -379,9 +437,10 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             right: 0;
             width: 10px;
             height: 10px;
-            background-color: #10b981; /* Green for online status */
+            background-color: var(--success-color); /* Green for online status */
             border-radius: 50%;
-            border: 2px solid white;
+            border: 2px solid var(--bg-main);
+            transition: border-color 0.3s ease, background-color 0.3s ease;
         }
 
         .profile-trigger {
@@ -399,7 +458,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         }
 
         .profile-trigger:hover {
-            background: var(--secondary-color);
+            background: var(--bg-hover);
             color: var(--text-primary);
         }
 
@@ -408,7 +467,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             height: 32px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--border-color);
+            border: 2px solid var(--border-secondary);
             display: block; /* Ensure it's always displayed */
         }
 
@@ -433,15 +492,15 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             position: absolute;
             top: calc(100% + 5px);
             right: 0;
-            background: white;
+            background: var(--bg-dropdown);
             border-radius: 10px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-lg);
             width: 240px;
             padding: 8px 0;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
-            transition: all 0.2s ease;
+            transition: all 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
             z-index: 1000;
         }
 
@@ -463,7 +522,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         }
 
         .dropdown-item:hover {
-            background: var(--secondary-color);
+            background: var(--bg-hover);
             color: var(--text-primary);
         }
 
@@ -475,17 +534,19 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
         .dropdown-divider {
             height: 1px;
-            background: var(--border-color);
+            background: var(--divider-color);
             margin: 8px 0;
             border: none;
+            transition: background-color 0.3s ease;
         }
 
         .referral-section {
             padding: 12px 16px;
-            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-secondary) 100%);
             margin: 8px;
             border-radius: 8px;
-            border: 1px solid #bae6fd;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .referral-section .dropdown-item {
@@ -502,8 +563,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
         /* Sidebar Toggle Button in Header */
         .sidebar-toggle {
-            background: var(--primary-color);
-            color: white;
+            background: var(--bg-button);
+            color: var(--text-on-primary);
             border: none;
             border-radius: 8px;
             width: 40px;
@@ -514,8 +575,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             cursor: pointer;
             margin-right: 16px;
             flex-shrink: 0;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
             position: relative; /* Ensure proper stacking */
             z-index: 1010; /* Higher than sidebar but lower than overlay */
         }
@@ -523,6 +584,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         .sidebar-toggle:hover {
             background: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
         
         .sidebar-toggle:active {
@@ -725,7 +787,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             </button>
 
             <!-- Theme Toggle -->
-            <button type="button" class="header-icon" id="themeToggle" title="Toggle Theme">
+            <button type="button" class="header-icon theme-toggle" id="themeToggle" title="Toggle Theme">
                 <i class="fas fa-moon"></i>
             </button>
             
@@ -795,7 +857,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     </div>
 </header>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo SITE_URL ?? ''; ?>/public/js/theme-toggle.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Profile dropdown functionality
@@ -818,29 +881,6 @@ document.addEventListener('DOMContentLoaded', function() {
             profileDropdown.classList.remove('show');
         }
     });
-
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
-    
-    themeToggle.addEventListener('click', function() {
-        document.body.classList.toggle('dark-theme');
-        
-        if (document.body.classList.contains('dark-theme')) {
-            themeIcon.className = 'fas fa-sun';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeIcon.className = 'fas fa-moon';
-            localStorage.setItem('theme', 'light');
-        }
-    });
-
-    // Load saved theme
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        themeIcon.className = 'fas fa-sun';
-    }
 
     // Search functionality
     document.getElementById('searchBtn').addEventListener('click', function() {

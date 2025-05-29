@@ -298,16 +298,14 @@ if (!isset($_SESSION['user_id'])) {
                     </div>
                 </div>
             </div>
-            <!-- End Main Content Body -->
 
             <!-- Footer -->
             <?php include '../includes/dashboard-footer.php'; ?>
         </div>
-        <!-- End Main Content Area -->
     </div>
 </div>
 
-<!-- Bootstrap 5 JS and dependencies -->
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 

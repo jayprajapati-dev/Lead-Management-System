@@ -166,7 +166,9 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
     <div class="login-wrapper">
         <div class="login-container">
             <div class="login-header">
-                <img src="assets/images/logo.png" alt="<?php echo SITE_NAME; ?>" class="mb-4" style="max-width: 150px;">
+                <a href="index.php" class="text-decoration-none">
+                    <h2 class="text-primary mb-4" style="font-weight: 600; font-size: 2rem;"><?php echo SITE_NAME; ?></h2>
+                </a>
                 <h1>Welcome Back</h1>
                 <p>Sign in to continue to your account</p>
             </div>
