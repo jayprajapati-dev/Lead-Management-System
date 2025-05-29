@@ -45,15 +45,18 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             font-size: 14px;
         }
 
-        /* Header Styles */
+        /* Modern Header Styles */
         .header-container {
-            background: #ffffff;
-            border-bottom: 1px solid var(--border-color);
-            padding: 12px 24px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            width: 100%;
+            padding: 10px 20px;
+            height: auto;
+            min-height: 60px;
+            overflow: visible;
         }
 
         .header-content {
@@ -62,49 +65,120 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             justify-content: space-between;
             max-width: 1400px;
             margin: 0 auto;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            position: relative;
+        }
+        
+        /* Center section for action buttons */
+        .header-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: nowrap;
+            padding: 0 10px;
+            flex: 1;
+        }
+        
+        /* Left side - Menu toggle and quick actions */
+        .header-left {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            overflow: visible;
+            min-width: 0;
+            margin-right: 20px;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .menu-toggle {
+            background: transparent;
+            border: none;
+            color: #6b7280;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        
+        .menu-toggle:hover {
+            color: #374151;
         }
 
-        /* Quick Action Buttons */
+        /* Quick Action Buttons Styles */
         .quick-actions {
             display: flex;
+            align-items: center;
+            margin-left: 20px;
             gap: 12px;
-            align-items: center;
             flex-wrap: nowrap;
+            overflow: visible;
+            flex: 1;
+            position: relative;
+            z-index: 10;
         }
-
-        .quick-action-btn {
-            display: inline-flex;
+        
+        /* Media queries for responsive button display */
+        @media (max-width: 1200px) and (min-width: 992px) {
+            .quick-actions {
+                margin-left: 15px;
+                gap: 8px;
+            }
+            
+            .action-button {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+        }
+        
+        @media (max-width: 991px) and (min-width: 768px) {
+            .quick-actions {
+                margin-left: 10px;
+                gap: 6px;
+            }
+            
+            .action-button {
+                padding: 5px 10px;
+                font-size: 12px;
+            }
+        }
+        
+        .action-button {
+            display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 16px;
-            background: var(--primary-color);
-            color: white;
+            justify-content: center;
+            background-color: #4a3f8c; /* Dark purple/indigo */
             border: none;
-            border-radius: 8px;
+            border-radius: 50px; /* Full pill shape */
+            color: white;
             font-size: 14px;
             font-weight: 500;
-            cursor: pointer;
+            padding: 8px 18px;
             transition: all 0.2s ease;
-            text-decoration: none;
-            min-height: 40px;
+            cursor: pointer;
             white-space: nowrap;
-            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-
-        .quick-action-btn:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-            color: white;
+        
+        .action-button:hover {
+            background-color: #5a4da6; /* Slightly lighter on hover */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
-
-        .quick-action-btn:active {
-            transform: translateY(0);
+        
+        .action-button i {
+            font-size: 14px;
+            margin-right: 6px;
         }
-
-        .quick-action-btn i {
-            font-size: 12px;
-            opacity: 0.9;
+        
+        .action-button i.ml-1 {
+            margin-left: 6px;
+            margin-right: 0;
         }
 
         .quick-action-btn .btn-text {
@@ -116,52 +190,95 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             display: flex;
             align-items: center;
             gap: 16px;
+            flex-shrink: 0;
         }
 
-        /* Icon Buttons */
-        .icon-btn {
+        /* Header Icons */
+        .header-icon {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
             background: transparent;
             border: none;
-            color: var(--text-secondary);
+            color: #6b7280;
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
+            padding: 0;
         }
 
-        .icon-btn:hover {
-            background: var(--secondary-color);
-            color: var(--text-primary);
+        .header-icon:hover {
+            color: #374151;
+            background-color: #f9fafb;
         }
 
-        .icon-btn i {
+        .header-icon i {
             font-size: 18px;
         }
-
+        
         /* Notification Badge */
+        .notification-badge {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            background-color: #ef4444;
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
         .notification-btn {
             position: relative;
         }
 
-        .notification-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            background: var(--danger-color);
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        /* User Profile Dropdown */
+        /* User Profile Styling */
         .user-profile {
             position: relative;
+            margin-left: 8px;
+        }
+        
+        .profile-button {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .avatar-container {
+            position: relative;
+            width: 36px;
+            height: 36px;
+        }
+        
+        .profile-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #f3f4f6;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            background-color: #10b981; /* Green for online status */
+            border-radius: 50%;
+            border: 2px solid white;
         }
 
         .profile-trigger {
@@ -174,6 +291,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             transition: background 0.2s ease;
             text-decoration: none;
             color: var(--text-primary);
+            min-width: 36px; /* Ensure minimum width on mobile */
+            justify-content: center; /* Center the avatar on mobile */
         }
 
         .profile-trigger:hover {
@@ -187,6 +306,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             border-radius: 50%;
             object-fit: cover;
             border: 2px solid var(--border-color);
+            display: block; /* Ensure it's always displayed */
         }
 
         .profile-name {
@@ -208,15 +328,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         /* Dropdown Menu */
         .dropdown-menu {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 5px);
             right: 0;
-            min-width: 240px;
             background: white;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            width: 240px;
             padding: 8px 0;
-            margin-top: 8px;
             opacity: 0;
             visibility: hidden;
             transform: translateY(-10px);
@@ -279,42 +397,164 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             color: #0284c7;
         }
 
+        /* Sidebar Toggle Button in Header */
+        .sidebar-toggle {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-right: 16px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            position: relative; /* Ensure proper stacking */
+            z-index: 1010; /* Higher than sidebar but lower than overlay */
+        }
+        
+        .sidebar-toggle:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+        
+        .sidebar-toggle:active {
+            transform: translateY(0);
+        }
+        
+        .sidebar-toggle i {
+            font-size: 18px;
+        }
+        
         /* Responsive Design */
-        @media (max-width: 768px) {
+        @media (max-width: 991.98px) {
             .header-container {
-                padding: 8px 16px;
+                padding: 0 16px;
+                height: 50px; /* Reduced height for header */
             }
 
             .header-content {
                 flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: center;
+                height: 100%;
             }
 
             .quick-actions {
-                gap: 8px;
+                display: none; /* Hide quick action buttons on mobile */
+            }
+            
+            .profile-name {
+                display: none;
+            }
+            
+            .profile-dropdown-icon {
+                display: none;
+            }
+            
+            .icon-btn {
+                width: 36px;
+                height: 36px;
                 flex-shrink: 0;
+            }
+            
+            .header-right {
+                gap: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
             }
 
             .quick-action-btn {
-                padding: 8px 12px;
-                min-height: 36px;
-                font-size: 13px;
+                padding: 6px 8px;
+                min-width: 32px;
+                flex-shrink: 0;
             }
 
             .quick-action-btn .btn-text {
                 display: none;
             }
-
-            .profile-name {
-                display: none;
+            
+            /* Ensure dropdown menu doesn't get cut off */
+            .dropdown-menu {
+                right: 0;
+                left: auto;
+                width: 280px;
+                max-width: 90vw;
+                position: absolute;
             }
-
+            
+            /* Ensure user profile is always visible */
+            .user-profile {
+                position: relative;
+                display: flex;
+                align-items: center;
+                min-width: 36px;
+                flex-shrink: 0;
+            }
+        }
+        
+        /* Extra small devices */
+        @media (max-width: 575.98px) {
+            .header-container {
+                padding: 0 10px;
+                height: 45px; /* Even smaller height */
+            }
+            
+            .header-content {
+                align-items: center; /* Ensure vertical centering */
+                height: 100%;
+            }
+            
+            .quick-actions {
+                display: none; /* Hide on smallest screens */
+            }
+            
+            .header-right {
+                gap: 4px;
+                min-width: 120px; /* Ensure minimum width for icons */
+                justify-content: flex-end;
+                align-items: center; /* Ensure vertical centering */
+                height: 100%; /* Full height */
+                padding: 0; /* Remove padding */
+                margin: 0; /* Remove margin */
+            }
+            
             .icon-btn {
+                width: 32px;
+                height: 32px;
+                padding: 0; /* Remove padding */
+            }
+            
+            .profile-avatar {
+                width: 28px;
+                height: 28px;
+                min-width: 28px; /* Prevent shrinking */
+                margin: 0; /* Remove any margin */
+                padding: 0; /* Remove padding */
+            }
+            
+            /* Ensure user profile is always visible */
+            .user-profile {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 36px;
+                height: 100%; /* Full height */
+                padding: 0; /* Remove padding */
+                margin: 0; /* Remove margin */
+            }
+            
+            /* Adjust sidebar toggle for smaller header */
+            .sidebar-toggle {
                 width: 36px;
                 height: 36px;
-            }
-
-            .header-right {
-                gap: 8px;
+                margin-right: 10px;
             }
         }
 
@@ -348,52 +588,59 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
 <header class="header-container">
     <div class="header-content">
-        <!-- Quick Action Buttons -->
-        <div class="quick-actions">
-            <button type="button" class="quick-action-btn" data-bs-toggle="modal" data-bs-target="#addLeadModal">
-                + <span class="btn-text">Lead</span> 
-                <i class="fas fa-filter"></i>
+        <!-- Left Side - Only Hamburger Menu -->
+        <div class="header-left">
+            <button class="menu-toggle" id="sidebarToggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
             </button>
-            <button type="button" class="quick-action-btn" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                + <span class="btn-text">Task</span> 
-                <i class="fas fa-calendar-alt"></i>
+        </div>
+        
+        <!-- Center - Quick Action Buttons (visible on desktop/tablet only) -->
+        <div class="header-center d-none d-md-flex">
+            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+                <i class="fas fa-plus"></i> Lead <i class="fas fa-filter ml-1"></i>
             </button>
-            <button type="button" class="quick-action-btn" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                + <span class="btn-text">Note</span> 
-                <i class="fas fa-sticky-note"></i>
+            
+            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+                <i class="fas fa-plus"></i> Task <i class="fas fa-calendar-alt ml-1"></i>
             </button>
-            <button type="button" class="quick-action-btn" data-bs-toggle="modal" data-bs-target="#addReminderModal">
-                + <span class="btn-text">Reminder</span> 
-                <i class="fas fa-bell"></i>
+            
+            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                <i class="fas fa-plus"></i> Note <i class="fas fa-edit ml-1"></i>
+            </button>
+            
+            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addReminderModal">
+                <i class="fas fa-plus"></i> Reminder <i class="fas fa-bell ml-1"></i>
             </button>
         </div>
 
-        <!-- Header Right Section -->
+        <!-- Right Side Navigation -->
         <div class="header-right">
-            <!-- Search Button -->
-            <button type="button" class="icon-btn" id="searchBtn" title="Search">
+            <!-- Search Icon -->
+            <button type="button" class="header-icon" id="searchBtn" title="Search">
                 <i class="fas fa-search"></i>
             </button>
 
             <!-- Theme Toggle -->
-            <button type="button" class="icon-btn" id="themeToggle" title="Toggle Theme">
+            <button type="button" class="header-icon" id="themeToggle" title="Toggle Theme">
                 <i class="fas fa-moon"></i>
             </button>
-
+            
             <!-- Notifications -->
-            <button type="button" class="icon-btn notification-btn" id="notificationBtn" title="Notifications">
+            <button type="button" class="header-icon" id="notificationBtn" title="Notifications">
                 <i class="fas fa-bell"></i>
-                <span class="notification-badge"></span>
+                <span class="notification-badge">0</span>
             </button>
 
-            <!-- User Profile Dropdown -->
+            <!-- User Profile -->
             <div class="user-profile" id="userProfile">
-                <a href="#" class="profile-trigger" id="profileTrigger">
-                    <img src="<?php echo htmlspecialchars($userProfileImage); ?>" 
-                         alt="Profile" class="profile-avatar">
-                    <span class="profile-name"><?php echo htmlspecialchars($userName); ?></span>
-                    <i class="fas fa-chevron-down profile-dropdown-icon"></i>
-                </a>
+                <button class="profile-button" id="profileTrigger">
+                    <div class="avatar-container">
+                        <img src="<?php echo htmlspecialchars($userProfileImage); ?>" 
+                             alt="Profile" class="profile-avatar">
+                        <span class="status-indicator"></span>
+                    </div>
+                </button>
 
                 <div class="dropdown-menu" id="profileDropdown">
                     <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/profile.php" class="dropdown-item">
@@ -498,10 +745,28 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Search clicked');
     });
 
+    // Copy/Duplicate functionality
+    document.getElementById('copyBtn').addEventListener('click', function() {
+        // Add your copy functionality here
+        console.log('Copy clicked');
+    });
+
     // Notification functionality
     document.getElementById('notificationBtn').addEventListener('click', function() {
         // Add your notification functionality here
         console.log('Notifications clicked');
+    });
+    
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebarMenu');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    sidebarToggle.addEventListener('click', function(e) {
+        e.stopPropagation();
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('show');
+        document.body.classList.toggle('sidebar-open');
     });
 });
 </script>

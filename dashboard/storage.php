@@ -412,24 +412,20 @@ $storageItems = []; // Empty for now to show the "no records" message
     </style>
 </head>
 <body>
-
-<div class="dashboard-container">
-    <div class="row g-0">
-        <!-- Mobile Toggle Button -->
-        <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <!-- Mobile Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-            <?php include '../includes/sidebar.php'; ?>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="col-md-9 col-lg-10 main-content-area">
-            <!-- Header -->
-            <?php include '../includes/dashboard-header.php'; ?>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Header first, outside the main container -->
+    <?php include '../includes/dashboard-header.php'; ?>
+    
+    <div class="dashboard-container container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
+                <?php include '../includes/sidebar.php'; ?>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="col-md-9 col-lg-10 main-content-area">
 
             <!-- Main Content -->
             <div class="container-fluid py-4">

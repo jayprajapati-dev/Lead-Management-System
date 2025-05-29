@@ -147,24 +147,20 @@ if (!isset($_SESSION['user_id'])) {
     </style>
 </head>
 <body>
-
-<div class="dashboard-container">
-    <div class="row g-0">
-        <!-- Mobile Toggle Button -->
-        <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <!-- Mobile Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-            <?php include '../includes/sidebar.php'; ?>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="col-md-9 col-lg-10 main-content-area">
-            <!-- Header -->
-            <?php include '../includes/dashboard-header.php'; ?>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Header first, outside the main container -->
+    <?php include '../includes/dashboard-header.php'; ?>
+    
+    <div class="dashboard-container container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
+                <?php include '../includes/sidebar.php'; ?>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="col-md-9 col-lg-10 main-content-area">
 
             <!-- Main Content -->
             <div class="notes-container">
@@ -234,5 +230,70 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebarMenu');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebarToggle && sidebar && sidebarOverlay) {
+        // Toggle sidebar on mobile
+        sidebarToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+            document.body.classList.toggle('sidebar-open');
+        });
+        
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+            document.body.classList.remove('sidebar-open');
+        });
+        
+        // Close sidebar when clicking on any nav link on mobile
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            });
+        });
+        
+        // Also handle dropdown items to close sidebar on mobile
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            });
+        });
+        
+        // Ensure the sidebar doesn't block clicks on the main content
+        document.addEventListener('click', function(e) {
+            // If sidebar is open and click is outside sidebar and toggle button
+            if (document.body.classList.contains('sidebar-open')) {
+                const isClickInsideSidebar = sidebar.contains(e.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(e.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            }
+        });
+    }
+});
+</script>
 </body>
 </html>

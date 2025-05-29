@@ -160,35 +160,54 @@ try {
             bottom: 0;
             background-color: rgba(0,0,0,0.5);
             z-index: 999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         .sidebar-overlay.show {
             display: block;
+            opacity: 1;
         }
         .main-content-area {
             margin-left: 16.666667%; /* col-md-2 width */
             transition: all 0.3s;
+            padding-top: 0; /* Remove any top padding */
+            margin-top: 0; /* Remove any top margin */
         }
         @media (max-width: 767.98px) {
             .sidebar {
+                position: fixed;
+                top: 0;
+                left: 0;
+                height: 100vh;
+                z-index: 1000;
                 transform: translateX(-100%);
+                transition: transform 0.3s ease;
+                box-shadow: none;
             }
             .sidebar.show {
                 transform: translateX(0);
+                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             }
             .main-content-area {
+                width: 100%;
                 margin-left: 0;
             }
-        }
-        .sidebar-toggle {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 1001;
-            background: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 0.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            .sidebar-overlay.show {
+                display: block;
+                opacity: 1;
+            }
         }
         .navbar {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -272,24 +291,20 @@ try {
     </style>
 </head>
 <body>
-
-<div class="dashboard-container">
-    <div class="row g-0">
-        <!-- Mobile Toggle Button -->
-        <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <!-- Mobile Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
-        <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-            <?php include '../includes/sidebar.php'; ?>
-        </div>
-
-        <!-- Main Content Area -->
-        <div class="col-md-9 col-lg-10 main-content-area">
-            <!-- Header -->
-            <?php include '../includes/dashboard-header.php'; ?>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Header first, outside the main container -->
+    <?php include '../includes/dashboard-header.php'; ?>
+    
+    <div class="dashboard-container container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
+                <?php include '../includes/sidebar.php'; ?>
+            </div>
+            
+            <!-- Main Content Area -->
+            <div class="col-md-9 col-lg-10 main-content-area">
 
             <!-- Main Content -->
             <div class="container-fluid py-4">
@@ -498,5 +513,70 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebarMenu');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    
+    if (sidebarToggle && sidebar && sidebarOverlay) {
+        // Toggle sidebar on mobile
+        sidebarToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+            document.body.classList.toggle('sidebar-open');
+        });
+        
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+            document.body.classList.remove('sidebar-open');
+        });
+        
+        // Close sidebar when clicking on any nav link on mobile
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            });
+        });
+        
+        // Also handle dropdown items to close sidebar on mobile
+        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth < 992) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            });
+        });
+        
+        // Ensure the sidebar doesn't block clicks on the main content
+        document.addEventListener('click', function(e) {
+            // If sidebar is open and click is outside sidebar and toggle button
+            if (document.body.classList.contains('sidebar-open')) {
+                const isClickInsideSidebar = sidebar.contains(e.target);
+                const isClickOnToggle = sidebarToggle && sidebarToggle.contains(e.target);
+                
+                if (!isClickInsideSidebar && !isClickOnToggle) {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                    document.body.classList.remove('sidebar-open');
+                }
+            }
+        });
+    }
+});
+</script>
 </body>
 </html> 

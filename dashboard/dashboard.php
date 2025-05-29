@@ -66,23 +66,35 @@ try {
     <link rel="stylesheet" href="css/dashboard_style.css">
 </head>
 <body>
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    
+    <!-- Header first, outside the main container -->
+    <?php include '../includes/dashboard-header.php'; ?>
+    
     <div class="dashboard-container container-fluid">
         <div class="row">
-            <!-- Mobile Toggle Button -->
-            <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <!-- Mobile Overlay -->
-            <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
             <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-<?php include '../includes/sidebar.php'; ?>
+                <?php include '../includes/sidebar.php'; ?>
             </div>
             <div class="col-md-9 col-lg-10 main-content-area">
-<?php include '../includes/dashboard-header.php'; ?>
 <style>
     /* Fix sizing issues */
+    body {
+        padding-top: 0; /* Remove any top padding */
+        margin-top: 0; /* Remove any top margin */
+    }
+    
+    .dashboard-container {
+        padding-top: 0; /* Remove any top padding */
+        margin-top: 0; /* Remove any top margin */
+    }
+    
+    .main-content-area {
+        padding-top: 0; /* Remove any top padding */
+        margin-top: 0; /* Remove any top margin */
+    }
+    
     .dashboard-body {
         padding: 15px;
         max-width: 100%;
