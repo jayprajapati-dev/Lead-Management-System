@@ -581,3 +581,11 @@
 [25-May-2025 17:50:21 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 3
 [25-May-2025 17:58:56 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 3
 [25-May-2025 17:58:56 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 3
+[29-May-2025 12:10:08 Europe/Berlin] PHP Warning:  Undefined array key "user_first_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:08 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:24 Europe/Berlin] PHP Warning:  Undefined array key "user_first_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:24 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:31 Europe/Berlin] PHP Warning:  Undefined array key "user_first_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:31 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:40 Europe/Berlin] PHP Warning:  Undefined array key "user_first_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224
+[29-May-2025 12:10:40 Europe/Berlin] PHP Warning:  Undefined array key "user_last_name" in C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php on line 224

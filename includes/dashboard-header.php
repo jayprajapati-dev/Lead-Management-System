@@ -41,7 +41,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background-color: #f8fafc;
             color: var(--text-primary);
-            line-height: 1.6;
+            line-height: 1.5;
+            font-size: 14px;
         }
 
         /* Header Styles */

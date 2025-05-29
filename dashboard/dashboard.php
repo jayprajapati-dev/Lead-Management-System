@@ -81,6 +81,150 @@ try {
             </div>
             <div class="col-md-9 col-lg-10 main-content-area">
 <?php include '../includes/dashboard-header.php'; ?>
+<style>
+    /* Fix sizing issues */
+    .dashboard-body {
+        padding: 15px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+    
+    .card {
+        font-size: 14px;
+    }
+    
+    .card-header h4 {
+        font-size: 16px;
+        margin: 0;
+    }
+    
+    .card-tabs .nav-link {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    
+    .dashboard-card {
+        height: 100%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    /* Fix chart sizing */
+    canvas {
+        max-width: 100%;
+        height: auto !important;
+    }
+    
+    /* Fix card headers */
+    .card-header {
+        padding: 10px 15px;
+        display: flex;
+        align-items: center;
+        background-color: #f8f9fa;
+    }
+    
+    /* Fix filter containers */
+    .filter-container {
+        padding: 10px;
+        background-color: #f8f9fa;
+        border-radius: 6px;
+        margin-bottom: 10px;
+    }
+    
+    /* Fix form elements */
+    .form-control, .form-select {
+        font-size: 13px;
+        padding: 6px 10px;
+        height: auto;
+    }
+    
+    /* Fix buttons */
+    .btn {
+        font-size: 13px;
+        padding: 6px 12px;
+    }
+    
+    /* Analytics cards */
+    .analytics-card {
+        height: 100%;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    
+    .analytics-card .card-body {
+        padding: 15px;
+    }
+    
+    /* Status and source legends */
+    .status-legend, .source-legend {
+        font-size: 12px;
+    }
+    
+    .status-item, .source-item {
+        margin: 4px;
+    }
+    
+    .status-circle, .source-circle {
+        width: 12px !important;
+        height: 12px !important;
+        margin-right: 4px !important;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 992px) {
+        .col-md-6 {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        
+        .mb-4 {
+            margin-bottom: 15px !important;
+        }
+        
+        .row {
+            margin-left: -10px;
+            margin-right: -10px;
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .dashboard-body {
+            padding: 10px 5px;
+        }
+        
+        .card-header h4 {
+            font-size: 14px;
+        }
+        
+        .card-tabs .nav-link {
+            font-size: 12px;
+            padding: 5px 8px;
+        }
+        
+        .col-md-6 {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        
+        .row {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+    }
+    
+    /* Fix for very small screens */
+    @media (max-width: 576px) {
+        .dashboard-body {
+            padding: 5px;
+        }
+        
+        .card {
+            margin-bottom: 10px;
+        }
+        
+        .card-body {
+            padding: 10px;
+        }
+    }
+</style>
                 <div class="dashboard-body">
                     <div class="row">
                         <!-- Today's Leads Card -->
@@ -210,27 +354,86 @@ try {
                         <!-- Lead Status Analytics Card -->
                         <div class="col-md-6 mb-4">
                             <div class="card analytics-card">
-                                <div class="card-header">
-                            <h4>Lead Status</h4>
-                                     <i class="fas fa-bars filter-icon" data-bs-toggle="modal" data-bs-target="#analyticsFilterModal"></i> <!-- Menu icon with data attributes for modal -->
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4>Lead Status</h4>
+                                    <i class="fas fa-bars" id="toggleLeadStatusFilter"></i>
                                 </div>
                                 <div class="card-body">
-                                    <div class="analytics-info mb-3">
-                                         <p class="date-range"></p>
-                                         <span class="badge bg-primary staff-badge"></span>
+                                    <!-- Filter Section (Hidden by default) -->
+                                    <div class="lead-status-filter-container filter-container mb-3" style="display: none; overflow: hidden; transition: all 0.3s ease;">
+                                        <form id="leadStatusFilterForm" class="row g-3">
+                                            <div class="col-md-12">
+                                                <label for="leadStatusStartDate" class="form-label">Start Date</label>
+                                                <input type="text" class="form-control" id="leadStatusStartDate" value="01-05-2025" readonly>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="leadStatusEndDate" class="form-label">End Date</label>
+                                                <input type="text" class="form-control" id="leadStatusEndDate" value="29-05-2025" readonly>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="leadStatusUser" class="form-label">User</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" value="Kavan Patel" readonly>
+                                                    <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 text-end mt-3">
+                                                <button type="button" id="applyLeadStatusFilter" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;">Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="chart-container" style="display: none;">
-                                        <canvas id="leadStatusChart"></canvas>
-                                        <!-- Center text and percentage will be added via Chart.js plugin or custom JS -->
+                                    
+                                    <!-- Date Range and User Display -->
+                                    <div class="mb-3 lead-status-info">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <p class="mb-0 lead-status-date-range">FROM 01-05-2025 TO 29-05-2025</p>
+                                        </div>
+                                        <div class="user-badge-container">
+                                            <?php
+                                            // Get current user info
+                                            $currentUserId = $_SESSION['user_id'] ?? 0;
+                                            $currentUserName = 'Unknown User';
+                                            
+                                            // Find current user in the users list
+                                            foreach ($usersList as $user) {
+                                                if ($user['id'] == $currentUserId) {
+                                                    $currentUserName = $user['name'];
+                                                    break;
+                                                }
+                                            }
+                                            ?>
+                                            <span class="badge rounded-pill bg-light text-dark lead-status-user-badge"><?php echo $currentUserName; ?></span>
+                                        </div>
                                     </div>
-                                    <div class="chart-legend lead-status-legend text-center mt-3" style="display: none;">
-                                        <!-- Legend will be generated by Chart.js or rendered statically -->
+                                    
+                                    <!-- Main Content Area -->
+                                    <div class="lead-status-content text-center">
+                                        <h3 class="no-lead-text">No Lead</h3>
+                                        <div class="lead-count-display">0</div>
                                     </div>
-                                    <!-- No Data Message -->
-                                    <div class="no-data-message text-center">
-                                        <p class="no-data-text">No Lead Found</p>
-                                        <p class="no-data-count">0</p>
-                                        <!-- Legend will be shown below this by JS -->
+                                    
+                                    <!-- Status Legend -->
+                                    <div class="status-legend d-flex justify-content-center flex-wrap mt-4">
+                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
+                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #007bff; margin-right: 5px;"></div>
+                                            <span>New</span>
+                                        </div>
+                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
+                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #28a745; margin-right: 5px;"></div>
+                                            <span>Processing</span>
+                                        </div>
+                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
+                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #ffc107; margin-right: 5px;"></div>
+                                            <span>Close-by</span>
+                                        </div>
+                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
+                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #dc3545; margin-right: 5px;"></div>
+                                            <span>Confirm</span>
+                                        </div>
+                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
+                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #6f42c1; margin-right: 5px;"></div>
+                                            <span>Cancel</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -239,27 +442,91 @@ try {
                         <!-- Lead Source Analytics Card -->
                         <div class="col-md-6 mb-4">
                              <div class="card analytics-card">
-                                <div class="card-header">
-                            <h4>Lead Source</h4>
-                                     <i class="fas fa-bars filter-icon" data-bs-toggle="modal" data-bs-target="#analyticsFilterModal"></i> <!-- Menu icon with data attributes for modal -->
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4>Lead Source</h4>
+                                    <i class="fas fa-bars" id="toggleLeadSourceFilter"></i>
                                 </div>
                                 <div class="card-body">
-                                     <div class="analytics-info mb-3">
-                                         <p class="date-range"></p>
-                                         <span class="badge bg-primary staff-badge"></span>
-                                     </div>
-                                     <div class="chart-container" style="display: none;">
-                                        <canvas id="leadSourceChart"></canvas>
-                                        <!-- Center text and percentage will be added via Chart.js plugin or custom JS -->
-                                     </div>
-                                    <div class="chart-legend lead-source-legend text-center mt-3" style="display: none;">
-                                         <!-- Legend will be generated by Chart.js or rendered statically -->
+                                    <!-- Filter Section (Hidden by default) -->
+                                    <div class="lead-source-filter-container filter-container mb-3" style="display: none; overflow: hidden; transition: all 0.3s ease;">
+                                        <form id="leadSourceFilterForm" class="row g-3">
+                                            <div class="col-md-12">
+                                                <label for="leadSourceStartDate" class="form-label">Start Date</label>
+                                                <input type="text" class="form-control" id="leadSourceStartDate" value="01-05-2025" readonly>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="leadSourceEndDate" class="form-label">End Date</label>
+                                                <input type="text" class="form-control" id="leadSourceEndDate" value="29-05-2025" readonly>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label for="leadSourceUser" class="form-label">User</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" value="Kavan Patel" readonly>
+                                                    <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 text-end mt-3">
+                                                <button type="button" id="applyLeadSourceFilter" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;">Submit</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <!-- No Data Message -->
-                                    <div class="no-data-message text-center">
-                                        <p class="no-data-text">No Lead Found</p>
-                                        <p class="no-data-count">0</p>
-                                        <!-- Legend will be shown below this by JS -->
+                                    
+                                    <!-- Date Range and User Display -->
+                                    <div class="mb-3 lead-source-info">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <p class="mb-0 lead-source-date-range">FROM 01-05-2025 TO 29-05-2025</p>
+                                        </div>
+                                        <div class="user-badge-container">
+                                            <span class="badge rounded-pill bg-light text-dark lead-source-user-badge"><?php echo $currentUserName; ?></span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Main Content Area -->
+                                    <div class="lead-source-content text-center">
+                                        <h3 class="no-lead-text">No Lead Found</h3>
+                                        <div class="lead-count-display">0</div>
+                                    </div>
+                                    
+                                    <!-- Source Legend -->
+                                    <div class="source-legend mt-4">
+                                        <!-- Row 1 -->
+                                        <div class="d-flex justify-content-center flex-wrap mb-2">
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #007bff; margin-right: 5px;"></div>
+                                                <span>Online</span>
+                                            </div>
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #28a745; margin-right: 5px;"></div>
+                                                <span>Offline</span>
+                                            </div>
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #ffc107; margin-right: 5px;"></div>
+                                                <span>Website</span>
+                                            </div>
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #dc3545; margin-right: 5px;"></div>
+                                                <span>Whatsapp</span>
+                                            </div>
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #6f42c1; margin-right: 5px;"></div>
+                                                <span>Customer Reminder</span>
+                                            </div>
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #17a2b8; margin-right: 5px;"></div>
+                                                <span>Indiamart</span>
+                                            </div>
+                                        </div>
+                                        <!-- Row 2 -->
+                                        <div class="d-flex justify-content-center flex-wrap">
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #28a745; margin-right: 5px;"></div>
+                                                <span>Facebook</span>
+                                            </div>
+                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
+                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #ffc107; margin-right: 5px;"></div>
+                                                <span>Google Form</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -283,6 +550,177 @@ try {
             // Initialize all modals
             const addNoteModalElement = document.getElementById('addNoteModal');
             const addNoteModal = addNoteModalElement ? new bootstrap.Modal(addNoteModalElement) : null;
+            
+            // --- Lead Status and Lead Source Functionality ---
+            // Lead Status elements
+            const toggleLeadStatusFilter = document.getElementById('toggleLeadStatusFilter');
+            const leadStatusFilterContainer = document.querySelector('.lead-status-filter-container');
+            const leadStatusInfo = document.querySelector('.lead-status-info');
+            const applyLeadStatusFilter = document.getElementById('applyLeadStatusFilter');
+            const leadStatusDateRange = document.querySelector('.lead-status-date-range');
+            const leadStatusUserBadge = document.querySelector('.lead-status-user-badge');
+            
+            // Lead Source elements
+            const toggleLeadSourceFilter = document.getElementById('toggleLeadSourceFilter');
+            const leadSourceFilterContainer = document.querySelector('.lead-source-filter-container');
+            const leadSourceInfo = document.querySelector('.lead-source-info');
+            const applyLeadSourceFilter = document.getElementById('applyLeadSourceFilter');
+            const leadSourceDateRange = document.querySelector('.lead-source-date-range');
+            const leadSourceUserBadge = document.querySelector('.lead-source-user-badge');
+            
+            // Helper function to toggle filter containers with animation
+            function toggleFilterContainer(filterContainer, infoElement, show) {
+                if (show) {
+                    // First set display to block to make it visible
+                    filterContainer.style.display = 'block';
+                    
+                    // Get the height of the container
+                    const height = filterContainer.scrollHeight;
+                    
+                    // Set initial height to 0
+                    filterContainer.style.height = '0px';
+                    
+                    // Force a reflow to make the transition work
+                    filterContainer.offsetHeight;
+                    
+                    // Set the height to its actual height to trigger the animation
+                    filterContainer.style.height = height + 'px';
+                    
+                    // Hide the info element
+                    if (infoElement) {
+                        infoElement.style.display = 'none';
+                    }
+                    
+                    // After animation completes, set height to auto
+                    setTimeout(() => {
+                        filterContainer.style.height = 'auto';
+                    }, 300);
+                } else {
+                    // Set a fixed height before animating to 0
+                    filterContainer.style.height = filterContainer.scrollHeight + 'px';
+                    
+                    // Force a reflow
+                    filterContainer.offsetHeight;
+                    
+                    // Animate to height 0
+                    filterContainer.style.height = '0px';
+                    
+                    // Show the info element
+                    if (infoElement) {
+                        infoElement.style.display = 'block';
+                    }
+                    
+                    // After animation completes, set display to none
+                    setTimeout(() => {
+                        filterContainer.style.display = 'none';
+                        filterContainer.style.height = '';
+                    }, 300);
+                }
+            }
+            
+            // Toggle Lead Status filter visibility
+            if (toggleLeadStatusFilter && leadStatusFilterContainer) {
+                toggleLeadStatusFilter.addEventListener('click', function() {
+                    const isHidden = leadStatusFilterContainer.style.display === 'none' || leadStatusFilterContainer.style.display === '';
+                    
+                    // Hide the other filter if it's open
+                    if (leadSourceFilterContainer && leadSourceFilterContainer.style.display === 'block') {
+                        toggleFilterContainer(leadSourceFilterContainer, leadSourceInfo, false);
+                    }
+                    
+                    // Toggle this filter
+                    toggleFilterContainer(leadStatusFilterContainer, leadStatusInfo, isHidden);
+                });
+            }
+            
+            // Toggle Lead Source filter visibility
+            if (toggleLeadSourceFilter && leadSourceFilterContainer) {
+                toggleLeadSourceFilter.addEventListener('click', function() {
+                    const isHidden = leadSourceFilterContainer.style.display === 'none' || leadSourceFilterContainer.style.display === '';
+                    
+                    // Hide the other filter if it's open
+                    if (leadStatusFilterContainer && leadStatusFilterContainer.style.display === 'block') {
+                        toggleFilterContainer(leadStatusFilterContainer, leadStatusInfo, false);
+                    }
+                    
+                    // Toggle this filter
+                    toggleFilterContainer(leadSourceFilterContainer, leadSourceInfo, isHidden);
+                });
+            }
+            
+            // Apply Lead Status filter
+            if (applyLeadStatusFilter) {
+                applyLeadStatusFilter.addEventListener('click', function() {
+                    // Get filter values from the form inputs
+                    const startDate = document.getElementById('leadStatusStartDate').value;
+                    const endDate = document.getElementById('leadStatusEndDate').value;
+                    const userName = document.querySelector('#leadStatusFilterForm .input-group input').value;
+                    
+                    // Update display
+                    if (leadStatusDateRange) {
+                        leadStatusDateRange.textContent = `FROM ${startDate} TO ${endDate}`;
+                    }
+                    
+                    if (leadStatusUserBadge) {
+                        leadStatusUserBadge.textContent = userName;
+                    }
+                    
+                    // Hide filter container with animation
+                    toggleFilterContainer(leadStatusFilterContainer, leadStatusInfo, false);
+                    
+                    // Show the info element after filter is applied
+                    setTimeout(() => {
+                        if (leadStatusInfo) {
+                            leadStatusInfo.style.display = 'block';
+                        }
+                    }, 300);
+                    
+                    // In a real application, you would fetch lead data based on the filters here
+                    // For now, we'll just keep the "No Lead" message
+                });
+            }
+            
+            // Apply Lead Source filter
+            if (applyLeadSourceFilter) {
+                applyLeadSourceFilter.addEventListener('click', function() {
+                    // Get filter values from the form inputs
+                    const startDate = document.getElementById('leadSourceStartDate').value;
+                    const endDate = document.getElementById('leadSourceEndDate').value;
+                    const userName = document.querySelector('#leadSourceFilterForm .input-group input').value;
+                    
+                    // Update display
+                    if (leadSourceDateRange) {
+                        leadSourceDateRange.textContent = `FROM ${startDate} TO ${endDate}`;
+                    }
+                    
+                    if (leadSourceUserBadge) {
+                        leadSourceUserBadge.textContent = userName;
+                    }
+                    
+                    // Hide filter container with animation
+                    toggleFilterContainer(leadSourceFilterContainer, leadSourceInfo, false);
+                    
+                    // Show the info element after filter is applied
+                    setTimeout(() => {
+                        if (leadSourceInfo) {
+                            leadSourceInfo.style.display = 'block';
+                        }
+                    }, 300);
+                    
+                    // In a real application, you would fetch lead data based on the filters here
+                    // For now, we'll just keep the "No Lead Found" message
+                });
+            }
+            
+            // Add hover effects to source items
+            document.querySelectorAll('.source-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = 'none';
+                });
+            });
             
             // Clear note content when modal is shown
             if (addNoteModalElement) {
@@ -486,7 +924,7 @@ try {
 
 
         }); // End of DOMContentLoaded
-
+        
         // --- Analytics Dashboard Functionality ---
 
         const leadStatusChartCanvas = document.getElementById('leadStatusChart');
@@ -659,6 +1097,52 @@ try {
             }
         }
 
+        // Add some CSS for the Lead Status and Lead Source sections
+        const style = document.createElement('style');
+        style.textContent = `
+            .lead-status-date-range,
+            .lead-source-date-range {
+                font-size: 16px;
+                color: #666;
+            }
+            
+            .lead-status-user-badge,
+            .lead-source-user-badge {
+                background-color: #f0f0f0;
+                padding: 5px 12px;
+                border-radius: 20px;
+                font-size: 14px;
+                color: #333;
+            }
+            
+            .no-lead-text {
+                font-size: 24px;
+                color: #999;
+                margin: 20px 0 10px;
+            }
+            
+            .lead-count-display {
+                font-size: 48px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 20px;
+            }
+            
+            .source-item, .status-item {
+                transition: all 0.2s ease;
+            }
+            
+            .source-item:hover, .status-item:hover {
+                transform: translateY(-2px);
+                cursor: pointer;
+            }
+            
+            .source-circle, .status-circle {
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+        `;
+        document.head.appendChild(style);
+        
         // Function to render Chart.js donut chart (used when data is available)
         function renderChart(canvas, chartData, centerText, chartInstance, legendContainer) {
              // Destroy existing chart if it exists
