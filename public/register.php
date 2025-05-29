@@ -190,233 +190,266 @@ $timezones = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration For 365 Lead Management</title>
+    <title>Registration - <?php echo SITE_NAME; ?></title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <link href="assets/css/login.css" rel="stylesheet">
     <link href="assets/css/register.css" rel="stylesheet">
 </head>
-<body>
+<body class="professional-theme">
     <div class="register-wrapper">
-        <div class="register-container">
+        <div class="register-container shadow-lg">
             <div class="register-header text-center mb-4">
-                 <h2>Registration For 365 Lead Management</h2>
+                <a href="index.php" class="logo-link">
+                    <h1 class="site-name"><?php echo SITE_NAME; ?></h1>
+                </a>
+                <h2 class="fw-bold">Create Your Account</h2>
+                <p class="text-muted">Get started with our lead management solution</p>
             </div>
             
             <?php if ($error): ?>
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>
                     <?php echo htmlspecialchars($error); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             
             <?php if ($success): ?>
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
                     <?php echo htmlspecialchars($success); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="needs-validation" novalidate>
-                <div class="row mb-3">
-                    <div class="col-md-6">
-                        <label for="first_name" class="form-label">First Name: *</label>
-                        <input type="text" 
-                               class="form-control" 
-                               id="first_name" 
-                               name="first_name" 
-                               value="<?php echo htmlspecialchars($formData['first_name']); ?>"
-                               placeholder="Enter First Name"
-                               required>
+                <input type="hidden" name="selected_package" id="selected_package" value="<?php echo htmlspecialchars($formData['package']); ?>">
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="first_name" class="form-label fw-medium">First Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-user text-primary"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" id="first_name" name="first_name" value="<?php echo htmlspecialchars($formData['first_name']); ?>" placeholder="Enter first name" required>
+                        </div>
+                        <div class="invalid-feedback">Please enter your first name.</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="last_name" class="form-label fw-medium">Last Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-user text-primary"></i>
+                            </span>
+                            <input type="text" class="form-control border-start-0" id="last_name" name="last_name" value="<?php echo htmlspecialchars($formData['last_name']); ?>" placeholder="Enter last name" required>
+                        </div>
+                        <div class="invalid-feedback">Please enter your last name.</div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-medium">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-envelope text-primary"></i>
+                        </span>
+                        <input type="email" class="form-control border-start-0" id="email" name="email" value="<?php echo htmlspecialchars($formData['email']); ?>" placeholder="Enter email address" required>
+                    </div>
+                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="phone" class="form-label fw-medium">Phone Number</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-phone text-primary"></i>
+                        </span>
+                        <input type="tel" class="form-control border-start-0" id="phone" name="phone" value="<?php echo htmlspecialchars($formData['phone']); ?>" placeholder="Enter phone number" required>
+                    </div>
+                    <div class="invalid-feedback">Please enter your phone number.</div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="password" class="form-label fw-medium">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-lock text-primary"></i>
+                            </span>
+                            <input type="password" class="form-control border-start-0" id="password" name="password" placeholder="Enter password (min. 8 chars)" required>
+                            <span class="toggle-password" onclick="togglePassword('password')" title="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="invalid-feedback">Please enter a password (min. 8 characters).</div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="confirm_password" class="form-label fw-medium">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0">
+                                <i class="fas fa-lock text-primary"></i>
+                            </span>
+                            <input type="password" class="form-control border-start-0" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                            <span class="toggle-password" onclick="togglePassword('confirm_password')" title="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </span>
+                        </div>
+                        <div class="invalid-feedback">Please confirm your password.</div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="timezone" class="form-label fw-medium">Timezone</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-globe text-primary"></i>
+                        </span>
+                        <select class="form-select border-start-0" id="timezone" name="timezone">
+                            <?php foreach ($timezones as $timezone): ?>
+                                <option value="<?php echo htmlspecialchars($timezone); ?>" <?php echo $formData['timezone'] === $timezone ? 'selected' : ''; ?>>
+                                    <?php echo htmlspecialchars($timezone); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="company_name" class="form-label fw-medium">Company Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-building text-primary"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="company_name" name="company_name" value="<?php echo htmlspecialchars($formData['company_name']); ?>" placeholder="Enter company name">
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="gst_number" class="form-label fw-medium">GST Number (Optional)</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="fas fa-receipt text-primary"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="gst_number" name="gst_number" value="<?php echo htmlspecialchars($formData['gst_number']); ?>" placeholder="Enter GST number if applicable">
+                    </div>
+                </div>
+                
+                <div class="plan-section mt-5 mb-4">
+                    <div class="section-header text-center mb-4">
+                        <span class="badge bg-primary mb-2">SUBSCRIPTION</span>
+                        <h3 class="fw-bold">Choose Your Plan</h3>
+                        <p class="text-muted">Select the plan that best fits your business needs</p>
                     </div>
                     
-                    <div class="col-md-6">
-                        <label for="last_name" class="form-label">Last Name: *</label>
-                         <input type="text" 
-                               class="form-control" 
-                               id="last_name" 
-                               name="last_name" 
-                               value="<?php echo htmlspecialchars($formData['last_name']); ?>"
-                               placeholder="Enter Last Name"
-                               required>
+                    <div class="row mb-4">
+                        <!-- Basic Package -->
+                        <div class="col-md-4 mb-3">
+                            <div class="package-card" data-package-id="basic">
+                                <div class="package-badge">BASIC</div>
+                                <div class="package-header">
+                                    <h4>Starter</h4>
+                                    <div class="price">₹999<span>/month</span></div>
+                                </div>
+                                <div class="package-features">
+                                    <ul>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Up to 500 Leads</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Email Support</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Basic Analytics</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>1 User Account</li>
+                                    </ul>
+                                </div>
+                                <div class="package-footer">
+                                    <span class="select-plan-text">Select Plan</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Standard Package -->
+                        <div class="col-md-4 mb-3">
+                            <div class="package-card popular" data-package-id="standard">
+                                <div class="package-badge">POPULAR</div>
+                                <div class="package-header">
+                                    <h4>Standard</h4>
+                                    <div class="price">₹1999<span>/month</span></div>
+                                </div>
+                                <div class="package-features">
+                                    <ul>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Up to 2000 Leads</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Email & Phone Support</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Advanced Analytics</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>5 User Accounts</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Custom Fields</li>
+                                    </ul>
+                                </div>
+                                <div class="package-footer">
+                                    <span class="select-plan-text">Select Plan</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Premium Package -->
+                        <div class="col-md-4 mb-3">
+                            <div class="package-card" data-package-id="premium">
+                                <div class="package-badge">PREMIUM</div>
+                                <div class="package-header">
+                                    <h4>Enterprise</h4>
+                                    <div class="price">₹3999<span>/month</span></div>
+                                </div>
+                                <div class="package-features">
+                                    <ul>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Unlimited Leads</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Priority Support</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Advanced Analytics & Reports</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Unlimited User Accounts</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>Custom Fields & Workflows</li>
+                                        <li><i class="fas fa-check-circle text-success me-2"></i>API Access</li>
+                                    </ul>
+                                </div>
+                                <div class="package-footer">
+                                    <span class="select-plan-text">Select Plan</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email: *</label>
-                    <input type="email" 
-                           class="form-control" 
-                           id="email" 
-                           name="email" 
-                           value="<?php echo htmlspecialchars($formData['email']); ?>"
-                           placeholder="Enter Email"
-                           required>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone: *</label>
-                     <div class="input-group">
-                        <span class="input-group-text" id="basic-addon1">
-                            🇮🇳 +91 
-                        </span>
-                        <input type="text" 
-                               class="form-control" 
-                               id="phone" 
-                               name="phone" 
-                               value="<?php echo htmlspecialchars($formData['phone']); ?>"
-                               placeholder="Enter Phone Number"
-                               aria-label="Phone Number" 
-                               aria-describedby="basic-addon1"
-                               required>
-                    </div>
-                </div>
-                
-                <div class="mb-3 password-toggle">
-                    <label for="password" class="form-label">Password: *</label>
-                    <input type="password" 
-                           class="form-control" 
-                           id="password" 
-                           name="password" 
-                           placeholder="Enter Password"
-                           required 
-                           minlength="8">
-                    <span class="toggle-password" onclick="togglePassword('password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-                
-                <div class="mb-3 password-toggle">
-                    <label for="confirm_password" class="form-label">Confirm Password: *</label>
-                    <input type="password" 
-                           class="form-control" 
-                           id="confirm_password" 
-                           name="confirm_password" 
-                           placeholder="Enter Confirm Password"
-                           required>
-                    <span class="toggle-password" onclick="togglePassword('confirm_password')">
-                        <i class="fas fa-eye"></i>
-                    </span>
-                </div>
-
-                 <div class="mb-3">
-                    <label for="timezone" class="form-label">Select TimeZone:</label>
-                    <select class="form-select" id="timezone" name="timezone">
-                        <?php foreach ($timezones as $tz): ?>
-                            <option value="<?php echo htmlspecialchars($tz); ?>" <?php echo $formData['timezone'] === $tz ? 'selected' : ''; ?>><?php echo htmlspecialchars($tz); ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="mb-3">
-                    <label for="company_name" class="form-label">Company Name: (Optional)</label>
-                    <input type="text" 
-                           class="form-control" 
-                           id="company_name" 
-                           name="company_name" 
-                           value="<?php echo htmlspecialchars($formData['company_name']); ?>"
-                           placeholder="Enter Company Name">
-                </div>
-
-                <div class="mb-3">
-                    <label for="gst_number" class="form-label">GST Number: (Optional)</label>
-                    <input type="text" 
-                           class="form-control" 
-                           id="gst_number" 
-                           name="gst_number" 
-                           value="<?php echo htmlspecialchars($formData['gst_number']); ?>"
-                           placeholder="Enter GST Number">
-                </div>
-                
-                <div class="coupon-section mb-3">
-                     <a href="#couponCode" class="coupon-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="couponCode">
-                        Apply Coupon Code
-                    </a>
-                    <div class="collapse coupon-input-container" id="couponCode">
-                        <div class="mt-2">
-                             <label for="coupon_code" class="form-label">Coupon Code:</label>
-                             <input type="text" 
-                                    class="form-control" 
-                                    id="coupon_code" 
-                                    name="coupon_code" 
-                                    placeholder="Enter Coupon Code">
-                        </div>
-                    </div>
-                </div>
-
-                <input type="hidden" name="package" id="selected_package" value="<?php echo htmlspecialchars($formData['package']); ?>">
-
-                <div class="pricing-packages row">
-                    <div class="col-md-4">
-                        <div class="package-card" data-package-id="basic">
-                            <h4>Basic</h4>
-                            <p class="price">₹365.00</p>
-                            <p class="users">Users:- 1</p>
-                            <p class="trial">7 Days Trial</p>
-                        </div>
-                    </div>
-                     <div class="col-md-4">
-                        <div class="package-card" data-package-id="silver">
-                            <h4>Silver</h4>
-                            <p class="price">₹1000.00</p>
-                            <p class="users">Users:- 2</p>
-                            <p class="trial">7 Days Trial</p>
-                        </div>
-                    </div>
-                     <div class="col-md-4">
-                        <div class="package-card" data-package-id="gold">
-                            <h4>Gold</h4>
-                            <p class="price">₹1500.00</p>
-                            <p class="users">Users:- 3</p>
-                            <p class="trial">7 Days Trial</p>
-                        </div>
-                    </div>
-                     <div class="col-md-4">
-                        <div class="package-card" data-package-id="platinum">
-                            <h4>Platinum</h4>
-                            <p class="price">₹2000.00</p>
-                            <p class="users">Users:- 4</p>
-                            <p class="trial">7 Days Trial</p>
-                        </div>
-                    </div>
-                     <div class="col-md-4">
-                        <div class="package-card" data-package-id="diamond">
-                            <h4>Diamond</h4>
-                            <p class="price">₹2500.00</p>
-                            <p class="users">Users:- 6</p>
-                            <p class="trial">7 Days Trial</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="package-card" data-package-id="diamond_pro">
-                            <h4>Diamond Pro</h4>
-                            <p class="price">₹3950.00</p>
-                            <p class="users">Users:- 6</p>
-                            <p class="trial">7 Days Trial</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-check mb-4">
-                    <input class="form-check-input" type="checkbox" id="terms" name="terms" <?php echo $formData['terms'] ? 'checked' : ''; ?> required>
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="terms" name="terms" <?php echo $formData['terms'] ? 'checked' : ''; ?> required>
                     <label class="form-check-label" for="terms">
-                        I agree to the <a href="privacy_policy.php" target="_blank">Privacy Policy and Terms</a>: *
+                        I agree to the <a href="privacy.php" target="_blank" class="text-primary">Privacy Policy</a>
                     </label>
-                    <div class="invalid-feedback">
-                        You must agree to the Privacy Policy and Terms before registering.
-                    </div>
+                    <div class="invalid-feedback">You must agree to the privacy policy.</div>
                 </div>
-
-                <div class="button-group mb-3 text-center">
-                     <button type="submit" class="btn btn-primary me-2" name="action" value="try_for_free" id="try_for_free_btn">Try For Free</button>
-                     <button type="submit" class="btn btn-outline-primary" name="action" value="pay_now" id="pay_now_btn">Pay Now</button>
+                
+                <div class="d-grid gap-3 d-md-flex justify-content-md-center mt-4">
+                    <button type="submit" name="action" value="try_for_free" class="btn btn-outline-primary btn-lg px-4" id="try_for_free_btn">
+                        <i class="fas fa-rocket me-2"></i>Try For Free
+                    </button>
+                    <button type="submit" name="action" value="pay_now" class="btn btn-primary btn-lg px-4" id="pay_now_btn">
+                        <i class="fas fa-credit-card me-2"></i>Pay Now
+                    </button>
                 </div>
-
-                <div class="text-center mt-3">
-                    Already have an account? <a href="login.php">Login here</a>
-                </div>
+                
             </form>
+            
+            <div class="text-center mt-4">
+                <p class="mb-2">Already have an account?</p>
+                <a href="login.php" class="btn btn-outline-secondary">
+                    <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                </a>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="index.php" class="btn btn-link text-muted">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Home
+                </a>
+            </div>
         </div>
     </div>
 

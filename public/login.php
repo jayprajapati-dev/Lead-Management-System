@@ -160,46 +160,49 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
     <link href="assets/css/login.css" rel="stylesheet">
 </head>
-<body>
+<body class="professional-theme">
     <div class="login-wrapper">
-        <div class="login-container">
-            <div class="login-header">
-                <a href="index.php" class="text-decoration-none">
-                    <h2 class="text-primary mb-4" style="font-weight: 600; font-size: 2rem;"><?php echo SITE_NAME; ?></h2>
+        <div class="login-container shadow-lg">
+            <div class="login-header text-center mb-4">
+                <a href="index.php" class="logo-link">
+                    <h1 class="site-name"><?php echo SITE_NAME; ?></h1>
                 </a>
-                <h1>Welcome Back</h1>
-                <p>Sign in to continue to your account</p>
+                <h2 class="fw-bold">Welcome Back</h2>
+                <p class="text-muted">Enter your credentials to access your account</p>
             </div>
             
             <?php if ($error): ?>
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>
                     <?php echo htmlspecialchars($error); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             
             <?php if ($success): ?>
-                <div class="alert alert-success" role="alert">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
                     <i class="fas fa-check-circle me-2"></i>
                     <?php echo htmlspecialchars($success); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
             
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" class="needs-validation" novalidate>
+            <form method="post" class="needs-validation" novalidate>
                 <div class="mb-4">
-                    <label for="email" class="form-label">Email Address</label>
-                    <div class="input-group">
+                    <label for="email" class="form-label fw-medium">Email Address</label>
+                    <div class="input-group input-group-lg">
                         <span class="input-group-text bg-light border-end-0">
-                            <i class="fas fa-envelope text-muted"></i>
+                            <i class="fas fa-envelope text-primary"></i>
                         </span>
                         <input type="email" 
                                class="form-control border-start-0" 
                                id="email" 
                                name="email" 
-                               value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>"
-                               placeholder="Enter your email address"
+                               placeholder="Enter your email"
+                               value="<?php echo htmlspecialchars($email ?? ''); ?>"
                                required
                                autocomplete="email">
                     </div>
@@ -208,11 +211,14 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
                     </div>
                 </div>
                 
-                <div class="mb-4 password-toggle">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-group">
+                <div class="mb-4">
+                    <div class="d-flex justify-content-between">
+                        <label for="password" class="form-label fw-medium">Password</label>
+                        <a href="forgot-password.php" class="forgot-password-link small">Forgot Password?</a>
+                    </div>
+                    <div class="input-group input-group-lg">
                         <span class="input-group-text bg-light border-end-0">
-                            <i class="fas fa-lock text-muted"></i>
+                            <i class="fas fa-lock text-primary"></i>
                         </span>
                         <input type="password" 
                                class="form-control border-start-0" 
@@ -230,7 +236,7 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
                     </div>
                 </div>
                 
-                <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="mb-4">
                     <div class="form-check">
                         <input type="checkbox" 
                                class="form-check-input" 
@@ -239,20 +245,25 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
                                <?php echo isset($_POST['remember']) ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="remember">Remember me</label>
                     </div>
-                    <a href="forgot-password.php" class="forgot-password-link">Forgot Password?</a>
                 </div>
                 
-                <button type="submit" class="btn btn-login">
+                <button type="submit" class="btn btn-primary btn-lg w-100 mb-3">
                     <span class="button-text">Sign In</span>
                     <span class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                 </button>
             </form>
             
-            <div class="auth-links">
+            <div class="auth-links text-center mt-4">
                 <p class="mb-0">
                     Don't have an account? 
-                    <a href="register.php" class="fw-bold">Create an account</a>
+                    <a href="register.php" class="fw-bold text-primary">Create an account</a>
                 </p>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="index.php" class="btn btn-link text-muted">
+                    <i class="fas fa-arrow-left me-1"></i> Back to Home
+                </a>
             </div>
         </div>
     </div>

@@ -1,10 +1,12 @@
 body {
     background-color: #f8f9fa;
+    background-image: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem 1rem;
+    font-family: 'Poppins', 'Segoe UI', Roboto, sans-serif;
 }
 
 .login-wrapper {
@@ -20,8 +22,40 @@ body {
     padding: 2.5rem;
     background: white;
     border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, var(--bs-primary) 0%, var(--bs-info) 100%);
+}
+
+.site-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--bs-primary);
+    margin-bottom: 1.5rem;
+    text-decoration: none;
+    background: linear-gradient(90deg, var(--bs-primary) 0%, var(--bs-info) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.site-name:hover {
+    transform: translateY(-2px);
+    text-shadow: 0 5px 15px rgba(var(--bs-primary-rgb), 0.3);
 }
 
 .login-header {
@@ -29,17 +63,18 @@ body {
     margin-bottom: 2.5rem;
 }
 
-.login-header h1 {
+.login-header h2 {
     color: #2c3e50;
-    font-size: 2rem;
+    font-size: 1.75rem;
     margin-bottom: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .login-header p {
     color: #7f8c8d;
     margin: 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
+    opacity: 0.8;
 }
 
 .form-label {
@@ -56,11 +91,16 @@ body {
     font-size: 1rem;
     transition: all 0.2s ease;
     background-color: #f8f9fa;
+    height: auto;
+}
+
+.input-group-lg > .form-control {
+    min-height: 50px;
 }
 
 .form-control:focus {
-    border-color: #3498db;
-    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.15);
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.15);
     background-color: #fff;
 }
 
@@ -68,34 +108,47 @@ body {
     color: #95a5a6;
 }
 
-.btn-login {
+.btn-primary {
     padding: 0.875rem 1.5rem;
     font-weight: 600;
-    background-color: #3498db;
     border: none;
     border-radius: 8px;
     font-size: 1.1rem;
     color: white;
     width: 100%;
-    transition: all 0.2s ease;
-    text-transform: uppercase;
+    transition: all 0.3s ease;
     letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
 }
 
-.btn-login:hover {
-    background-color: #2980b9;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+.btn-primary::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.1);
+    z-index: -2;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s ease;
+}
+
+.btn-primary:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(var(--bs-primary-rgb), 0.3);
 }
 
 .btn-login:active {
     transform: translateY(0);
-}
-
-.btn-login.loading {
-    position: relative;
-    pointer-events: none;
-    opacity: 0.9;
 }
 
 .alert {
@@ -121,6 +174,20 @@ body {
     text-align: center;
     padding-top: 1.5rem;
     border-top: 1px solid #e5e7eb;
+    position: relative;
+}
+
+.auth-links::before {
+    content: 'OR';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 0 15px;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    font-weight: 500;
 }
 
 .auth-links p {
@@ -128,32 +195,29 @@ body {
     color: #6b7280;
 }
 
-.auth-links a {
-    color: #3498db;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.auth-links a:hover {
-    color: #2980b9;
-    text-decoration: underline;
-}
-
 .password-toggle {
     position: relative;
 }
 
-.password-toggle .toggle-password {
+.toggle-password {
     position: absolute;
     right: 1rem;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
     color: #95a5a6;
-    transition: color 0.2s ease;
-    padding: 0.25rem;
-    border-radius: 4px;
+    transition: all 0.2s ease;
+    padding: 0.5rem;
+    border-radius: 50%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toggle-password:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--bs-primary);
 }
 
 .password-toggle .toggle-password:hover {
