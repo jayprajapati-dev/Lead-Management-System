@@ -147,7 +147,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             align-items: center;
             justify-content: space-between;
             height: 100%;
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
             position: relative;
         }
@@ -155,7 +155,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         .header-left {
             display: flex;
             align-items: center;
-            gap: 0px;
+            gap: 10px;
             flex-shrink: 0;
         }
         
@@ -176,7 +176,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             font-size: 20px;
             cursor: pointer;
             padding: 8px;
-            margin-right: 50px;
+            margin-right: 10px;
             transition: color 0.2s ease;
         }
         
@@ -399,23 +399,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             font-size: 14px;
             color: var(--text-secondary);
         }
-        
-        .dropdown-item.referral-link {
-            background-color: #5e4fb0;
-            color: white;
-            margin-top: 8px;
-            border-radius: 0;
-            padding: 12px 16px;
-        }
-        
-        .dropdown-item.referral-link i {
-            color: white;
-        }
-        
-        .dropdown-item.referral-link:hover {
-            background-color: #4f46e5;
-            color: white;
-        }
 
         .dropdown-divider {
             height: 1px;
@@ -596,25 +579,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/sync.php" class="dropdown-item">
-                        <i class="fas fa-sync"></i>
-                        <span>Sync Data</span>
+                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/settings.php" class="dropdown-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
                     </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/billing.php" class="dropdown-item">
-                        <i class="fas fa-credit-card"></i>
-                        <span>Billing</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/packages.php" class="dropdown-item">
-                        <i class="fas fa-box"></i>
-                        <span>Packages</span>
-                    </a>
+                    <hr class="dropdown-divider">
                     <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/logout.php" class="dropdown-item">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/referral.php" class="dropdown-item referral-link">
-                        <i class="fas fa-gift"></i>
-                        <span>Set up a Referral Link<br>and earn free Points</span>
                     </a>
                 </div>
             </div>

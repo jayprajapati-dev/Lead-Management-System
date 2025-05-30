@@ -724,8 +724,7 @@ if (isset($_SESSION['user_id'])) {
             <span>Reports</span>
         </a>
         <!-- General Settings Dropdown -->
-        <div class="dropdown-container">
-            <a class="nav-link dropdown-toggle <?php echo in_array($current_page, ['general-settings.php', 'web-settings.php', 'lead-trash.php', 'attributes.php', 'templates.php', 'automation-rules.php']) ? 'active' : ''; ?>" href="#">
+            <a class="nav-link dropdown-toggle <?php echo in_array($current_page, ['web-settings.php', 'lead-trash.php', 'attributes.php', 'templates.php', 'automation-rules.php']) ? 'active' : ''; ?>" href="#">
                 <i class="fas fa-cog"></i>
                 <span>General Settings</span>
                 <i class="fas fa-chevron-down dropdown-icon"></i>
@@ -755,7 +754,6 @@ if (isset($_SESSION['user_id'])) {
                     <i class="fas fa-chevron-right ml-auto"></i>
                 </a>
             </div>
-        </div>
     </nav>
 </div>
 

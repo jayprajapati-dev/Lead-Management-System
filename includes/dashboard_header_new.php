@@ -1,38 +1,10 @@
 <?php
-// Get user information if not already available
-if (isset($_SESSION['user_id']) && !isset($user)) {
-    $user_id = $_SESSION['user_id'];
-    $sql = "SELECT * FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-}
+// Include necessary functions or configuration
+// require_once '../includes/config.php';
 
-// Get user's name for display
-$user_first_name = isset($user['first_name']) ? htmlspecialchars($user['first_name']) : '';
-$user_last_name = isset($user['last_name']) ? htmlspecialchars($user['last_name']) : '';
-$user_display_name = !empty($user_first_name) ? $user_first_name : 'User';
-$user_full_name = trim($user_first_name . ' ' . $user_last_name);
-
-// Get user's profile image
-$profile_image = '';
-if (isset($user['profile_image']) && !empty($user['profile_image'])) {
-    // Get the site root path for consistent image references
-    $site_root = SITE_URL;
-    
-    // Remove any leading slashes from the profile image path
-    $user_image = ltrim($user['profile_image'], '/');
-    
-    // Create the full URL to the profile image
-    $profile_image = $site_root . '/' . $user_image;
-}
-
-// If no profile image, use generated avatar
-if (empty($profile_image)) {
-    $profile_image = "https://ui-avatars.com/api/?name=" . urlencode($user_full_name) . "&background=4f46e5&color=fff&size=128";
-}
+// User data from session
+$userName = ($_SESSION['user_first_name'] ?? 'User') . ' ' . ($_SESSION['user_last_name'] ?? '');
+$userProfileImage = $_SESSION['user_profile_image'] ?? 'https://via.placeholder.com/40x40/6366f1/ffffff?text=U';
 
 // Get the current page filename
 $currentPage = basename($_SERVER['PHP_SELF']);
@@ -147,7 +119,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             align-items: center;
             justify-content: space-between;
             height: 100%;
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
             position: relative;
         }
@@ -155,7 +127,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
         .header-left {
             display: flex;
             align-items: center;
-            gap: 0px;
+            gap: 10px;
             flex-shrink: 0;
         }
         
@@ -176,7 +148,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             font-size: 20px;
             cursor: pointer;
             padding: 8px;
-            margin-right: 50px;
+            margin-right: 10px;
             transition: color 0.2s ease;
         }
         
@@ -399,23 +371,6 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             font-size: 14px;
             color: var(--text-secondary);
         }
-        
-        .dropdown-item.referral-link {
-            background-color: #5e4fb0;
-            color: white;
-            margin-top: 8px;
-            border-radius: 0;
-            padding: 12px 16px;
-        }
-        
-        .dropdown-item.referral-link i {
-            color: white;
-        }
-        
-        .dropdown-item.referral-link:hover {
-            background-color: #4f46e5;
-            color: white;
-        }
 
         .dropdown-divider {
             height: 1px;
@@ -585,7 +540,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             <div class="user-profile" id="userProfile">
                 <button class="profile-button" id="profileTrigger">
                     <div class="avatar-container">
-                        <img src="<?php echo htmlspecialchars($profile_image); ?>" 
+                        <img src="<?php echo htmlspecialchars($userProfileImage); ?>" 
                              alt="Profile" class="profile-avatar">
                         <span class="status-indicator"></span>
                     </div>
@@ -596,25 +551,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <i class="fas fa-user"></i>
                         <span>Profile</span>
                     </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/sync.php" class="dropdown-item">
-                        <i class="fas fa-sync"></i>
-                        <span>Sync Data</span>
+                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/settings.php" class="dropdown-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
                     </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/billing.php" class="dropdown-item">
-                        <i class="fas fa-credit-card"></i>
-                        <span>Billing</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/packages.php" class="dropdown-item">
-                        <i class="fas fa-box"></i>
-                        <span>Packages</span>
-                    </a>
+                    <hr class="dropdown-divider">
                     <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/logout.php" class="dropdown-item">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/referral.php" class="dropdown-item referral-link">
-                        <i class="fas fa-gift"></i>
-                        <span>Set up a Referral Link<br>and earn free Points</span>
                     </a>
                 </div>
             </div>
@@ -728,29 +672,6 @@ document.addEventListener('DOMContentLoaded', function() {
             sidebarOverlay.classList.remove('show');
             document.body.classList.remove('sidebar-open');
         });
-    }
-    
-    // Theme toggle functionality
-    const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const htmlElement = document.documentElement;
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            
-            if (currentTheme === 'dark') {
-                htmlElement.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-            } else {
-                htmlElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Set initial theme based on localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
-        }
     }
 });
 </script>
