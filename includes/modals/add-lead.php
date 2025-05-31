@@ -1,10 +1,36 @@
 <?php
-// Assuming $userName is available from the session or included file like dashboard-header.php
-// Ensure session keys are set before accessing them to prevent warnings
-$loggedInFirstName = isset($_SESSION['user_first_name']) ? $_SESSION['user_first_name'] : '';
-$loggedInLastName = isset($_SESSION['user_last_name']) ? $_SESSION['user_last_name'] : '';
-$loggedInUserName = $loggedInFirstName . ' ' . $loggedInLastName;
-$loggedInUserId = $_SESSION['user_id'] ?? ''; // Assuming user ID is also available
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Get user information from session
+$loggedInFirstName = $_SESSION['user_first_name'] ?? '';
+$loggedInLastName = $_SESSION['user_last_name'] ?? '';
+$loggedInUserName = trim($loggedInFirstName . ' ' . $loggedInLastName);
+$loggedInUserId = $_SESSION['user_id'] ?? '';
+
+// If name is empty, try to get it from the database
+if (empty($loggedInUserName) && !empty($loggedInUserId)) {
+    try {
+        require_once '../includes/config.php';
+        $stmt = executeQuery(
+            "SELECT first_name, last_name FROM users WHERE id = ?",
+            [$loggedInUserId]
+        );
+        $result = $stmt->get_result();
+        if ($user = $result->fetch_assoc()) {
+            $loggedInUserName = trim($user['first_name'] . ' ' . $user['last_name']);
+        }
+    } catch (Exception $e) {
+        error_log("Error fetching user details: " . $e->getMessage());
+    }
+}
+
+// If still empty, use a default value
+if (empty($loggedInUserName)) {
+    $loggedInUserName = 'Unknown User';
+}
 ?>
 
 <!-- Add Lead Modal -->
@@ -70,7 +96,6 @@ $loggedInUserId = $_SESSION['user_id'] ?? ''; // Assuming user ID is also availa
                 <input type="date" class="form-control" id="leadDate" name="date">
              </div>
 
-
             <!-- Customer Name -->
             <div class="col-md-6">
               <label for="customerName" class="form-label">Customer Name: *</label>
@@ -97,7 +122,6 @@ $loggedInUserId = $_SESSION['user_id'] ?? ''; // Assuming user ID is also availa
                 <label for="leadReference" class="form-label">Reference (Optional):</label>
                 <input type="text" class="form-control" id="leadReference" name="reference">
              </div>
-
 
             <!-- Address -->
             <div class="col-12">

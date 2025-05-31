@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - CRM Dashboard</title>
+    <title>Forgot Password - Lead Management System</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
@@ -174,9 +174,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <div class="forgot-container">
         <div class="forgot-header">
-            <img src="https://ui-avatars.com/api/?name=CRM&background=3498db&color=fff&size=128" alt="CRM Logo">
-            <h1>Forgot Password</h1>
-            <p>Enter your email to reset your password</p>
+            <a href="index.php" class="text-decoration-none">
+                <h1 class="display-4 mb-3">Lead Management System</h1>
+            </a>
+            <p class="lead">Enter your email to reset your password</p>
         </div>
         
         <?php if ($error): ?>

@@ -1,772 +1,467 @@
 <?php
-// Get user information if not already available
-if (isset($_SESSION['user_id']) && !isset($user)) {
-    $user_id = $_SESSION['user_id'];
-    $sql = "SELECT * FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $user_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-// Get user's name for display
-$user_first_name = isset($user['first_name']) ? htmlspecialchars($user['first_name']) : '';
-$user_last_name = isset($user['last_name']) ? htmlspecialchars($user['last_name']) : '';
-$user_display_name = !empty($user_first_name) ? $user_first_name : 'User';
-$user_full_name = trim($user_first_name . ' ' . $user_last_name);
-
-// Get user's profile image
-$profile_image = '';
-if (isset($user['profile_image']) && !empty($user['profile_image'])) {
-    // Get the site root path for consistent image references
-    $site_root = SITE_URL;
-    
-    // Remove any leading slashes from the profile image path
-    $user_image = ltrim($user['profile_image'], '/');
-    
-    // Create the full URL to the profile image
-    $profile_image = $site_root . '/' . $user_image;
-}
-
-// If no profile image, use generated avatar
-if (empty($profile_image)) {
-    $profile_image = "https://ui-avatars.com/api/?name=" . urlencode($user_full_name) . "&background=4f46e5&color=fff&size=128";
-}
-
-// Get the current page filename
-$currentPage = basename($_SERVER['PHP_SELF']);
+// Get user data from session
+$user_name = $_SESSION['user_name'] ?? 'User';
+$user_email = $_SESSION['user_email'] ?? '';
+$notification_count = 0; // You can update this dynamically from your database
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            /* Base colors */
-            --primary-color: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --success-color: #10b981;
-            --danger-color: #ef4444;
-            --warning-color: #f59e0b;
-            
-            /* Light theme colors (default) */
-            --bg-main: #ffffff;
-            --bg-secondary: #f8fafc;
-            --bg-tertiary: #f1f5f9;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --bg-dropdown: #ffffff;
-            --bg-input: #ffffff;
-            --bg-button: #6366f1;
-            --bg-hover: #f1f5f9;
-            
-            --text-primary: #1e293b;
-            --text-secondary: #64748b;
-            --text-tertiary: #94a3b8;
-            --text-on-primary: #ffffff;
-            --text-on-success: #ffffff;
-            --text-on-danger: #ffffff;
-            --text-on-warning: #ffffff;
-            
-            --border-color: #e2e8f0;
-            --border-secondary: #f1f5f9;
-            --divider-color: #e2e8f0;
-            
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        
-        /* Dark theme colors */
-        [data-theme="dark"] {
-            --bg-main: #121212;
-            --bg-secondary: #1e1e1e;
-            --bg-tertiary: #2d2d2d;
-            --bg-sidebar: #1a1a1a;
-            --bg-card: #1e1e1e;
-            --bg-dropdown: #2d2d2d;
-            --bg-input: #2d2d2d;
-            --bg-button: #4f46e5;
-            --bg-hover: #3a3a3a;
-            
-            --text-primary: #f1f5f9;
-            --text-secondary: #cbd5e1;
-            --text-tertiary: #94a3b8;
-            --text-on-primary: #ffffff;
-            --text-on-success: #ffffff;
-            --text-on-danger: #ffffff;
-            --text-on-warning: #ffffff;
-            
-            --border-color: #3a3a3a;
-            --border-secondary: #3a3a3a;
-            --divider-color: #3a3a3a;
-            
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-        }
+<!-- Dashboard Header CSS -->
+<style>
+/* Main Layout Adjustments */
+body {
+    margin: 0;
+    padding: 0;
+}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+.dashboard-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 250px;
+    z-index: 1000;
+    height: 50px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            line-height: 1.5;
-            font-size: 14px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+.header-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    height: 100%;
+    padding: 0 0.75rem;
+}
 
-        /* Modern Header Styles */
-        .header-container {
-            background-color: var(--bg-main);
-            box-shadow: var(--shadow-sm);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            width: 100%;
-            padding: 10px 20px;
-            height: auto;
-            min-height: 60px;
-            overflow: visible;
-        }
-        
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 0px;
-            flex-shrink: 0;
-        }
-        
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            flex-shrink: 0;
-        }
-        
-        .menu-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            margin-right: 50px;
-            transition: color 0.2s ease;
-        }
-        
-        .menu-toggle:focus {
-            outline: none;
-            color: var(--text-secondary) !important;
-            box-shadow: none !important;
-            border: none !important;
-        }
-        
-        /* Action Buttons */
-        .action-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--bg-button);
-            border: none;
-            border-radius: 50px; /* Full pill shape */
-            color: var(--text-on-primary);
-            padding: 8px 16px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.2s ease, background-color 0.3s ease, color 0.3s ease;
-            white-space: nowrap;
-            box-shadow: var(--shadow-sm);
-            margin: 0 5px;
-        }
-        
-        .action-button i {
-            margin-right: 6px;
-            font-size: 12px;
-        }
-        
-        .action-button i.ml-1 {
-            margin-left: 4px;
-            margin-right: 0;
-            opacity: 0.7;
-        }
-        
-        .action-button:hover {
-            background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-        
-        .action-button:active {
-            transform: translateY(0);
-        }
+/* Quick Actions Section */
+.quick-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: auto;
+    background: #f8fafc;
+    padding: 0.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
 
-        /* Header Icons */
-        .header-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 6px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.2s ease, color 0.3s ease, background-color 0.3s ease;
-            position: relative;
-        }
-        
-        .header-icon:hover {
-            background-color: var(--bg-hover);
-            color: var(--text-primary);
-        }
-        
-        .header-icon:active {
-            transform: scale(0.95);
-        }
-        
-        /* Notification Badge */
-        .notification-badge {
-            position: absolute;
-            top: 4px;
-            right: 4px;
-            background-color: var(--danger-color);
-            color: var(--text-on-danger);
-            font-size: 10px;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            border: 2px solid var(--bg-main);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
+.quick-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.375rem 0.625rem;
+    color: #64748b;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border-radius: 0.375rem;
+    transition: all 0.15s;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    height: 28px;
+}
 
-        .notification-container {
-            position: relative;
-        }
-        
-        .notification-dropdown {
-            width: 320px;
-            padding: 0;
-            max-height: 400px;
-            overflow-y: auto;
-        }
-        
-        .dropdown-header {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--divider-color);
-            font-weight: 500;
-        }
-        
-        .notification-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .dropdown-footer {
-            padding: 10px 16px;
-            border-top: 1px solid var(--divider-color);
-            text-align: center;
-        }
-        
-        .empty-notifications {
-            color: var(--text-secondary);
-            padding: 20px 0;
-        }
+.quick-action-btn i {
+    font-size: 0.625rem;
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+    background: #e2e8f0;
+    color: #64748b;
+    transition: all 0.15s;
+}
 
-        /* User Profile Styling */
-        .user-profile {
-            position: relative;
-            margin-left: 8px;
-        }
-        
-        .profile-button {
-            background: transparent;
-            border: none;
-            padding: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: background-color 0.2s ease;
-        }
-        
-        .profile-button:hover {
-            background-color: var(--bg-hover);
-        }
-        
-        .avatar-container {
-            position: relative;
-            width: 36px;
-            height: 36px;
-        }
-        
-        .profile-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--border-secondary);
-            transition: border-color 0.3s ease;
-        }
-        
-        .status-indicator {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 10px;
-            height: 10px;
-            background-color: var(--success-color); /* Green for online status */
-            border-radius: 50%;
-            border: 2px solid var(--bg-main);
-            transition: border-color 0.3s ease, background-color 0.3s ease;
-        }
+.quick-action-btn:hover {
+    color: #6366f1;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
 
-        /* Dropdown Menu */
-        .dropdown-menu {
-            position: absolute;
-            top: calc(100% + 5px);
-            right: 0;
-            background: var(--bg-dropdown);
-            border-radius: 10px;
-            box-shadow: var(--shadow-lg);
-            width: 240px;
-            padding: 8px 0;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-            z-index: 1000;
-            pointer-events: none; /* Prevent interaction when hidden */
-        }
+.quick-action-btn:hover i {
+    background: #818cf8;
+    color: white;
+}
 
-        .dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-            pointer-events: auto; /* Allow interaction when visible */
-        }
+/* Header Icons */
+.header-icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
 
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            color: var(--text-primary);
-            text-decoration: none;
-            font-size: 14px;
-            transition: background 0.2s ease;
-        }
+.icon-button {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #64748b;
+    border-radius: 0.375rem;
+    transition: all 0.15s;
+    position: relative;
+}
 
-        .dropdown-item:hover {
-            background: var(--bg-hover);
-            color: var(--text-primary);
-        }
+.icon-button i {
+    font-size: 0.875rem;
+}
 
-        .dropdown-item i {
-            width: 16px;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
-        
-        .dropdown-item.referral-link {
-            background-color: #5e4fb0;
-            color: white;
-            margin-top: 8px;
-            border-radius: 0;
-            padding: 12px 16px;
-        }
-        
-        .dropdown-item.referral-link i {
-            color: white;
-        }
-        
-        .dropdown-item.referral-link:hover {
-            background-color: #4f46e5;
-            color: white;
-        }
+.icon-button:hover {
+    background: #f1f5f9;
+    color: #6366f1;
+}
 
-        .dropdown-divider {
-            height: 1px;
-            background: var(--divider-color);
-            margin: 8px 0;
-            border: none;
-            transition: background-color 0.3s ease;
-        }
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    width: 32px;
+    height: 32px;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #64748b;
+    margin-right: 0.5rem;
+    transition: color 0.15s;
+}
 
-        /* Responsive Design */
-        @media (max-width: 991.98px) {
-            .header-container {
-                padding: 0 16px;
-                min-height: 56px;
-            }
-            
-            .header-left {
-                flex-wrap: wrap;
-                justify-content: flex-start;
-            }
-            
-            .action-button {
-                padding: 6px 12px;
-                font-size: 12px;
-                margin: 2px;
-            }
-            
-            .header-icon {
-                width: 32px;
-                height: 32px;
-                padding: 0;
-            }
-            
-            .profile-avatar {
-                width: 28px;
-                height: 28px;
-                min-width: 28px;
-                margin: 0;
-                padding: 0;
-            }
-            
-            .user-profile {
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                min-width: 36px;
-                height: 100%;
-                padding: 0;
-                margin: 0;
-            }
-        }
+.mobile-menu-btn:hover {
+    color: #6366f1;
+}
 
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 10px 0;
-            }
-            
-            .header-left {
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 10px;
-            }
-            
-            .header-right {
-                justify-content: flex-end;
-                width: 100%;
-            }
-            
-            .action-button {
-                padding: 5px 10px;
-                font-size: 11px;
-                flex: 1;
-                text-align: center;
-                justify-content: center;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .action-button span {
-                display: none;
-            }
-            
-            .action-button i {
-                margin-right: 0;
-                font-size: 14px;
-            }
-            
-            .action-button {
-                padding: 8px;
-                width: 36px;
-                height: 36px;
-                border-radius: 50%;
-            }
-        }
-    </style>
-</head>
-<body>
+/* Remove Mobile Quick Actions Menu */
+.mobile-quick-actions {
+    display: none;
+}
 
-<header class="header-container">
-    <div class="header-content">
-        <!-- Left Side - Quick Action Buttons -->
-        <div class="header-left">
-            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addLeadModal">
-                <i class="fas fa-plus"></i> <span>Lead</span>
+/* Responsive Design */
+@media (max-width: 768px) {
+    .dashboard-header {
+        left: 0;
+    }
+
+    .mobile-menu-btn {
+        display: flex;
+    }
+
+    .quick-actions {
+        display: none;
+    }
+
+    .header-icons {
+        margin-left: auto;
+    }
+
+    /* Adjust icon sizes for mobile */
+    .icon-button {
+        width: 36px;
+        height: 36px;
+    }
+
+    .icon-button i {
+        font-size: 1rem;
+    }
+
+    /* Make dropdowns full width on mobile */
+    .dropdown-menu {
+        width: calc(100vw - 2rem);
+        max-width: none;
+        margin: 0.5rem 1rem;
+        right: 0;
+        left: 0;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .dashboard-header {
+        background: #1e293b;
+        border-color: #334155;
+    }
+
+    .quick-actions {
+        background: #334155;
+        border-color: #475569;
+    }
+
+    .quick-action-btn {
+        color: #e2e8f0;
+    }
+
+    .quick-action-btn i {
+        background: #475569;
+        color: #e2e8f0;
+    }
+
+    .quick-action-btn:hover {
+        background: #1e293b;
+        color: #818cf8;
+    }
+
+    .icon-button {
+        color: #e2e8f0;
+    }
+
+    .icon-button:hover {
+        background: #334155;
+        color: #818cf8;
+    }
+
+    .mobile-quick-actions {
+        background: #1e293b;
+        border-color: #334155;
+    }
+}
+
+/* Dropdown Menus */
+.dropdown-menu {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    min-width: 240px;
+    display: none;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #4b5563;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.dropdown-item:hover {
+    background: #f8fafc;
+    color: #6366f1;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 0.5rem 0;
+}
+
+.referral-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.referral-button:hover {
+    opacity: 0.9;
+    color: white;
+}
+
+/* Add this new class for main content wrapper */
+.main-content-wrapper {
+    margin-top: 60px; /* Height of header */
+    margin-left: 250px; /* Width of sidebar */
+    padding: 1.5rem;
+    min-height: calc(100vh - 60px);
+}
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        left: 0;
+    }
+    .main-content-wrapper {
+        margin-left: 0;
+        padding: 1rem;
+    }
+}
+</style>
+
+<!-- Dashboard Header HTML -->
+<header class="dashboard-header">
+    <div class="header-container">
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-btn" id="sidebarToggle" aria-label="Toggle Sidebar">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Quick Actions (Desktop Only) -->
+        <div class="quick-actions">
+            <button class="quick-action-btn" title="Add New Lead">
+                <i class="fas fa-plus"></i>
+                <span>Lead</span>
             </button>
-            
-            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addTaskModal">
-                <i class="fas fa-plus"></i> <span>Task</span>
+            <button class="quick-action-btn" title="Add New Task">
+                <i class="fas fa-plus"></i>
+                <span>Task</span>
             </button>
-            
-            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                <i class="fas fa-plus"></i> <span>Note</span>
+            <button class="quick-action-btn" title="Add New Note">
+                <i class="fas fa-plus"></i>
+                <span>Note</span>
             </button>
-            
-            <button type="button" class="action-button" data-bs-toggle="modal" data-bs-target="#addReminderModal">
-                <i class="fas fa-plus"></i> <span>Reminder</span>
+            <button class="quick-action-btn" title="Add New Reminder">
+                <i class="fas fa-plus"></i>
+                <span>Reminder</span>
             </button>
         </div>
 
-        <!-- Right Side Navigation -->
-        <div class="header-right">
-            <!-- Menu Toggle for Mobile -->
-            <button class="menu-toggle d-lg-none" id="sidebarToggle" aria-label="Toggle Menu">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <!-- Search Icon -->
-            <button type="button" class="header-icon" id="searchBtn" title="Search">
+        <!-- Header Icons -->
+        <div class="header-icons">
+            <button class="icon-button" id="searchButton" title="Search">
                 <i class="fas fa-search"></i>
             </button>
-
-            <!-- Theme Toggle -->
-            <button type="button" class="header-icon theme-toggle" id="themeToggle" title="Toggle Theme">
+            
+            <button class="icon-button" id="themeToggle" title="Toggle Theme">
                 <i class="fas fa-moon"></i>
             </button>
             
-            <!-- Notifications -->
-            <div class="notification-container" id="notificationContainer">
-                <button type="button" class="header-icon" id="notificationBtn" title="Notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="notification-badge">0</span>
-                </button>
-                
-                <div class="dropdown-menu notification-dropdown" id="notificationDropdown">
-                    <div class="dropdown-header d-flex justify-content-between align-items-center">
-                        <span>Notifications</span>
-                        <a href="#" class="text-primary">Mark all as read</a>
-                    </div>
-                    <div class="notification-list">
-                        <!-- Empty state -->
-                        <div class="empty-notifications text-center p-3">
-                            <i class="fas fa-bell-slash fa-2x text-muted mb-2"></i>
-                            <p class="mb-0">No new notifications</p>
-                        </div>
-                        <!-- Notifications will be dynamically added here -->
-                    </div>
-                    <div class="dropdown-footer">
-                        <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/notifications.php" class="text-center d-block">View all notifications</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- User Profile -->
-            <div class="user-profile" id="userProfile">
-                <button class="profile-button" id="profileTrigger">
-                    <div class="avatar-container">
-                        <img src="<?php echo htmlspecialchars($profile_image); ?>" 
-                             alt="Profile" class="profile-avatar">
-                        <span class="status-indicator"></span>
-                    </div>
-                </button>
-
-                <div class="dropdown-menu" id="profileDropdown">
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/profile.php" class="dropdown-item">
-                        <i class="fas fa-user"></i>
-                        <span>Profile</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/sync.php" class="dropdown-item">
-                        <i class="fas fa-sync"></i>
-                        <span>Sync Data</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/billing.php" class="dropdown-item">
-                        <i class="fas fa-credit-card"></i>
-                        <span>Billing</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/packages.php" class="dropdown-item">
-                        <i class="fas fa-box"></i>
-                        <span>Packages</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/logout.php" class="dropdown-item">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                    <a href="<?php echo SITE_URL ?? ''; ?>/dashboard/referral.php" class="dropdown-item referral-link">
-                        <i class="fas fa-gift"></i>
-                        <span>Set up a Referral Link<br>and earn free Points</span>
-                    </a>
-                </div>
-            </div>
+            <button class="icon-button" id="notificationButton" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <?php if ($notification_count > 0): ?>
+                    <span class="notification-badge"><?php echo $notification_count; ?></span>
+                <?php endif; ?>
+            </button>
+            
+            <button class="icon-button" id="profileButton" title="Profile">
+                <i class="fas fa-user-circle"></i>
+            </button>
         </div>
+    </div>
+
+    <!-- Notification Dropdown -->
+    <div class="dropdown-menu" id="notificationDropdown">
+        <div class="dropdown-item">
+            <h6 style="margin: 0; font-size: 0.875rem;">Notifications <?php if ($notification_count > 0): ?><span class="notification-badge" style="position: static; margin-left: 0.5rem;"><?php echo $notification_count; ?></span><?php endif; ?></h6>
+        </div>
+        <div class="dropdown-divider"></div>
+        <?php if ($notification_count === 0): ?>
+            <div class="dropdown-item">
+                <span>No Notifications</span>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- Profile Dropdown -->
+    <div class="dropdown-menu" id="profileDropdown">
+        <div class="dropdown-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </div>
+        <div class="dropdown-item">
+            <i class="fas fa-sync"></i>
+            <span>Sync Data</span>
+        </div>
+        <div class="dropdown-item">
+            <i class="fas fa-credit-card"></i>
+            <span>Billing</span>
+        </div>
+        <div class="dropdown-item">
+            <i class="fas fa-box"></i>
+            <span>Packages</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <a href="logout.php" class="dropdown-item">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="referral-button">
+            <i class="fas fa-gift"></i>
+            <span>Set up a Referral Link and earn free Points</span>
+        </a>
     </div>
 </header>
 
-<!-- Sidebar Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JavaScript for Header Functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Function to close all dropdowns
-    function closeAllDropdowns() {
-        const dropdowns = document.querySelectorAll('.dropdown-menu');
-        const containers = document.querySelectorAll('.user-profile, .notification-container');
-        
-        dropdowns.forEach(dropdown => dropdown.classList.remove('show'));
-        containers.forEach(container => container.classList.remove('show'));
-    }
+    // Sidebar Toggle
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const body = document.body;
     
-    // Profile dropdown functionality
-    const profileTrigger = document.getElementById('profileTrigger');
-    const profileDropdown = document.getElementById('profileDropdown');
-    const userProfile = document.getElementById('userProfile');
-
-    if (profileTrigger && profileDropdown && userProfile) {
-        profileTrigger.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Close other dropdowns first
-            const notificationContainer = document.getElementById('notificationContainer');
-            const notificationDropdown = document.getElementById('notificationDropdown');
-            if (notificationContainer && notificationDropdown) {
-                notificationContainer.classList.remove('show');
-                notificationDropdown.classList.remove('show');
-            }
-            
-            // Toggle profile dropdown
-            userProfile.classList.toggle('show');
-            profileDropdown.classList.toggle('show');
-        });
-    }
-
-    // Close dropdowns when clicking outside
-    document.addEventListener('click', function(e) {
-        const userProfile = document.getElementById('userProfile');
-        const notificationContainer = document.getElementById('notificationContainer');
-        
-        if (userProfile && !userProfile.contains(e.target)) {
-            userProfile.classList.remove('show');
-            document.getElementById('profileDropdown')?.classList.remove('show');
-        }
-        
-        if (notificationContainer && !notificationContainer.contains(e.target)) {
-            notificationContainer.classList.remove('show');
-            document.getElementById('notificationDropdown')?.classList.remove('show');
-        }
+    sidebarToggle.addEventListener('click', () => {
+        body.classList.toggle('sidebar-collapsed');
+        // Dispatch custom event for sidebar toggle
+        document.dispatchEvent(new CustomEvent('sidebar-toggle'));
     });
 
-    // Search functionality
-    const searchBtn = document.getElementById('searchBtn');
-    if (searchBtn) {
-        searchBtn.addEventListener('click', function() {
-            // Implement search functionality here
-            console.log('Search clicked');
-        });
-    }
-    
-    // Notification functionality
-    const notificationBtn = document.getElementById('notificationBtn');
-    const notificationDropdown = document.getElementById('notificationDropdown');
-    const notificationContainer = document.getElementById('notificationContainer');
-    
-    if (notificationBtn && notificationDropdown && notificationContainer) {
-        notificationBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Close other dropdowns first
-            const userProfile = document.getElementById('userProfile');
-            const profileDropdown = document.getElementById('profileDropdown');
-            if (userProfile && profileDropdown) {
-                userProfile.classList.remove('show');
-                profileDropdown.classList.remove('show');
-            }
-            
-            // Toggle notification dropdown
-            notificationContainer.classList.toggle('show');
-            notificationDropdown.classList.toggle('show');
-        });
-    }
-    
-    // Mobile sidebar functionality
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebar = document.getElementById('sidebarMenu');
-    const sidebarOverlay = document.getElementById('sidebarOverlay');
-    
-    if (sidebarToggle && sidebar && sidebarOverlay) {
-        sidebarToggle.addEventListener('click', function(e) {
-            e.stopPropagation();
-            sidebar.classList.toggle('show');
-            sidebarOverlay.classList.toggle('show');
-            document.body.classList.toggle('sidebar-open');
-        });
-        
-        sidebarOverlay.addEventListener('click', function() {
-            sidebar.classList.remove('show');
-            sidebarOverlay.classList.remove('show');
-            document.body.classList.remove('sidebar-open');
-        });
-    }
-    
-    // Theme toggle functionality
+    // Theme Toggle
     const themeToggle = document.getElementById('themeToggle');
-    if (themeToggle) {
-        themeToggle.addEventListener('click', function() {
-            const htmlElement = document.documentElement;
-            const currentTheme = htmlElement.getAttribute('data-theme');
-            
-            if (currentTheme === 'dark') {
-                htmlElement.removeAttribute('data-theme');
-                localStorage.setItem('theme', 'light');
-            } else {
-                htmlElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-            }
-        });
-        
-        // Set initial theme based on localStorage
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'dark') {
-            document.documentElement.setAttribute('data-theme', 'dark');
+    const themeIcon = themeToggle.querySelector('i');
+    let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+    function updateTheme() {
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
         }
     }
+
+    themeToggle.addEventListener('click', () => {
+        isDarkMode = !isDarkMode;
+        localStorage.setItem('darkMode', isDarkMode);
+        updateTheme();
+    });
+
+    updateTheme();
+
+    // Dropdown Toggles
+    function setupDropdown(buttonId, dropdownId) {
+        const button = document.getElementById(buttonId);
+        const dropdown = document.getElementById(dropdownId);
+
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = dropdown.classList.contains('show');
+            
+            // Close all dropdowns
+            document.querySelectorAll('.dropdown-menu').forEach(d => {
+                d.classList.remove('show');
+            });
+
+            // Toggle current dropdown
+            if (!isActive) {
+                dropdown.classList.add('show');
+            }
+        });
+    }
+
+    setupDropdown('notificationButton', 'notificationDropdown');
+    setupDropdown('profileButton', 'profileDropdown');
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+        document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+            dropdown.classList.remove('show');
+        });
+    });
 });
 </script>
-
-<?php
-// Include the modal forms
-if (file_exists('../includes/modals/add-lead.php')) {
-    include '../includes/modals/add-lead.php';
-}
-if (file_exists('../includes/modals/add-task.php')) {
-    include '../includes/modals/add-task.php';
-}
-if (file_exists('../includes/modals/add-note.php')) {
-    include '../includes/modals/add-note.php';
-}
-if (file_exists('../includes/modals/add-reminder.php')) {
-    include '../includes/modals/add-reminder.php';
-}
-?>

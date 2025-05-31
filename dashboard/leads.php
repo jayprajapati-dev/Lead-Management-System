@@ -637,6 +637,12 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
         </div>
     </div>
 
+    <!-- Include Add Lead Modal -->
+    <?php include '../includes/modals/add-lead.php'; ?>
+
+    <!-- Custom JavaScript -->
+    <script src="js/leads.js"></script>
+
 <!-- Sidebar toggle functionality is now handled in dashboard-header.php -->
 </body>
 </html>
