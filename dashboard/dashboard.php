@@ -87,88 +87,116 @@ try {
     <div class="main-content-wrapper">
         <div class="dashboard-body">
             <div class="container-fluid p-0">
-                <div class="row g-4">
+                <div class="row dashboard-cards-row">
                         <!-- Today's Leads Card -->
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-4 mb-4">
                             <div class="card dashboard-card">
                                 <div class="card-header">
-                                    <h4>Today's Leads</h4>
+                                    <h4><i class="fas fa-user-plus me-2"></i>Today's Leads</h4>
                                 </div>
                                 <div class="card-body">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">New <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">New <span class="badge badge-count">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button" role="tab" aria-controls="processing" aria-selected="false">Processing <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button" role="tab" aria-controls="processing" aria-selected="false">Processing <span class="badge badge-count">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="close-tab" data-bs-toggle="tab" data-bs-target="#close" type="button" role="tab" aria-controls="close" aria-selected="false">Close-By <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link" id="close-by-tab" data-bs-toggle="tab" data-bs-target="#close-by" type="button" role="tab" aria-controls="close-by" aria-selected="false">Close-By <span class="badge badge-count">0</span></button>
                                         </li>
                                     </ul>
-                                    <div class="tab-content mt-3">
+                                    <div class="tab-content">
                                         <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
-                            <p>No Leads For Today</p>
+                                            <div class="empty-state">
+                                                <i class="fas fa-clipboard-list"></i>
+                                                <h5>No New Leads</h5>
+                                                <p>There are no new leads assigned to you today</p>
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="processing" role="tabpanel" aria-labelledby="processing-tab">
-                                            <p>No Processing Leads Today</p>
+                                            <div class="empty-state">
+                                                <i class="fas fa-spinner"></i>
+                                                <h5>No Processing Leads</h5>
+                                                <p>There are no leads in processing status today</p>
+                                            </div>
                                         </div>
-                                        <div class="tab-pane fade" id="close" role="tabpanel" aria-labelledby="close-tab">
-                                            <p>No Close-By Leads Today</p>
+                                        <div class="tab-pane fade" id="close-by" role="tabpanel" aria-labelledby="close-by-tab">
+                                            <div class="empty-state">
+                                                <i class="fas fa-check-circle"></i>
+                                                <h5>No Close-By Leads</h5>
+                                                <p>There are no leads close to completion today</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <!-- Today's Tasks Card -->
-                        <div class="col-md-6 col-lg-4">
+                        <div class="col-md-4 mb-4">
                             <div class="card dashboard-card">
                                 <div class="card-header">
-                                    <h4>Today's Tasks</h4>
+                                    <h4><i class="fas fa-tasks me-2"></i>Today's Tasks</h4>
                                 </div>
                                 <div class="card-body">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="today-tab" data-bs-toggle="tab" data-bs-target="#today" type="button" role="tab" aria-controls="today" aria-selected="true">Today <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link active" id="today-tab" data-bs-toggle="tab" data-bs-target="#today" type="button" role="tab" aria-controls="today" aria-selected="true">Today <span class="badge badge-count">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="tomorrow-tab" data-bs-toggle="tab" data-bs-target="#tomorrow" type="button" role="tab" aria-controls="tomorrow" aria-selected="false">Tomorrow <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link" id="tomorrow-tab" data-bs-toggle="tab" data-bs-target="#tomorrow" type="button" role="tab" aria-controls="tomorrow" aria-selected="false">Tomorrow <span class="badge badge-count">0</span></button>
                                         </li>
                                     </ul>
-                                    <div class="tab-content mt-3">
+                                    <div class="tab-content">
                                         <div class="tab-pane fade show active" id="today" role="tabpanel" aria-labelledby="today-tab">
-                                            <p><span class="status-dot red"></span> No Task For Today</p>
+                                            <div class="empty-state">
+                                                <i class="fas fa-calendar-day"></i>
+                                                <h5>No Tasks Today</h5>
+                                                <p>You have no tasks scheduled for today</p>
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="tomorrow" role="tabpanel" aria-labelledby="tomorrow-tab">
-                                             <p>No Task For Tomorrow</p>
+                                            <div class="empty-state">
+                                                <i class="fas fa-calendar-plus"></i>
+                                                <h5>No Tasks Tomorrow</h5>
+                                                <p>You have no tasks scheduled for tomorrow</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <!-- Today's Reminders Card -->
-                         <div class="col-md-6 col-lg-4">
+                        <div class="col-md-4 mb-4">
                             <div class="card dashboard-card">
                                 <div class="card-header">
-                                    <h4>Today's Reminders</h4>
+                                    <h4><i class="fas fa-bell me-2"></i>Today's Reminders</h4>
                                 </div>
                                 <div class="card-body">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="reminders-tab" data-bs-toggle="tab" data-bs-target="#reminders" type="button" role="tab" aria-controls="reminders" aria-selected="true">Reminders <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link active" id="reminders-tab" data-bs-toggle="tab" data-bs-target="#reminders" type="button" role="tab" aria-controls="reminders" aria-selected="true">Reminders <span class="badge badge-count">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events <span class="badge bg-danger rounded-pill">0</span></button>
+                                            <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events <span class="badge badge-count">0</span></button>
                                         </li>
                                     </ul>
-                                    <div class="tab-content mt-3">
+                                    <div class="tab-content">
                                         <div class="tab-pane fade show active" id="reminders" role="tabpanel" aria-labelledby="reminders-tab">
-                                            <p><span class="status-dot red"></span> No Reminders For Today</p>
+                                            <div class="empty-state">
+                                                <i class="fas fa-clock"></i>
+                                                <h5>No Reminders Today</h5>
+                                                <p>You have no reminders scheduled for today</p>
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
-                                             <p>No Events For Today</p>
+                                            <div class="empty-state">
+                                                <i class="fas fa-calendar-alt"></i>
+                                                <h5>No Events Today</h5>
+                                                <p>You have no events scheduled for today</p>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,56 +218,80 @@ try {
                                 <div class="card-body">
                             <!-- Container for displaying sticky notes -->
                             <div id="stickyNotesContainer" class="row g-3 mt-2">
-                                <?php
-                                // Fetch existing notes for the logged-in user
-                                if (isLoggedIn()) {
-                                    $userId = $_SESSION['user_id'];
-                                    try {
-                                        $notesStmt = executeQuery("SELECT id, content FROM sticky_notes WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-                                        $notesResult = $notesStmt->get_result();
-                                        if ($notesResult->num_rows > 0) {
-                                            while ($note = $notesResult->fetch_assoc()) {
-                                                // Output HTML for each note (will style with CSS later)
-                                                echo '<div class="col-md-6 col-lg-4 col-xl-3 mb-3"><div class="sticky-note" data-note-id="' . htmlspecialchars($note['id']) . '"><span class="note-pin"></span><span class="delete-note" data-note-id="' . htmlspecialchars($note['id']) . '"><i class="fas fa-times"></i></span><div class="note-content">' . htmlspecialchars($note['content']) . '</div></div></div>';
+                                            <?php
+                                            // Fetch existing notes for the logged-in user
+                                            if (isLoggedIn()) {
+                                                $userId = $_SESSION['user_id'];
+                                                try {
+                                                    $notesStmt = executeQuery("SELECT id, content, created_at FROM sticky_notes WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
+                                                    $notesResult = $notesStmt->get_result();
+                                                    if ($notesResult->num_rows > 0) {
+                                                        while ($note = $notesResult->fetch_assoc()) {
+                                                            // Format the note creation date
+                                                            $createdDate = new DateTime($note['created_at']);
+                                                            $formattedDate = $createdDate->format('M d, Y');
+                                                            
+                                                            // Output HTML for each note with professional styling
+                                                            echo '<div class="col-md-6 col-lg-4 mb-3">
+                                                                <div class="sticky-note" data-note-id="' . htmlspecialchars($note['id']) . '">
+                                                                    <span class="note-pin"></span>
+                                                                    <span class="delete-note" data-note-id="' . htmlspecialchars($note['id']) . '" title="Delete note">
+                                                                        <i class="fas fa-times"></i>
+                                                                    </span>
+                                                                    <div class="note-content">' . htmlspecialchars($note['content']) . '</div>
+                                                                    <div class="note-date">' . $formattedDate . '</div>
+                                                                </div>
+                                                            </div>';
+                                                        }
+                                                    } else {
+                                                        echo '<div class="col-12 empty-notes-state">
+                                                            <i class="fas fa-sticky-note"></i>
+                                                            <h5>No Notes Yet</h5>
+                                                            <p>Click the "Add Note" button to create your first note</p>
+                                                        </div>';
+                                                    }
+                                                    $notesStmt->close();
+                                                } catch (Exception $e) {
+                                                    error_log("Error fetching sticky notes for user " . $userId . ": " . $e->getMessage());
+                                                    echo '<div class="col-12">
+                                                        <div class="alert alert-danger">
+                                                            <i class="fas fa-exclamation-circle me-2"></i>
+                                                            Error loading notes. Please try again later.
+                                                        </div>
+                                                    </div>';
+                                                }
                                             }
-                                        } else {
-                                            echo '<p class="text-muted mt-2 no-notes-message">There are no records to display.</p>';
-                                        }
-                                        $notesStmt->close();
-                                    } catch (Exception $e) {
-                                        error_log("Error fetching sticky notes for user " . $userId . ": " . $e->getMessage());
-                                        echo '<p class="text-danger mt-2">Error loading notes.</p>';
-                                    }
-                                }
-                                ?>
+                                            ?>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
                    <!-- Analytics Cards Section -->
                    <div class="row mt-5">
                             <!-- Lead Status Card -->
                             <div class="col-md-6">
                                 <div class="card dashboard-card analytics-card">
                                     <div class="card-header">
-                                        <h4>Lead Status</h4>
+                                        <h4><i class="fas fa-chart-pie me-2"></i>Lead Status</h4>
                                         <i class="fas fa-filter filter-icon" data-bs-toggle="modal" data-bs-target="#leadStatusFilterModal"></i>
                                     </div>
                                     <div class="card-body">
                                         <div class="analytics-info">
-                                            <div class="date-range">FROM 01-05-2025 TO 31-05-2025</div>
-                                            <span class="staff-badge badge">Star Tech</span>
+                                            <div class="date-range"><i class="fas fa-calendar-alt me-2"></i>FROM 01-05-2025 TO 31-05-2025</div>
+                                            <span class="staff-badge badge"><i class="fas fa-user-tie me-1"></i>Star Tech</span>
                                         </div>
                                         <div class="no-data-message">
-                                            <div class="no-data-text">No Lead Found</div>
+                                            <i class="fas fa-chart-bar"></i>
+                                            <div class="no-data-text">No Lead Data Available</div>
                                             <div class="no-data-count">0</div>
                                         </div>
                                         <div class="chart-legend">
                                             <ul>
-                                                <li><span style="background-color: #007bff;"></span> New</li>
-                                                <li><span style="background-color: #28a745;"></span> Processing</li>
-                                                <li><span style="background-color: #ffc107;"></span> Close-by</li>
-                                                <li><span style="background-color: #dc3545;"></span> Confirm</li>
-                                                <li><span style="background-color: #6f42c1;"></span> Cancel</li>
+                                                <li><span style="background-color: #2c5282;"></span> New</li>
+                                                <li><span style="background-color: #2b6cb0;"></span> Processing</li>
+                                                <li><span style="background-color: #3182ce;"></span> Close-by</li>
+                                                <li><span style="background-color: #4299e1;"></span> Confirm</li>
+                                                <li><span style="background-color: #63b3ed;"></span> Cancel</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -250,28 +302,29 @@ try {
                             <div class="col-md-6">
                                 <div class="card dashboard-card analytics-card">
                                     <div class="card-header">
-                                        <h4>Lead Source</h4>
+                                        <h4><i class="fas fa-filter me-2"></i>Lead Source</h4>
                                         <i class="fas fa-filter filter-icon" data-bs-toggle="modal" data-bs-target="#leadSourceFilterModal"></i>
                                     </div>
                                     <div class="card-body">
                                         <div class="analytics-info">
-                                            <div class="date-range">FROM 01-05-2025 TO 31-05-2025</div>
-                                            <span class="staff-badge badge">Star Tech</span>
+                                            <div class="date-range"><i class="fas fa-calendar-alt me-2"></i>FROM 01-05-2025 TO 31-05-2025</div>
+                                            <span class="staff-badge badge"><i class="fas fa-user-tie me-1"></i>Star Tech</span>
                                         </div>
                                         <div class="no-data-message">
-                                            <div class="no-data-text">No Lead Found</div>
+                                            <i class="fas fa-chart-line"></i>
+                                            <div class="no-data-text">No Source Data Available</div>
                                             <div class="no-data-count">0</div>
                                         </div>
                                         <div class="chart-legend">
                                             <ul>
-                                                <li><span style="background-color: #007bff;"></span> Online</li>
-                                                <li><span style="background-color: #28a745;"></span> Offline</li>
-                                                <li><span style="background-color: #ffc107;"></span> Website</li>
-                                                <li><span style="background-color: #dc3545;"></span> Whatsapp</li>
-                                                <li><span style="background-color: #6f42c1;"></span> Customer Reminder</li>
-                                                <li><span style="background-color: #17a2b8;"></span> Indiamart</li>
-                                                <li><span style="background-color: #20c997;"></span> Facebook</li>
-                                                <li><span style="background-color: #fd7e14;"></span> Google Form</li>
+                                                <li><span style="background-color: #2c5282;"></span> Online</li>
+                                                <li><span style="background-color: #2b6cb0;"></span> Offline</li>
+                                                <li><span style="background-color: #3182ce;"></span> Website</li>
+                                                <li><span style="background-color: #4299e1;"></span> Whatsapp</li>
+                                                <li><span style="background-color: #63b3ed;"></span> Customer Reminder</li>
+                                                <li><span style="background-color: #90cdf4;"></span> Indiamart</li>
+                                                <li><span style="background-color: #bee3f8;"></span> Facebook</li>
+                                                <li><span style="background-color: #ebf8ff;"></span> Google Form</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -762,6 +815,118 @@ try {
                 if (parts.length !== 3) return dateString;
                 return `${parts[2]}-${parts[1]}-${parts[0]}`;
             }
+        });
+    </script>
+    <!-- Add Note Modal -->
+    <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addNoteModalLabel"><i class="fas fa-sticky-note me-2"></i>Add New Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addNoteForm">
+                        <div class="mb-3">
+                            <label for="noteContent" class="form-label">Note Content</label>
+                            <textarea class="form-control" id="noteContent" rows="5" placeholder="Enter your note here..."></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveNoteBtn">Save Note</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add Note functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Save Note button click handler
+            const saveNoteBtn = document.getElementById('saveNoteBtn');
+            if (saveNoteBtn) {
+                saveNoteBtn.addEventListener('click', function() {
+                    const noteContent = document.getElementById('noteContent').value.trim();
+                    if (!noteContent) {
+                        alert('Please enter note content');
+                        return;
+                    }
+
+                    // Send AJAX request to save the note
+                    fetch('save_note.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'content=' + encodeURIComponent(noteContent)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Close the modal
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addNoteModal'));
+                            modal.hide();
+                            
+                            // Clear the form
+                            document.getElementById('noteContent').value = '';
+                            
+                            // Refresh the notes section
+                            location.reload();
+                        } else {
+                            alert('Error saving note: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error saving note:', error);
+                        alert('An error occurred while saving your note. Please try again.');
+                    });
+                });
+            }
+
+            // Delete Note functionality
+            document.querySelectorAll('.delete-note').forEach(button => {
+                button.addEventListener('click', function() {
+                    const noteId = this.getAttribute('data-note-id');
+                    if (confirm('Are you sure you want to delete this note?')) {
+                        // Send AJAX request to delete the note
+                        fetch('delete_note.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: 'note_id=' + encodeURIComponent(noteId)
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Remove the note from the DOM
+                                const noteElement = document.querySelector(`.sticky-note[data-note-id="${noteId}"]`).closest('.col-md-6');
+                                noteElement.remove();
+                                
+                                // If no notes left, show empty state
+                                if (document.querySelectorAll('.sticky-note').length === 0) {
+                                    const emptyState = `
+                                        <div class="col-12 empty-notes-state">
+                                            <i class="fas fa-sticky-note"></i>
+                                            <h5>No Notes Yet</h5>
+                                            <p>Click the "Add Note" button to create your first note</p>
+                                        </div>
+                                    `;
+                                    document.getElementById('stickyNotesContainer').innerHTML = emptyState;
+                                }
+                            } else {
+                                alert('Error deleting note: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error deleting note:', error);
+                            alert('An error occurred while deleting your note. Please try again.');
+                        });
+                    }
+                });
+            });
         });
     </script>
 </body>
