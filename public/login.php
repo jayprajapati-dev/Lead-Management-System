@@ -47,7 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     if (password_verify($password, $user['password'])) {
                         // Check account status
                         if ($user['status'] === 'expired') {
-                            $error = 'Your trial period has expired. Please upgrade your account to continue.';
+                            $error = '
+                                <div class="d-flex flex-column align-items-center">
+                                    <div class="mb-3">Your trial period has expired. Please upgrade your account to continue.</div>
+                                    <a href="' . SITE_URL . '/public/upgrade.php" class="btn btn-primary">
+                                        <i class="fas fa-arrow-circle-up me-2"></i>Upgrade Now
+                                    </a>
+                                </div>';
                             logLoginAttempt($user['id'], 'failed', 'Trial expired');
                         } elseif ($user['status'] === 'suspended') {
                             $error = 'Your account has been suspended. Please contact support.';
@@ -179,7 +185,7 @@ if (!isLoggedIn() && isset($_COOKIE['remember_token'])) {
             <?php if ($error): ?>
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
                     <i class="fas fa-exclamation-circle me-2"></i>
-                    <?php echo htmlspecialchars($error); ?>
+                    <?php echo $error; ?>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
