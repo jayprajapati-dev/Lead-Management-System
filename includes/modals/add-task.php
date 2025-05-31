@@ -9,12 +9,15 @@ $loggedInUserName = ($_SESSION['user_first_name'] ?? '') . ' ' . ($_SESSION['use
 $loggedInUserId = $_SESSION['user_id'] ?? '';
 ?>
 
+<!-- Include Modal Styles -->
+<link rel="stylesheet" href="../includes/modals/modal_styles.css">
+
 <!-- Add Task Modal -->
 <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addTaskModalLabel">Add Task</h5>
+        <h5 class="modal-title" id="addTaskModalLabel"><i class="fas fa-tasks"></i> Add Task</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -54,78 +57,77 @@ $loggedInUserId = $_SESSION['user_id'] ?? '';
 
            <div class="row g-3 mb-3 align-items-center">
                 <div class="col-md-4">
-                    <label for="taskRecursive" class="form-label">Recursive:</label>
-                     <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="taskRecursive" name="recursive">
+                    <label for="taskRecursive" class="form-label">Recursive</label>
+                    <div class="form-check form-switch mt-2">
+                        <input class="form-check-input" type="checkbox" id="taskRecursive" name="is_recursive">
                         <label class="form-check-label" for="taskRecursive"></label>
                     </div>
                 </div>
                  <!-- Fields to show when Recursive is OFF -->
                  <div class="col-md-8 row g-3" id="taskNonRecursiveDates">
                      <div class="col-md-6">
-                        <label for="taskStartDate" class="form-label">Start Date:</label>
-                        <input type="datetime-local" class="form-control" id="taskStartDate" name="start_date">
+                        <label for="taskStartDate" class="form-label">Start Date: *</label>
+                        <input type="datetime-local" class="form-control" id="taskStartDate" name="start_date" required>
                     </div>
                      <div class="col-md-6">
-                        <label for="taskEndDate" class="form-label">End Date:</label>
-                        <input type="datetime-local" class="form-control" id="taskEndDate" name="end_date">
+                        <label for="taskEndDate" class="form-label">End Date: *</label>
+                        <input type="datetime-local" class="form-control" id="taskEndDate" name="end_date" required>
                     </div>
                  </div>
 
                  <!-- Fields to show when Recursive is ON (initially hidden) -->
-                 <div class="col-md-8 row g-3 d-none" id="taskRecursiveOptions">
-                     <div class="col-md-6">
-                         <label for="taskRecursionType" class="form-label">Recursion Type:</label>
-                          <div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatOnce" value="once" checked>
-                              <label class="form-check-label" for="taskRepeatOnce">Once</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatDaily" value="daily">
-                              <label class="form-check-label" for="taskRepeatDaily">Daily</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatWeekly" value="weekly">
-                              <label class="form-check-label" for="taskRepeatWeekly">Weekly</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatMonthly" value="monthly">
-                              <label class="form-check-label" for="taskRepeatMonthly">Monthly</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatQuarterly" value="quarterly">
-                              <label class="form-check-label" for="taskRepeatQuarterly">Quarterly</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatHalfYearly" value="half-yearly">
-                              <label class="form-check-label" for="taskRepeatHalfYearly">Half-Yearly</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                              <input class="form-check-input" type="radio" name="taskRecursionType" id="taskRepeatYearly" value="yearly">
-                              <label class="form-check-label" for="taskRepeatYearly">Yearly</label>
-                            </div>
-                          </div>
-                     </div>
-                      <div class="col-md-6">
-                        <label for="taskDate" class="form-label">Date:</label>
-                        <input type="date" class="form-control" id="taskDate" name="task_date">
+                 <div class="col-md-8 d-none" id="taskRecursiveOptions">
+                     <div class="row g-3">
+                         <div class="col-md-6">
+                            <label for="taskRecursionType" class="form-label">Recursion Type: *</label>
+                            <select class="form-select" id="taskRecursionType" name="recursion_type">
+                                <option value="daily" selected>Once</option>
+                                <option value="daily">Daily</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="monthly">Monthly</option>
+                                <option value="quarterly">Quarterly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                         </div>
+                         <div class="col-md-6">
+                            <label for="taskDate" class="form-label">Date: *</label>
+                            <input type="datetime-local" class="form-control" id="taskDate" name="task_date">
+                         </div>
                      </div>
                  </div>
            </div>
 
            <div class="mb-3">
                 <label for="taskAssignTo" class="form-label">Assign To: *</label>
-                 <!-- This would ideally be a multi-select with user suggestions -->
-                 <!-- For now, a simple select or input -->
-                 <select class="form-select" id="taskAssignTo" name="assigned_to" required>
-                    <option value="" selected disabled>Select User</option>
-                    <?php foreach ($usersList as $user): // Assuming $usersList is available ?>
-                        <option value="<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['name']); ?></option>
+                <?php
+                // Get users from database - in a real implementation, this would fetch from DB
+                // For now, we'll create a sample array with the logged-in user
+                $usersList = [
+                    ['id' => $loggedInUserId, 'name' => $loggedInUserName]
+                ];
+                
+                // In a real implementation, you'd fetch all users from database
+                // For example:
+                // $query = "SELECT id, CONCAT(first_name, ' ', last_name) AS name FROM users ORDER BY name";
+                // $result = mysqli_query($conn, $query);
+                // while($row = mysqli_fetch_assoc($result)) {
+                //     $usersList[] = $row;
+                // }
+                ?>
+                <select class="form-select" id="taskAssignTo" name="assigned_to" required>
+                    <?php if (!empty($loggedInUserId)): ?>
+                        <option value="<?php echo $loggedInUserId; ?>" selected><?php echo htmlspecialchars($loggedInUserName); ?> (You)</option>
+                    <?php else: ?>
+                        <option value="" selected disabled>Select User</option>
+                    <?php endif; ?>
+                    
+                    <?php foreach ($usersList as $user): ?>
+                        <?php if ($user['id'] != $loggedInUserId): // Skip logged-in user as it's already at the top ?>
+                            <option value="<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['name']); ?></option>
+                        <?php endif; ?>
                     <?php endforeach; ?>
-                 </select>
-                 <!-- Or a placeholder for a tagging/multi-select input -->
-                 <!-- <input type="text" class="form-control" id="taskAssignTo" placeholder="Assign To">-->
+                </select>
+                <div class="form-text"><small><i class="fas fa-info-circle me-1"></i>Task will be assigned to this user</small></div>
             </div>
 
           <div class="mb-3">
@@ -156,39 +158,46 @@ $loggedInUserId = $_SESSION['user_id'] ?? '';
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    const recursiveToggle = document.getElementById('taskRecursive');
+    const taskRecursiveToggle = document.getElementById('taskRecursive');
     const nonRecursiveDates = document.getElementById('taskNonRecursiveDates');
     const recursiveOptions = document.getElementById('taskRecursiveOptions');
     const taskStartDate = document.getElementById('taskStartDate');
     const taskEndDate = document.getElementById('taskEndDate');
     const taskDate = document.getElementById('taskDate');
+    const taskRecursionType = document.getElementById('taskRecursionType');
 
-    // Function to toggle visibility
+    // Function to toggle visibility based on recursion toggle
     function toggleRecursiveFields() {
-        if (recursiveToggle.checked) {
+        const isRecurring = taskRecursiveToggle.checked;
+        
+        if (isRecurring) {
             nonRecursiveDates.classList.add('d-none');
             recursiveOptions.classList.remove('d-none');
             // Set required/disabled states
             taskStartDate.removeAttribute('required');
             taskEndDate.removeAttribute('required');
             taskDate.setAttribute('required', 'required');
-
+            taskRecursionType.setAttribute('required', 'required');
         } else {
             nonRecursiveDates.classList.remove('d-none');
             recursiveOptions.classList.add('d-none');
-             // Set required/disabled states
-             taskStartDate.setAttribute('required', 'required');
-             taskEndDate.setAttribute('required', 'required');
-             taskDate.removeAttribute('required');
+            // Set required/disabled states
+            taskStartDate.setAttribute('required', 'required');
+            taskEndDate.setAttribute('required', 'required');
+            taskDate.removeAttribute('required');
+            taskRecursionType.removeAttribute('required');
         }
     }
 
-    // Add event listener to the toggle switch
-    if (recursiveToggle) {
-        recursiveToggle.addEventListener('change', toggleRecursiveFields);
+    // Add event listener to the recursion toggle
+    if (taskRecursiveToggle) {
+        taskRecursiveToggle.addEventListener('change', toggleRecursiveFields);
 
         // Set initial state on page load
         toggleRecursiveFields();
     }
 });
-</script> 
+</script>
+
+<!-- Include Modal Enhancements Script -->
+<script src="../includes/modals/modal_enhancements.js"></script>

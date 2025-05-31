@@ -1,15 +1,49 @@
 <?php
-// Assuming user data (like list of users) is available for the "User" dropdown
-// For now, we'll use a placeholder and assume a PHP variable $usersList is available
-$usersList = []; // Replace with actual fetching of users
+// Get logged-in user information from session
+$loggedInUserId = $_SESSION['user_id'] ?? '';
+$loggedInUserName = ($_SESSION['user_first_name'] ?? '') . ' ' . ($_SESSION['user_last_name'] ?? '');
+
+// If we don't have the user name in session, try to fetch it from the database
+if (empty(trim($loggedInUserName)) && !empty($loggedInUserId)) {
+    try {
+        // Assuming a database connection is available
+        $stmt = $conn->prepare("SELECT first_name, last_name FROM users WHERE id = ?");
+        $stmt->bind_param("i", $loggedInUserId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($user = $result->fetch_assoc()) {
+            $loggedInUserName = trim($user['first_name'] . ' ' . $user['last_name']);
+        }
+    } catch (Exception $e) {
+        error_log("Error fetching user details: " . $e->getMessage());
+    }
+}
+
+// If still empty, use a default value
+if (empty(trim($loggedInUserName))) {
+    $loggedInUserName = 'Unknown User';
+}
+
+// Placeholder for user list - in a real implementation, this would fetch all users from the database
+$usersList = [
+    // This is just a placeholder, replace with actual database query
+    ['id' => 1, 'name' => 'John Doe'],
+    ['id' => 2, 'name' => 'Jane Smith']
+];
+
+// Placeholder for reminder templates - in a real implementation, this would fetch from the database
+$reminderTemplates = [];
 ?>
+
+<!-- Include Modal Styles -->
+<link rel="stylesheet" href="../includes/modals/modal_styles.css">
 
 <!-- Add Reminder Modal -->
 <div class="modal fade" id="addReminderModal" tabindex="-1" aria-labelledby="addReminderModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addReminderModalLabel">Add Reminder</h5>
+        <h5 class="modal-title" id="addReminderModalLabel"><i class="fas fa-bell"></i> Add Reminder</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -57,20 +91,35 @@ $usersList = []; // Replace with actual fetching of users
             <div class="col-md-6">
               <label for="reminderUser" class="form-label">User: *</label>
               <select class="form-select" id="reminderUser" name="user_id" required>
-                <option value="" selected disabled>Select User</option>
-                 <?php foreach ($usersList as $user): // Assuming $usersList is available ?>
-                    <option value="<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['name']); ?></option>
+                <?php if (!empty($loggedInUserId)): ?>
+                    <option value="<?php echo $loggedInUserId; ?>" selected><?php echo htmlspecialchars($loggedInUserName); ?> (You)</option>
+                <?php else: ?>
+                    <option value="" selected disabled>Select User</option>
+                <?php endif; ?>
+                
+                <?php foreach ($usersList as $user): ?>
+                    <?php if ($user['id'] != $loggedInUserId): // Skip logged-in user as it's already at the top ?>
+                        <option value="<?php echo $user['id']; ?>"><?php echo htmlspecialchars($user['name']); ?></option>
+                    <?php endif; ?>
                 <?php endforeach; ?>
               </select>
+              <div class="form-text"><small><i class="fas fa-info-circle me-1"></i>Reminder will be assigned to this user</small></div>
             </div>
           </div>
 
           <div class="mb-3">
             <label for="reminderTemplate" class="form-label">Reminder Template:</label>
             <select class="form-select" id="reminderTemplate" name="template_id">
-              <option value="" selected disabled>Select...</option>
-              <!-- Options for Reminder Templates will go here -->
+              <?php if (empty($reminderTemplates)): ?>
+                <option value="" selected disabled>No options</option>
+              <?php else: ?>
+                <option value="" selected disabled>Select...</option>
+                <?php foreach ($reminderTemplates as $template): ?>
+                  <option value="<?php echo $template['id']; ?>"><?php echo htmlspecialchars($template['name']); ?></option>
+                <?php endforeach; ?>
+              <?php endif; ?>
             </select>
+            <div class="form-text"><small><i class="fas fa-info-circle me-1"></i>Select a template to auto-fill reminder details</small></div>
           </div>
 
           <div class="mb-3">
@@ -84,25 +133,40 @@ $usersList = []; // Replace with actual fetching of users
           </div>
 
           <!-- Whatsapp Automation Section -->
-          <div class="card mt-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-              <h6 class="mb-0">Whatsapp Automation</h6>
+          <div class="card mt-4 border-0 shadow-sm">
+            <div class="card-header bg-gradient d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #25D366 0%, #128C7E 100%); color: white;">
+              <h6 class="mb-0"><i class="fab fa-whatsapp me-2"></i> Whatsapp Automation</h6>
               <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" id="reminderWhatsappAutomationToggle" name="whatsapp_automation">
-                <label class="form-check-label" for="reminderWhatsappAutomationToggle"></label>
+                <label class="form-check-label text-white ms-2" for="reminderWhatsappAutomationToggle">Enable WhatsApp notifications</label>
               </div>
             </div>
-            <div class="card-body" id="reminderWhatsappAutomationDetails" style="display: none;">
+            <div class="card-body" id="reminderWhatsappAutomationDetails" style="display: none; background-color: #f9fafb;">
               <div class="mb-3">
-                <label for="reminderCustomerMobile" class="form-label">Customer Mobile</label>
+                <label for="reminderCustomerMobile" class="form-label">Customer Mobile:</label>
                 <div class="input-group">
-                  <span class="input-group-text">🇮🇳 +91</span>
+                  <span class="input-group-text" style="background-color: #25D366; color: white; border-color: #25D366;">🇮🇳 +91</span>
                   <input type="text" class="form-control" id="reminderCustomerMobile" name="customer_mobile" placeholder="Enter Mobile Number">
-                   <button class="btn btn-outline-secondary" type="button" title="Add Mobile Number"><i class="fas fa-plus"></i></button>
-                   <button class="btn btn-outline-secondary" type="button" title="View Customer Details"><i class="fas fa-eye"></i></button>
+                  <button class="btn btn-outline-success" type="button" title="Add Mobile Number"><i class="fas fa-plus"></i></button>
+                  <button class="btn btn-outline-primary" type="button" title="View Customer Details"><i class="fas fa-eye"></i></button>
                 </div>
+                <div class="form-text text-muted mt-1"><small><i class="fas fa-info-circle me-1"></i>Message will be sent to this number via WhatsApp</small></div>
               </div>
-              <!-- More automation details could go here -->
+              
+              <div class="mb-3">
+                <label for="whatsappTemplate" class="form-label">Message Template:</label>
+                <select class="form-select" id="whatsappTemplate" name="whatsapp_template">
+                  <option value="" selected>Default Message</option>
+                  <option value="meeting">Meeting Reminder</option>
+                  <option value="followup">Follow-up</option>
+                  <option value="payment">Payment Reminder</option>
+                </select>
+              </div>
+              
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="sendAttachment" name="send_attachment">
+                <label class="form-check-label" for="sendAttachment">Include Attachment</label>
+              </div>
             </div>
           </div>
         </form>
@@ -137,4 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleWhatsappAutomationFields(); // Hide details initially if toggle is off
     }
 });
-</script> 
+</script>
+
+<!-- Include Modal Enhancements Script -->
+<script src="../includes/modals/modal_enhancements.js"></script>

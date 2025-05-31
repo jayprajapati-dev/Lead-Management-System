@@ -33,12 +33,15 @@ if (empty($loggedInUserName)) {
 }
 ?>
 
+<!-- Include Modal Styles -->
+<link rel="stylesheet" href="../includes/modals/modal_styles.css">
+
 <!-- Add Lead Modal -->
 <div class="modal fade" id="addLeadModal" tabindex="-1" aria-labelledby="addLeadModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="addLeadModalLabel">Add New Lead</h5>
+        <h5 class="modal-title" id="addLeadModalLabel"><i class="fas fa-user-plus"></i> Add New Lead</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -48,27 +51,29 @@ if (empty($loggedInUserName)) {
             <div class="col-md-6">
               <label for="leadStatus" class="form-label">Status:</label>
               <select class="form-select" id="leadStatus" name="status">
-                <option value="New" selected>New</option>
-                <option value="Processing">Processing</option>
-                <option value="Close-by">Close-by</option>
-                <option value="Confirm">Confirm</option>
-                <option value="Cancel">Cancel</option>
+                <option value="New" selected data-badge-class="badge-status-new">New</option>
+                <option value="Processing" data-badge-class="badge-status-processing">Processing</option>
+                <option value="Close-by" data-badge-class="badge-status-feedback">Close-by</option>
+                <option value="Confirm" data-badge-class="badge-status-confirm">Confirm</option>
+                <option value="Cancel" data-badge-class="badge-status-cancel">Cancel</option>
               </select>
+              <div class="form-text"><small>Current lead status in the pipeline</small></div>
             </div>
 
             <!-- Source -->
             <div class="col-md-6">
               <label for="leadSource" class="form-label">Source:</label>
               <select class="form-select" id="leadSource" name="source">
-                <option value="Online" selected>Online</option>
-                <option value="Offline">Offline</option>
-                <option value="Website">Website</option>
-                <option value="Whatsapp">Whatsapp</option>
-                <option value="Customer Reminder">Customer Reminder</option>
-                <option value="Indiamart">Indiamart</option>
-                <option value="Facebook">Facebook</option>
-                <option value="Google Form">Google Form</option>
+                <option value="Online" selected data-dot-class="source-dot-online">Online</option>
+                <option value="Offline" data-dot-class="source-dot-offline">Offline</option>
+                <option value="Website" data-dot-class="source-dot-website">Website</option>
+                <option value="Whatsapp" data-dot-class="source-dot-whatsapp">Whatsapp</option>
+                <option value="Customer Reminder" data-dot-class="source-dot-reminder">Customer Reminder</option>
+                <option value="Indiamart" data-dot-class="source-dot-indiamart">Indiamart</option>
+                <option value="Facebook" data-dot-class="source-dot-facebook">Facebook</option>
+                <option value="Google Form" data-dot-class="source-dot-google">Google Form</option>
               </select>
+              <div class="form-text"><small>Where this lead originated from</small></div>
             </div>
 
             <!-- User (Auto-filled) -->
@@ -145,3 +150,6 @@ if (empty($loggedInUserName)) {
     </div>
   </div>
 </div>
+
+<!-- Include Modal Enhancements Script -->
+<script src="../includes/modals/modal_enhancements.js"></script>

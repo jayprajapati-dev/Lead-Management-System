@@ -55,37 +55,50 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 0.375rem;
-    padding: 0.375rem 0.625rem;
-    color: #64748b;
-    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    color: #4b5563;
+    font-size: 0.8rem;
     font-weight: 500;
     border-radius: 0.375rem;
-    transition: all 0.15s;
-    border: none;
-    background: transparent;
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+    background: white;
     cursor: pointer;
     white-space: nowrap;
-    height: 28px;
-}
-
-.quick-action-btn i {
-    font-size: 0.625rem;
-    padding: 0.25rem;
-    border-radius: 0.25rem;
-    background: #e2e8f0;
-    color: #64748b;
-    transition: all 0.15s;
-}
-
-.quick-action-btn:hover {
-    color: #6366f1;
-    background: white;
+    height: 32px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
+.quick-action-btn i {
+    font-size: 0.7rem;
+    padding: 0.3rem;
+    border-radius: 0.25rem;
+    background: #f3f4f6;
+    color: #4b5563;
+    transition: all 0.2s ease;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quick-action-btn:hover {
+    color: #4f46e5;
+    background: #f9fafb;
+    border-color: #d1d5db;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
 .quick-action-btn:hover i {
-    background: #818cf8;
+    background: #4f46e5;
     color: white;
+}
+
+.quick-action-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
 }
 
 /* Header Icons */
@@ -140,9 +153,47 @@ body {
     color: #6366f1;
 }
 
-/* Remove Mobile Quick Actions Menu */
+/* Mobile Quick Actions Menu */
 .mobile-quick-actions {
     display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e5e7eb;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.mobile-quick-actions .quick-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.mobile-quick-actions .quick-action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: 100%;
+    padding: 10px 5px;
+    gap: 5px;
+}
+
+.mobile-quick-actions .quick-action-btn i {
+    margin-bottom: 5px;
+    font-size: 0.8rem;
+    width: 24px;
+    height: 24px;
+}
+
+.mobile-quick-actions .quick-action-btn span {
+    font-size: 0.7rem;
+    text-align: center;
 }
 
 /* Responsive Design */
@@ -157,6 +208,10 @@ body {
 
     .quick-actions {
         display: none;
+    }
+    
+    .mobile-quick-actions {
+        display: block;
     }
 
     .header-icons {
@@ -180,6 +235,11 @@ body {
         margin: 0.5rem 1rem;
         right: 0;
         left: 0;
+    }
+    
+    /* Adjust main content to account for mobile quick actions bar */
+    .main-content-wrapper {
+        padding-bottom: 70px;
     }
 }
 
@@ -312,19 +372,19 @@ body {
 
         <!-- Quick Actions (Desktop Only) -->
         <div class="quick-actions">
-            <button class="quick-action-btn" title="Add New Lead">
+            <button class="quick-action-btn" title="Add New Lead" data-bs-toggle="modal" data-bs-target="#addLeadModal">
                 <i class="fas fa-plus"></i>
                 <span>Lead</span>
             </button>
-            <button class="quick-action-btn" title="Add New Task">
+            <button class="quick-action-btn" title="Add New Task" data-bs-toggle="modal" data-bs-target="#addTaskModal">
                 <i class="fas fa-plus"></i>
                 <span>Task</span>
             </button>
-            <button class="quick-action-btn" title="Add New Note">
+            <button class="quick-action-btn" title="Add New Note" data-bs-toggle="modal" data-bs-target="#addNoteModal">
                 <i class="fas fa-plus"></i>
                 <span>Note</span>
             </button>
-            <button class="quick-action-btn" title="Add New Reminder">
+            <button class="quick-action-btn" title="Add New Reminder" data-bs-toggle="modal" data-bs-target="#addReminderModal">
                 <i class="fas fa-plus"></i>
                 <span>Reminder</span>
             </button>
@@ -396,6 +456,28 @@ body {
         </a>
     </div>
 </header>
+
+<!-- Mobile Quick Actions Menu -->
+<div class="mobile-quick-actions">
+    <div class="quick-actions-grid">
+        <button class="quick-action-btn" title="Add New Lead" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+            <i class="fas fa-plus"></i>
+            <span>Lead</span>
+        </button>
+        <button class="quick-action-btn" title="Add New Task" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+            <i class="fas fa-plus"></i>
+            <span>Task</span>
+        </button>
+        <button class="quick-action-btn" title="Add New Note" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+            <i class="fas fa-plus"></i>
+            <span>Note</span>
+        </button>
+        <button class="quick-action-btn" title="Add New Reminder" data-bs-toggle="modal" data-bs-target="#addReminderModal">
+            <i class="fas fa-plus"></i>
+            <span>Reminder</span>
+        </button>
+    </div>
+</div>
 
 <!-- JavaScript for Header Functionality -->
 <script>

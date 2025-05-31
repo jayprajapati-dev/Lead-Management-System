@@ -338,6 +338,12 @@ try {
     </div>
     <!-- Footer -->
     <?php include '../includes/dashboard-footer.php'; ?>
+    
+    <!-- Include Modal Forms -->
+    <?php include '../includes/modals/add-lead.php'; ?>
+    <?php include '../includes/modals/add-task.php'; ?>
+    <?php include '../includes/modals/add-note.php'; ?>
+    <?php include '../includes/modals/add-reminder.php'; ?>
 
     <!-- Lead Status Filter Modal -->
     <div class="modal fade" id="leadStatusFilterModal" tabindex="-1" aria-labelledby="leadStatusFilterModalLabel" aria-hidden="true">

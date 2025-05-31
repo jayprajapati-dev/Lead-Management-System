@@ -1,0 +1,265 @@
+/* Modal Styles for Lead Management System
+   Created: May 31, 2025
+   Description: Professional styling for all modal forms
+*/
+
+/* Modal Container Styling */
+.modal-content {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Header */
+.modal-header {
+    background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom: none;
+    padding: 15px 20px;
+}
+
+.modal-title {
+    font-weight: 600;
+    font-size: 1.25rem;
+    display: flex;
+    align-items: center;
+}
+
+.modal-title i {
+    margin-right: 10px;
+    font-size: 1.1em;
+}
+
+.btn-close {
+    color: white;
+    opacity: 0.8;
+    filter: brightness(0) invert(1);
+    transition: all 0.2s;
+}
+
+.btn-close:hover {
+    opacity: 1;
+    transform: rotate(90deg);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 20px;
+    background-color: #f9fafb;
+}
+
+/* Form Elements */
+.form-label {
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-control, .form-select {
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    background-color: white;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+.form-control::placeholder {
+    color: #9ca3af;
+    font-size: 0.9rem;
+}
+
+.form-control[readonly] {
+    background-color: #f3f4f6;
+}
+
+/* Required field indicator */
+.form-label:after {
+    content: " *";
+    color: #ef4444;
+}
+
+.form-label:not([for$="Mobile"]):not([for$="Name"]):not([for$="Content"]):not([for$="Subject"]):after {
+    content: "";
+}
+
+/* Checkboxes and Radio Buttons */
+.form-check-input {
+    border-color: #d1d5db;
+}
+
+.form-check-input:checked {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.form-check-label {
+    color: #4b5563;
+    font-size: 0.9rem;
+}
+
+.form-switch .form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+}
+
+/* Modal Footer */
+.modal-footer {
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 15px 20px;
+}
+
+/* Buttons */
+.btn {
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+}
+
+.btn-primary {
+    background-color: #4f46e5;
+    border-color: #4f46e5;
+}
+
+.btn-primary:hover {
+    background-color: #4338ca;
+    border-color: #4338ca;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(79, 70, 229, 0.3);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-secondary {
+    background-color: #9ca3af;
+    border-color: #9ca3af;
+}
+
+.btn-secondary:hover {
+    background-color: #6b7280;
+    border-color: #6b7280;
+}
+
+/* Status and Priority Badges */
+.badge-status, .badge-priority {
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+/* Status Colors */
+.badge-status-new {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.badge-status-processing {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.badge-status-completed, .badge-status-confirm {
+    background-color: #10b981;
+    color: white;
+}
+
+.badge-status-rejected, .badge-status-cancel {
+    background-color: #ef4444;
+    color: white;
+}
+
+.badge-status-feedback {
+    background-color: #8b5cf6;
+    color: white;
+}
+
+/* Priority Colors */
+.badge-priority-low {
+    background-color: #10b981;
+    color: white;
+}
+
+.badge-priority-medium {
+    background-color: #f59e0b;
+    color: white;
+}
+
+.badge-priority-high {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* Source Dots */
+.source-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.source-dot-online {
+    background-color: #3b82f6;
+}
+
+.source-dot-offline {
+    background-color: #8b5cf6;
+}
+
+.source-dot-website {
+    background-color: #10b981;
+}
+
+.source-dot-whatsapp {
+    background-color: #25D366;
+}
+
+.source-dot-facebook {
+    background-color: #1877F2;
+}
+
+.source-dot-indiamart {
+    background-color: #f59e0b;
+}
+
+.source-dot-google {
+    background-color: #4285F4;
+}
+
+.source-dot-reminder {
+    background-color: #ef4444;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .form-check-inline {
+        margin-bottom: 0.5rem;
+    }
+    
+    .modal-title {
+        font-size: 1.1rem;
+    }
+    
+    .btn {
+        padding: 0.4rem 1rem;
+    }
+}
