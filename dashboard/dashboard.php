@@ -56,12 +56,18 @@ try {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Lead Management System Dashboard">
+    <title>Dashboard | Lead Management System</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../assets/favicon.ico" type="image/x-icon">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Link to your custom CSS file -->
     <link rel="stylesheet" href="css/dashboard_style.css">
 </head>
@@ -73,40 +79,41 @@ try {
     <?php include '../includes/dashboard-header.php'; ?>
     
     <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-                <?php include '../includes/sidebar.php'; ?>
-            </div>
+    <div class="sidebar" id="sidebarMenu">
+        <?php include '../includes/sidebar.php'; ?>
+    </div>
 
     <!-- Main Content -->
     <div class="main-content-wrapper">
-                <div class="dashboard-body">
-                    <div class="row">
+        <div class="dashboard-body">
+            <div class="container-fluid p-0">
+                <div class="row g-4">
                         <!-- Today's Leads Card -->
-                        <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="col-md-6 col-lg-4">
                             <div class="card dashboard-card">
                                 <div class="card-header">
-                            <h4>Today's Leads</h4>
+                                    <h4>Today's Leads</h4>
                                 </div>
                                 <div class="card-body">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="leads-new-tab" data-bs-toggle="tab" data-bs-target="#leads-new" type="button" role="tab" aria-controls="leads-new" aria-selected="true">New <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">New <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="leads-processing-tab" data-bs-toggle="tab" data-bs-target="#leads-processing" type="button" role="tab" aria-controls="leads-processing" aria-selected="false">Processing <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button" role="tab" aria-controls="processing" aria-selected="false">Processing <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="leads-close-by-tab" data-bs-toggle="tab" data-bs-target="#leads-close-by" type="button" role="tab" aria-controls="leads-close-by" aria-selected="false">Close-By <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link" id="close-tab" data-bs-toggle="tab" data-bs-target="#close" type="button" role="tab" aria-controls="close" aria-selected="false">Close-By <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                     </ul>
                                     <div class="tab-content mt-3">
-                                        <div class="tab-pane fade show active" id="leads-new" role="tabpanel" aria-labelledby="leads-new-tab">
+                                        <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
                             <p>No Leads For Today</p>
                                         </div>
-                                        <div class="tab-pane fade" id="leads-processing" role="tabpanel" aria-labelledby="leads-processing-tab">
+                                        <div class="tab-pane fade" id="processing" role="tabpanel" aria-labelledby="processing-tab">
                                             <p>No Processing Leads Today</p>
                                         </div>
-                                        <div class="tab-pane fade" id="leads-close-by" role="tabpanel" aria-labelledby="leads-close-by-tab">
+                                        <div class="tab-pane fade" id="close" role="tabpanel" aria-labelledby="close-tab">
                                             <p>No Close-By Leads Today</p>
                                         </div>
                                     </div>
@@ -115,25 +122,25 @@ try {
                         </div>
 
                         <!-- Today's Tasks Card -->
-                        <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="col-md-6 col-lg-4">
                             <div class="card dashboard-card">
                                 <div class="card-header">
-                            <h4>Today's Tasks</h4>
+                                    <h4>Today's Tasks</h4>
                                 </div>
                                 <div class="card-body">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="tasks-today-tab" data-bs-toggle="tab" data-bs-target="#tasks-today" type="button" role="tab" aria-controls="tasks-today" aria-selected="true">Today <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link active" id="today-tab" data-bs-toggle="tab" data-bs-target="#today" type="button" role="tab" aria-controls="today" aria-selected="true">Today <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="tasks-tomorrow-tab" data-bs-toggle="tab" data-bs-target="#tasks-tomorrow" type="button" role="tab" aria-controls="tasks-tomorrow" aria-selected="false">Tomorrow <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link" id="tomorrow-tab" data-bs-toggle="tab" data-bs-target="#tomorrow" type="button" role="tab" aria-controls="tomorrow" aria-selected="false">Tomorrow <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                     </ul>
                                     <div class="tab-content mt-3">
-                                        <div class="tab-pane fade show active" id="tasks-today" role="tabpanel" aria-labelledby="tasks-today-tab">
+                                        <div class="tab-pane fade show active" id="today" role="tabpanel" aria-labelledby="today-tab">
                                             <p><span class="status-dot red"></span> No Task For Today</p>
                                         </div>
-                                        <div class="tab-pane fade" id="tasks-tomorrow" role="tabpanel" aria-labelledby="tasks-tomorrow-tab">
+                                        <div class="tab-pane fade" id="tomorrow" role="tabpanel" aria-labelledby="tomorrow-tab">
                                              <p>No Task For Tomorrow</p>
                                         </div>
                                     </div>
@@ -142,43 +149,47 @@ try {
                         </div>
 
                         <!-- Today's Reminders Card -->
-                         <div class="col-md-6 col-lg-4 mb-4">
+                         <div class="col-md-6 col-lg-4">
                             <div class="card dashboard-card">
                                 <div class="card-header">
-                            <h4>Today's Reminders</h4>
+                                    <h4>Today's Reminders</h4>
                                 </div>
                                 <div class="card-body">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="reminders-reminders-tab" data-bs-toggle="tab" data-bs-target="#reminders-reminders" type="button" role="tab" aria-controls="reminders-reminders" aria-selected="true">Reminders <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link active" id="reminders-tab" data-bs-toggle="tab" data-bs-target="#reminders" type="button" role="tab" aria-controls="reminders" aria-selected="true">Reminders <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="reminders-events-tab" data-bs-toggle="tab" data-bs-target="#reminders-events" type="button" role="tab" aria-controls="reminders-events" aria-selected="false">Events <span class="badge rounded-pill">0</span></button>
+                                            <button class="nav-link" id="events-tab" data-bs-toggle="tab" data-bs-target="#events" type="button" role="tab" aria-controls="events" aria-selected="false">Events <span class="badge bg-danger rounded-pill">0</span></button>
                                         </li>
                                     </ul>
                                     <div class="tab-content mt-3">
-                                        <div class="tab-pane fade show active" id="reminders-reminders" role="tabpanel" aria-labelledby="reminders-reminders-tab">
+                                        <div class="tab-pane fade show active" id="reminders" role="tabpanel" aria-labelledby="reminders-tab">
                                             <p><span class="status-dot red"></span> No Reminders For Today</p>
                                         </div>
-                                        <div class="tab-pane fade" id="reminders-events" role="tabpanel" aria-labelledby="reminders-events-tab">
+                                        <div class="tab-pane fade" id="events" role="tabpanel" aria-labelledby="events-tab">
                                              <p>No Events For Today</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Sticky Notes Section -->
-                    <div class="sticky-notes-section card dashboard-card mt-4">
-                        <div class="card-header">
-                        <h4>Sticky Notes</h4>
                         </div>
-                         <div class="card-body text-center">
-                            <button class="quick-action-button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                                + <span class="button-text">Notes</span> <i class="fas fa-check-square"></i>
-                            </button>
+                    </div>
+                        
+                        <!-- Sticky Notes Section -->
+                        <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="sticky-notes-section card dashboard-card" style="min-height: 300px;">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4><i class="fas fa-sticky-note"></i> Sticky Notes</h4>
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                                        <i class="fas fa-plus me-1"></i> Add Note
+                                    </button>
+                                </div>
+                                <div class="card-body">
                             <!-- Container for displaying sticky notes -->
-                            <div id="stickyNotesContainer" class="row mt-3">
+                            <div id="stickyNotesContainer" class="row g-3 mt-2">
                                 <?php
                                 // Fetch existing notes for the logged-in user
                                 if (isLoggedIn()) {
@@ -189,7 +200,7 @@ try {
                                         if ($notesResult->num_rows > 0) {
                                             while ($note = $notesResult->fetch_assoc()) {
                                                 // Output HTML for each note (will style with CSS later)
-                                                echo '<div class="col-md-4 mb-3"><div class="sticky-note" data-note-id="' . htmlspecialchars($note['id']) . '"><span class="note-pin"></span><span class="delete-note" data-note-id="' . htmlspecialchars($note['id']) . '">&times;</span><div class="note-content">' . htmlspecialchars($note['content']) . '</div></div></div>';
+                                                echo '<div class="col-md-6 col-lg-4 col-xl-3 mb-3"><div class="sticky-note" data-note-id="' . htmlspecialchars($note['id']) . '"><span class="note-pin"></span><span class="delete-note" data-note-id="' . htmlspecialchars($note['id']) . '"><i class="fas fa-times"></i></span><div class="note-content">' . htmlspecialchars($note['content']) . '</div></div></div>';
                                             }
                                         } else {
                                             echo '<p class="text-muted mt-2 no-notes-message">There are no records to display.</p>';
@@ -204,193 +215,146 @@ try {
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <!-- Lead Status Analytics Card -->
-                        <div class="col-md-6 mb-4">
-                            <div class="card analytics-card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4>Lead Status</h4>
-                                    <i class="fas fa-bars" id="toggleLeadStatusFilter"></i>
+                   <!-- Analytics Cards Section -->
+                   <div class="row mt-5">
+                            <!-- Lead Status Card -->
+                            <div class="col-md-6">
+                                <div class="card dashboard-card analytics-card">
+                                    <div class="card-header">
+                                        <h4>Lead Status</h4>
+                                        <i class="fas fa-filter filter-icon" data-bs-toggle="modal" data-bs-target="#leadStatusFilterModal"></i>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="analytics-info">
+                                            <div class="date-range">FROM 01-05-2025 TO 31-05-2025</div>
+                                            <span class="staff-badge badge">Star Tech</span>
+                                        </div>
+                                        <div class="no-data-message">
+                                            <div class="no-data-text">No Lead Found</div>
+                                            <div class="no-data-count">0</div>
+                                        </div>
+                                        <div class="chart-legend">
+                                            <ul>
+                                                <li><span style="background-color: #007bff;"></span> New</li>
+                                                <li><span style="background-color: #28a745;"></span> Processing</li>
+                                                <li><span style="background-color: #ffc107;"></span> Close-by</li>
+                                                <li><span style="background-color: #dc3545;"></span> Confirm</li>
+                                                <li><span style="background-color: #6f42c1;"></span> Cancel</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <!-- Filter Section (Hidden by default) -->
-                                    <div class="lead-status-filter-container filter-container mb-3" style="display: none; overflow: hidden; transition: all 0.3s ease;">
-                                        <form id="leadStatusFilterForm" class="row g-3">
-                                            <div class="col-md-12">
-                                                <label for="leadStatusStartDate" class="form-label">Start Date</label>
-                                                <input type="text" class="form-control" id="leadStatusStartDate" value="01-05-2025" readonly>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="leadStatusEndDate" class="form-label">End Date</label>
-                                                <input type="text" class="form-control" id="leadStatusEndDate" value="29-05-2025" readonly>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="leadStatusUser" class="form-label">User</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" value="Kavan Patel" readonly>
-                                                    <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 text-end mt-3">
-                                                <button type="button" id="applyLeadStatusFilter" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;">Submit</button>
-                                            </div>
-                                        </form>
+                            </div>
+                            
+                            <!-- Lead Source Card -->
+                            <div class="col-md-6">
+                                <div class="card dashboard-card analytics-card">
+                                    <div class="card-header">
+                                        <h4>Lead Source</h4>
+                                        <i class="fas fa-filter filter-icon" data-bs-toggle="modal" data-bs-target="#leadSourceFilterModal"></i>
                                     </div>
-                                    
-                                    <!-- Date Range and User Display -->
-                                    <div class="mb-3 lead-status-info">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <p class="mb-0 lead-status-date-range">FROM 01-05-2025 TO 29-05-2025</p>
+                                    <div class="card-body">
+                                        <div class="analytics-info">
+                                            <div class="date-range">FROM 01-05-2025 TO 31-05-2025</div>
+                                            <span class="staff-badge badge">Star Tech</span>
                                         </div>
-                                        <div class="user-badge-container">
-                                            <?php
-                                            // Get current user info
-                                            $currentUserId = $_SESSION['user_id'] ?? 0;
-                                            $currentUserName = 'Unknown User';
-                                            
-                                            // Find current user in the users list
-                                            foreach ($usersList as $user) {
-                                                if ($user['id'] == $currentUserId) {
-                                                    $currentUserName = $user['name'];
-                                                    break;
-                                                }
-                                            }
-                                            ?>
-                                            <span class="badge rounded-pill bg-light text-dark lead-status-user-badge"><?php echo $currentUserName; ?></span>
+                                        <div class="no-data-message">
+                                            <div class="no-data-text">No Lead Found</div>
+                                            <div class="no-data-count">0</div>
                                         </div>
-                                    </div>
-                                    
-                                    <!-- Main Content Area -->
-                                    <div class="lead-status-content text-center">
-                                        <h3 class="no-lead-text">No Lead</h3>
-                                        <div class="lead-count-display">0</div>
-                                    </div>
-                                    
-                                    <!-- Status Legend -->
-                                    <div class="status-legend d-flex justify-content-center flex-wrap mt-4">
-                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
-                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #007bff; margin-right: 5px;"></div>
-                                            <span>New</span>
-                                        </div>
-                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
-                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #28a745; margin-right: 5px;"></div>
-                                            <span>Processing</span>
-                                        </div>
-                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
-                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #ffc107; margin-right: 5px;"></div>
-                                            <span>Close-by</span>
-                                        </div>
-                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
-                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #dc3545; margin-right: 5px;"></div>
-                                            <span>Confirm</span>
-                                        </div>
-                                        <div class="status-item d-flex align-items-center mx-2 mb-2">
-                                            <div class="status-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #6f42c1; margin-right: 5px;"></div>
-                                            <span>Cancel</span>
+                                        <div class="chart-legend">
+                                            <ul>
+                                                <li><span style="background-color: #007bff;"></span> Online</li>
+                                                <li><span style="background-color: #28a745;"></span> Offline</li>
+                                                <li><span style="background-color: #ffc107;"></span> Website</li>
+                                                <li><span style="background-color: #dc3545;"></span> Whatsapp</li>
+                                                <li><span style="background-color: #6f42c1;"></span> Customer Reminder</li>
+                                                <li><span style="background-color: #17a2b8;"></span> Indiamart</li>
+                                                <li><span style="background-color: #20c997;"></span> Facebook</li>
+                                                <li><span style="background-color: #fd7e14;"></span> Google Form</li>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Lead Source Analytics Card -->
-                        <div class="col-md-6 mb-4">
-                             <div class="card analytics-card">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <h4>Lead Source</h4>
-                                    <i class="fas fa-bars" id="toggleLeadSourceFilter"></i>
-                                </div>
-                                <div class="card-body">
-                                    <!-- Filter Section (Hidden by default) -->
-                                    <div class="lead-source-filter-container filter-container mb-3" style="display: none; overflow: hidden; transition: all 0.3s ease;">
-                                        <form id="leadSourceFilterForm" class="row g-3">
-                                            <div class="col-md-12">
-                                                <label for="leadSourceStartDate" class="form-label">Start Date</label>
-                                                <input type="text" class="form-control" id="leadSourceStartDate" value="01-05-2025" readonly>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="leadSourceEndDate" class="form-label">End Date</label>
-                                                <input type="text" class="form-control" id="leadSourceEndDate" value="29-05-2025" readonly>
-                                            </div>
-                                            <div class="col-md-12">
-                                                <label for="leadSourceUser" class="form-label">User</label>
-                                                <div class="input-group">
-                                                    <input type="text" class="form-control" value="Kavan Patel" readonly>
-                                                    <span class="input-group-text"><i class="fas fa-chevron-down"></i></span>
-                                                </div>
-                                            </div>
-                                            <div class="col-12 text-end mt-3">
-                                                <button type="button" id="applyLeadSourceFilter" class="btn btn-primary" style="background-color: #6f42c1; border-color: #6f42c1;">Submit</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    
-                                    <!-- Date Range and User Display -->
-                                    <div class="mb-3 lead-source-info">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <p class="mb-0 lead-source-date-range">FROM 01-05-2025 TO 29-05-2025</p>
-                                        </div>
-                                        <div class="user-badge-container">
-                                            <span class="badge rounded-pill bg-light text-dark lead-source-user-badge"><?php echo $currentUserName; ?></span>
-                                        </div>
-                                    </div>
-                                    
-                                    <!-- Main Content Area -->
-                                    <div class="lead-source-content text-center">
-                                        <h3 class="no-lead-text">No Lead Found</h3>
-                                        <div class="lead-count-display">0</div>
-                                    </div>
-                                    
-                                    <!-- Source Legend -->
-                                    <div class="source-legend mt-4">
-                                        <!-- Row 1 -->
-                                        <div class="d-flex justify-content-center flex-wrap mb-2">
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #007bff; margin-right: 5px;"></div>
-                                                <span>Online</span>
-                                            </div>
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #28a745; margin-right: 5px;"></div>
-                                                <span>Offline</span>
-                                            </div>
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #ffc107; margin-right: 5px;"></div>
-                                                <span>Website</span>
-                                            </div>
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #dc3545; margin-right: 5px;"></div>
-                                                <span>Whatsapp</span>
-                                            </div>
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #6f42c1; margin-right: 5px;"></div>
-                                                <span>Customer Reminder</span>
-                                            </div>
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #17a2b8; margin-right: 5px;"></div>
-                                                <span>Indiamart</span>
-                                            </div>
-                                        </div>
-                                        <!-- Row 2 -->
-                                        <div class="d-flex justify-content-center flex-wrap">
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #28a745; margin-right: 5px;"></div>
-                                                <span>Facebook</span>
-                                            </div>
-                                            <div class="source-item d-flex align-items-center mx-2 mb-2">
-                                                <div class="source-circle" style="width: 15px; height: 15px; border-radius: 50%; background-color: #ffc107; margin-right: 5px;"></div>
-                                                <span>Google Form</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <!-- End of Analytics Section -->
         </div>
     </div>
     <!-- Footer -->
     <?php include '../includes/dashboard-footer.php'; ?>
+
+    <!-- Lead Status Filter Modal -->
+    <div class="modal fade" id="leadStatusFilterModal" tabindex="-1" aria-labelledby="leadStatusFilterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="leadStatusFilterModalLabel">Filter Lead Status</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="leadStatusFilterForm">
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="statusStartDate" name="startDate" value="2025-05-01">
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="statusEndDate" name="endDate" value="2025-05-31">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user" class="form-label">User</label>
+                            <select class="form-select" id="statusUser" name="user">
+                                <option value="all">All Users</option>
+                                <option value="1" selected>Star Tech</option>
+                                <!-- Other users would be populated dynamically -->
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="applyStatusFilter">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lead Source Filter Modal -->
+    <div class="modal fade" id="leadSourceFilterModal" tabindex="-1" aria-labelledby="leadSourceFilterModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="leadSourceFilterModalLabel">Filter Lead Source</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="leadSourceFilterForm">
+                        <div class="mb-3">
+                            <label for="startDate" class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="sourceStartDate" name="startDate" value="2025-05-01">
+                        </div>
+                        <div class="mb-3">
+                            <label for="endDate" class="form-label">End Date</label>
+                            <input type="date" class="form-control" id="sourceEndDate" name="endDate" value="2025-05-31">
+                        </div>
+                        <div class="mb-3">
+                            <label for="user" class="form-label">User</label>
+                            <select class="form-select" id="sourceUser" name="user">
+                                <option value="all">All Users</option>
+                                <option value="1" selected>Star Tech</option>
+                                <!-- Other users would be populated dynamically -->
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="applySourceFilter">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Add Note Modal -->
     <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
@@ -667,5 +631,138 @@ try {
     </div>
 </div>
 
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom Dashboard JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            // Handle sticky note deletion
+            document.querySelectorAll('.delete-note').forEach(button => {
+                button.addEventListener('click', function() {
+                    const noteId = this.getAttribute('data-note-id');
+                    if (confirm('Are you sure you want to delete this note?')) {
+                        // Send AJAX request to delete note
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', 'ajax/delete_note.php', true);
+                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                // Remove note from DOM
+                                const noteElement = document.querySelector(`.sticky-note[data-note-id="${noteId}"]`).closest('.col-md-6');
+                                noteElement.remove();
+                                
+                                // Check if there are no notes left
+                                if (document.querySelectorAll('.sticky-note').length === 0) {
+                                    document.getElementById('stickyNotesContainer').innerHTML = '<p class="text-muted mt-2 no-notes-message">There are no records to display.</p>';
+                                }
+                            }
+                        };
+                        xhr.send('note_id=' + noteId);
+                    }
+                });
+            });
+            
+            // Responsive sidebar toggle
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    document.body.classList.toggle('sidebar-open');
+                    document.getElementById('sidebarOverlay').classList.toggle('show');
+                });
+            }
+            
+            // Close sidebar when clicking overlay
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    document.body.classList.remove('sidebar-open');
+                    this.classList.remove('show');
+                });
+            }
+            
+            // Lead Status Filter Functionality
+            const applyStatusFilter = document.getElementById('applyStatusFilter');
+            if (applyStatusFilter) {
+                applyStatusFilter.addEventListener('click', function() {
+                    const startDate = document.getElementById('statusStartDate').value;
+                    const endDate = document.getElementById('statusEndDate').value;
+                    const user = document.getElementById('statusUser').value;
+                    const userText = document.getElementById('statusUser').options[document.getElementById('statusUser').selectedIndex].text;
+                    
+                    // Format dates for display (YYYY-MM-DD to DD-MM-YYYY)
+                    const formattedStartDate = formatDateForDisplay(startDate);
+                    const formattedEndDate = formatDateForDisplay(endDate);
+                    
+                    // Update the date range and user badge in the Lead Status card
+                    const dateRangeElement = document.querySelector('.analytics-card:nth-of-type(1) .date-range');
+                    const staffBadgeElement = document.querySelector('.analytics-card:nth-of-type(1) .staff-badge');
+                    
+                    if (dateRangeElement) {
+                        dateRangeElement.textContent = `FROM ${formattedStartDate} TO ${formattedEndDate}`;
+                    }
+                    
+                    if (staffBadgeElement) {
+                        staffBadgeElement.textContent = userText;
+                    }
+                    
+                    // Here you would typically make an AJAX call to fetch new data based on filters
+                    // For now, we'll just close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('leadStatusFilterModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                });
+            }
+            
+            // Lead Source Filter Functionality
+            const applySourceFilter = document.getElementById('applySourceFilter');
+            if (applySourceFilter) {
+                applySourceFilter.addEventListener('click', function() {
+                    const startDate = document.getElementById('sourceStartDate').value;
+                    const endDate = document.getElementById('sourceEndDate').value;
+                    const user = document.getElementById('sourceUser').value;
+                    const userText = document.getElementById('sourceUser').options[document.getElementById('sourceUser').selectedIndex].text;
+                    
+                    // Format dates for display (YYYY-MM-DD to DD-MM-YYYY)
+                    const formattedStartDate = formatDateForDisplay(startDate);
+                    const formattedEndDate = formatDateForDisplay(endDate);
+                    
+                    // Update the date range and user badge in the Lead Source card
+                    const dateRangeElement = document.querySelector('.analytics-card:nth-of-type(2) .date-range');
+                    const staffBadgeElement = document.querySelector('.analytics-card:nth-of-type(2) .staff-badge');
+                    
+                    if (dateRangeElement) {
+                        dateRangeElement.textContent = `FROM ${formattedStartDate} TO ${formattedEndDate}`;
+                    }
+                    
+                    if (staffBadgeElement) {
+                        staffBadgeElement.textContent = userText;
+                    }
+                    
+                    // Here you would typically make an AJAX call to fetch new data based on filters
+                    // For now, we'll just close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('leadSourceFilterModal'));
+                    if (modal) {
+                        modal.hide();
+                    }
+                });
+            }
+            
+            // Helper function to format date from YYYY-MM-DD to DD-MM-YYYY
+            function formatDateForDisplay(dateString) {
+                if (!dateString) return '';
+                const parts = dateString.split('-');
+                if (parts.length !== 3) return dateString;
+                return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+        });
+    </script>
 </body>
-</html> 
+</html>

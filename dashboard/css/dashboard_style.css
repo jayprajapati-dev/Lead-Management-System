@@ -1,12 +1,22 @@
-body {
+ body {
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #f4f7f6;
     overflow-x: hidden; /* Prevent horizontal scrolling when sidebar is off-screen */
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    transition: background-color 0.3s ease;
+    min-height: 100vh;
+    position: relative;
 }
 
 .dashboard-container {
-    /* Removed display: flex and height: 100vh */
+    width: 100%;
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 .sidebar {
@@ -18,22 +28,30 @@ body {
     top: 0;
     left: 0;
     width: 250px;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 1000;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) rgba(255, 255, 255, 0.7);
 }
 
 .sidebar > * {
     flex-shrink: 0; /* Prevent sidebar content from shrinking */
 }
 
-.main-content-area {
-    /* Removed display: flex and flex-grow */
-    margin-left: 250px; /* Add margin to the main content to make space for the fixed sidebar */
-    padding: 20px;
-    transition: all 0.3s ease; /* Add transition for smooth margin change */
+.main-content-wrapper {
+    margin-top: 60px; /* Height of header */
+    margin-left: 250px; /* Width of sidebar */
+    padding: 1.5rem;
+    min-height: calc(100vh - 60px);
+    width: calc(100% - 250px);
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    background-color: #f4f7f6;
+    position: relative;
+    overflow-x: hidden;
 }
 
 /* Mobile Styles */
@@ -51,6 +69,11 @@ body {
         padding: 8px 12px !important;
         cursor: pointer !important;
         box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
+        transition: background-color 0.2s ease !important;
+    }
+    
+    .sidebar-toggle:hover {
+        background: #0069d9 !important;
     }
     
     .sidebar {
@@ -61,6 +84,7 @@ body {
         position: fixed !important;
         top: 0 !important;
         height: 100vh !important;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1) !important;
     }
     
     .sidebar.show {
@@ -71,21 +95,67 @@ body {
         display: block !important;
         opacity: 1 !important;
         z-index: 9998 !important; /* Increased z-index below sidebar */
+        backdrop-filter: blur(2px);
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
     }
     
     .main-content-area {
         margin-left: 0 !important;
-        padding-top: 60px !important; /* Add space for the toggle button */
+        padding-top: 60px !important; /* Responsive Card Layouts */
+    }
+    
+    .main-content-wrapper {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0.75rem !important;
     }
     
     body.sidebar-open {
-        overflow: hidden !important; /* Prevent body scrolling when sidebar is open */
+        overflow: hidden !important; /* Prevent scrolling when sidebar is open */
     }
+    
+    .dashboard-card .card-tabs .nav-link {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+    }
+}
 
-    .header .user-profile .custom-dropdown-menu {
-        max-width: 250px; /* Set a max width for the dropdown on mobile */
-        left: auto !important; /* Override potential left positioning */
-        right: 0 !important; /* Align to the right */
+@media (max-width: 1199.98px) {
+    .dashboard-card {
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .dashboard-body {
+        padding: 15px;
+        width: 100%;
+        max-width: 1600px;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+    
+    .row {
+        margin-left: -10px;
+        margin-right: -10px;
+    }
+    
+    .col-md-6, .col-lg-4, .col-sm-12 {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .card-header {
+        padding: 12px 15px;
+    }
+    
+    .card-body {
+        padding: 15px;
     }
 }
 
@@ -97,6 +167,34 @@ body {
     
     .main-content-area {
         margin-left: 250px;
+        width: calc(100% - 250px);
+    }
+    
+    .main-content-wrapper {
+        margin-left: 250px;
+        width: calc(100% - 250px);
+        padding: 1.5rem 2rem;
+    }
+    
+    .dashboard-body {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 0;
+    }
+    
+    .row {
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+    
+    .col-md-6, .col-lg-4 {
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+    
+    .dashboard-card {
+        height: 100%;
+        margin-bottom: 0;
     }
 }
 
@@ -303,7 +401,7 @@ body {
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    margin-right: 5px;
+    margin-right: 8px;
 }
 
 .card p span.status-dot.new { background-color: #007bff; } /* Blue */
@@ -628,11 +726,12 @@ body {
     border: none;
     border-bottom: 2px solid transparent;
     font-weight: 500; /* Adjusted font weight */
+    background-color: transparent;
 }
 
 .nav-tabs .nav-link.active {
-    color: #6f42c1; /* Purple color for active tab */
-    border-bottom-color: #6f42c1; /* Purple underline for active tab */
+    color: #6f42c1;
+    border-bottom: 2px solid #6f42c1;
     background-color: transparent;
 }
 
@@ -692,29 +791,60 @@ body {
 /* Dashboard Cards Styling */
 .dashboard-card {
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
     background-color: #ffffff;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+    min-height: 280px;
+    margin-bottom: 20px;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-card .card-header {
-    background-color: #f8f9fa; /* Light background for header */
+    background-color: #ffffff;
     border-bottom: 1px solid #e0e0e0;
     padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 .dashboard-card .card-header h4 {
-    font-size: 1.1rem;
-    margin-bottom: 0;
-    color: #3A3A3A; /* Dark text color */
+    margin: 0;
+    color: #333333;
+    font-weight: 500;
+    font-size: 1rem;
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
+.dashboard-card .card-header h4 i {
+    display: none;
 }
 
 .dashboard-card .card-body {
     padding: 15px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
 }
 
 .dashboard-card .card-tabs.nav-tabs {
-    border-bottom: none; /* Remove default Bootstrap border */
+    border-bottom: none;
+    display: flex;
+    justify-content: center;
+    padding: 0 10px;
 }
 
 .dashboard-card .card-tabs .nav-item {
@@ -724,21 +854,30 @@ body {
 .dashboard-card .card-tabs .nav-link {
     border: none;
     border-bottom: 2px solid transparent;
-    color: #5B5B5B; /* Grey text color */
+    color: #5B5B5B;
     font-weight: 500;
-    padding: 6px 10px; /* Further adjusted padding */
-    margin-right: 8px; /* Further adjusted space */
-    transition: all 0.3s ease;
-    border-radius: 4px;
-    white-space: nowrap; /* Prevent text wrapping within the tab */
+    padding: 8px 12px;
+    margin: 0 5px;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+    position: relative;
+    border-radius: 0;
+    white-space: nowrap;
+    background-color: transparent;
+}
+
+.dashboard-card .card-tabs .nav-link .badge {
+    margin-left: 5px;
+    font-size: 0.7rem;
+    padding: 0.25em 0.5em;
+    background-color: #dc3545;
+    font-weight: 400;
 }
 
 .dashboard-card .card-tabs .nav-link.active {
-    color: #ffffff; /* White text for active tab */
-    background: linear-gradient(to right, #6f42c1, #e83e8c); /* Gradient background */
-    border-bottom-color: transparent; /* Remove underline if gradient goes to the edge */
-    border-radius: 4px; /* Keep rounded corners */
-    padding: 6px 10px; /* Match padding with inactive state */
+    color: #6f42c1;
+    border-bottom: 2px solid #6f42c1;
+    background-color: transparent;
 }
 
 .dashboard-card .card-tabs .nav-link:hover {
@@ -746,16 +885,19 @@ body {
     color: #6f42c1; /* Deep purple on hover */
 }
 
-.dashboard-card .card-tabs .nav-link .badge {
-    background-color: #e91e63; /* Pink */
-    color: #ffffff;
-    font-size: 0.7rem;
-    margin-left: 5px;
-    vertical-align: middle;
+.dashboard-card .tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px 0;
 }
 
-.dashboard-card .tab-content {
-    padding-top: 15px;
+.dashboard-card .tab-pane p {
+    color: #333;
+    font-size: 0.9rem;
+    margin: 0;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
 }
 
 /* Lead Item Styling */
@@ -904,44 +1046,92 @@ body {
 /* Sticky Note Styling */
 .sticky-note {
     position: relative;
-    background-color: #28a745; /* Green color */
-    color: #ffffff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: #fff7d1; /* Light yellow background */
+    color: #333;
+    padding: 20px 15px 15px;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     margin-bottom: 15px;
     width: 100%; /* Ensure it takes full column width */
     min-height: 120px; /* Minimum height */
     display: flex;
     flex-direction: column;
     word-wrap: break-word; /* Prevent long words from overflowing */
+    transition: all 0.2s ease;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    border-left: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.sticky-note:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
 
 .sticky-note .note-pin {
     position: absolute;
     top: 5px;
-    left: 10px;
-    width: 15px;
-    height: 15px;
-    background-color: #dc3545; /* Red color */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background-color: #ff5252; /* Red color */
     border-radius: 50%;
-    transform: rotate(45deg);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+.sticky-note .note-pin:before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: rgba(255, 82, 82, 0.3);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+    70% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
 }
 
 .sticky-note .delete-note {
     position: absolute;
     top: 5px;
     right: 5px;
-    color: #dc3545; /* Red color for delete */
-    font-size: 1.2em;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
     cursor: pointer;
+    color: #ff5252; /* Red color for delete */
+    font-size: 0.8rem;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     z-index: 10;
-    transition: color 0.2s ease-in-out;
 }
 
 .sticky-note .delete-note:hover {
-    color: #c82333; /* Darker red on hover */
+    opacity: 1;
+    background-color: #ff5252;
+    color: white;
+    transform: scale(1.1);
 }
 
 .sticky-note .note-content {
@@ -949,6 +1139,45 @@ body {
     margin-top: 10px; /* Space below pin */
     font-size: 0.9rem;
     line-height: 1.5;
+    color: #333;
+    word-break: break-word;
+    font-family: 'Inter', sans-serif;
+    max-height: 150px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+}
+
+.sticky-note::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.sticky-note::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.sticky-note::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.sticky-note::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+.sticky-note .note-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sticky-note .note-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sticky-note .note-content::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
 }
 
 /* Folded corner effect */
@@ -959,7 +1188,8 @@ body {
     right: 0;
     border-width: 0 0 15px 15px;
     border-style: solid;
-    border-color: transparent transparent #0056b3 #0056b3; /* Blue folded corner */
+    border-color: transparent transparent rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1); /* Subtle folded corner */
+    border-radius: 0 0 8px 0;
 }
 
 /* Success Toast Styling */
@@ -1129,6 +1359,38 @@ body {
 #analyticsFilterModal .modal-footer .btn-secondary:hover {
     background-color: #5a6268; /* Darker grey on hover */
     border-color: #545b62;
+}
+
+/* Large Desktop Optimization */
+@media (min-width: 1200px) {
+    .dashboard-body {
+        max-width: 1800px;
+    }
+    
+    .main-content-wrapper {
+        padding: 2rem 2.5rem;
+    }
+    
+    .dashboard-card {
+        min-height: 350px;
+    }
+    
+    .dashboard-card .card-header h4 {
+        font-size: 1.2rem;
+    }
+    
+    .dashboard-card .card-body {
+        padding: 1.25rem;
+    }
+    
+    .dashboard-card .card-tabs .nav-link {
+        font-size: 0.95rem;
+        padding: 8px 15px;
+    }
+    
+    .sticky-notes-section .card-body {
+        padding: 1.5rem;
+    }
 }
 
 /* Ensure responsiveness for analytics cards */
