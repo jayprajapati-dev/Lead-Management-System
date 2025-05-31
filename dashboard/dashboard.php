@@ -68,8 +68,10 @@ try {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Link to your custom CSS file -->
-    <link rel="stylesheet" href="css/dashboard_style.css">
+    <!-- Link to your custom CSS files -->
+    <link rel="stylesheet" href="css/dashboard_style_new.css">
+    <link rel="stylesheet" href="css/sticky_notes.css">
+    <link rel="stylesheet" href="css/dashboard_cards.css">
 </head>
 <body>
     <!-- Mobile Overlay -->
@@ -209,9 +211,9 @@ try {
                         <div class="row mt-5">
                         <div class="col-12">
                             <div class="sticky-notes-section card dashboard-card" style="min-height: 300px;">
-                                <div class="card-header d-flex justify-content-between align-items-center">
+                                <div class="card-header">
                                     <h4><i class="fas fa-sticky-note"></i> Sticky Notes</h4>
-                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNoteModal">
                                         <i class="fas fa-plus me-1"></i> Add Note
                                     </button>
                                 </div>
