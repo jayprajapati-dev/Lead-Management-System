@@ -36,33 +36,39 @@ if (isset($_SESSION['user_id'])) {
 ?>
 <style>
     :root {
-        /* Main colors */
-        --primary-color: #4f46e5; /* Primary purple/blue */
-        --primary-dark: #3730a3; /* Darker shade for gradients */
-        --primary-light: #a5b4fc; /* Lighter shade for highlights */
+        /* Main colors - Professional Business Theme */
+        --primary-color: #2c3e50; /* Dark blue/slate for primary elements */
+        --primary-dark: #1a252f; /* Darker shade for gradients */
+        --primary-light: #34495e; /* Lighter shade for highlights */
         
         /* Secondary colors */
-        --secondary-color: #f8fafc; /* Light background */
-        --hover-color: #f1f5f9; /* Hover state background */
+        --secondary-color: #ecf0f1; /* Light gray background */
+        --hover-color: #e0e6e9; /* Subtle hover state background */
+        
+        /* Accent colors */
+        --accent-color: #3498db; /* Accent blue */
+        --accent-light: #5dade2; /* Lighter accent */
+        --accent-dark: #2980b9; /* Darker accent */
         
         /* Text colors */
-        --text-primary: #1e293b; /* Main text color */
-        --text-secondary: #64748b; /* Secondary text */
-        --text-light: #94a3b8; /* Lighter text for less emphasis */
+        --text-primary: #2c3e50; /* Main text color */
+        --text-secondary: #7f8c8d; /* Secondary text */
+        --text-light: #95a5a6; /* Lighter text for less emphasis */
         --text-active: #ffffff; /* Text color for active items */
         
         /* Border and shadow */
-        --border-color: #e2e8f0;
-        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        --border-color: #dfe4ea;
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         
         /* Status colors */
-        --success-color: #10b981;
-        --danger-color: #ef4444;
-        --warning-color: #f59e0b;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --warning-color: #f39c12;
+        --info-color: #3498db;
         
         /* Dimensions */
-        --sidebar-width: 220px;
+        --sidebar-width: 250px;
         --sidebar-collapsed-width: 60px;
         
         /* Transitions */
@@ -83,21 +89,21 @@ if (isset($_SESSION['user_id'])) {
     }
 
     /* Sidebar Container */
-    .sidebar-container {
+    .sidebar {
+        background-color: var(--secondary-color);
+        padding: 0;
+        box-shadow: var(--shadow-md);
+        height: 100vh;
         position: fixed;
         top: 0;
         left: 0;
         width: var(--sidebar-width);
-        height: 100vh;
-        background: #ffffff;
-        border-right: 1px solid var(--border-color);
+        transition: all 0.3s ease;
         z-index: 1000;
-        transition: width var(--transition-normal);
+        overflow-y: auto;
         display: flex;
         flex-direction: column;
-        box-shadow: var(--shadow-sm);
-        overflow-y: auto;
-        overflow-x: hidden;
+        border-right: 1px solid var(--border-color);
     }
 
     .sidebar-container.collapsed {
@@ -160,13 +166,21 @@ if (isset($_SESSION['user_id'])) {
 
     /* Sidebar Header */
     .sidebar-header {
-        padding: 15px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: var(--text-active);
+        padding: 25px 15px;
+        border-bottom: 1px solid var(--border-color);
+        margin-bottom: 15px;
         text-align: center;
         position: relative;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+        color: var(--text-active);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .sidebar-header h4 {
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: 0.5px;
+        margin: 0;
     }
 
     .sidebar-header h4 {
@@ -246,14 +260,16 @@ if (isset($_SESSION['user_id'])) {
     .nav-link {
         display: flex;
         align-items: center;
-        padding: 8px 12px;
-        color: var(--text-secondary);
+        padding: 12px 20px;
+        color: var(--text-primary);
         text-decoration: none;
-        border-radius: 8px;
-        margin: 2px 6px;
-        transition: all var(--transition-fast);
+        transition: all 0.3s ease;
+        border-left: 4px solid transparent;
         position: relative;
-        overflow: hidden;
+        font-weight: 500;
+        font-size: 14px;
+        margin: 3px 0;
+        letter-spacing: 0.2px;
     }
 
     .nav-link:hover {
@@ -275,19 +291,21 @@ if (isset($_SESSION['user_id'])) {
     }
 
     .nav-link i {
-        width: 20px;
         font-size: 16px;
         margin-right: 12px;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+        width: 20px;
         text-align: center;
-        transition: all var(--transition-fast);
     }
     
     .nav-link:hover i {
-        color: var(--primary-color);
+        color: var(--accent-color);
+        transform: translateX(2px);
     }
     
     .nav-link.active i {
-        color: #ffffff !important;
+        color: var(--accent-color);
     }
 
     .nav-link span {
@@ -338,14 +356,17 @@ if (isset($_SESSION['user_id'])) {
     /* Free Trial Section */
     .free-trial-section {
         margin-top: auto;
-        padding: 15px;
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: var(--text-active);
-        border-radius: 10px;
-        margin: 15px;
-        text-align: center;
-        transition: all var(--transition-normal);
+        padding: 18px 15px;
+        background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-dark) 100%);
+        color: white;
+        border-radius: 6px;
+        margin: 15px 10px;
         box-shadow: var(--shadow-sm);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        transition: all var(--transition-fast);
     }
     
     /* Premium section styling */
@@ -429,16 +450,16 @@ if (isset($_SESSION['user_id'])) {
             display: flex;
         }
         
-        .sidebar-container {
+        .sidebar {
             transform: translateX(-100%);
             box-shadow: none;
             z-index: 1030;
             width: 280px;
         }
         
-        .sidebar-container.show {
+        .sidebar.show {
             transform: translateX(0);
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
         
         .sidebar-overlay {
@@ -447,6 +468,15 @@ if (isset($_SESSION['user_id'])) {
         
         body.sidebar-open {
             overflow: hidden;
+        }
+        
+        .main-content-wrapper {
+            margin-left: 0;
+            width: 100%;
+        }
+        
+        .header {
+            left: 0;
         }
     }
     
@@ -548,6 +578,7 @@ if (isset($_SESSION['user_id'])) {
         visibility: visible;
         transform: translateY(-50%) translateX(5px);
     }
+
     /* Dropdown Styles */
     .dropdown-container {
         position: relative;
@@ -580,25 +611,30 @@ if (isset($_SESSION['user_id'])) {
         box-shadow: var(--shadow-md);
     }
     
-    .dropdown-icon {
+    .dropdown-toggle .dropdown-icon {
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
         font-size: 10px;
-        margin-left: auto;
-        transition: transform var(--transition-normal);
-    }
-    
-    .dropdown-toggle.open .dropdown-icon {
-        transform: rotate(180deg);
+        transition: transform 0.3s ease;
+        color: var(--text-light);
     }
     
     .dropdown-toggle.active .dropdown-icon {
-        color: #ffffff !important;
+        transform: translateY(-50%) rotate(180deg);
+        color: var(--accent-color);
     }
     
     .dropdown-menu {
-        display: none;
         padding: 5px 0 5px 20px;
-        margin: 4px 0;
+        margin: 0;
+        display: none;
+        list-style: none;
+        transition: all 0.3s ease;
         overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-radius: 0 0 4px 4px;
     }
     
     .dropdown-menu.show {
@@ -609,42 +645,44 @@ if (isset($_SESSION['user_id'])) {
     .dropdown-item {
         display: flex;
         align-items: center;
-        padding: 6px 12px;
-        color: var(--text-secondary);
+        padding: 8px 15px;
+        color: var(--text-primary);
         text-decoration: none;
-        border-radius: 6px;
         margin: 2px 0;
-        transition: all var(--transition-fast);
-        font-size: 12px;
-        font-weight: 500;
+        transition: all 0.3s ease;
+        font-size: 13px;
+        font-weight: 400;
+        border-left: 3px solid transparent;
+        letter-spacing: 0.1px;
     }
         
     .dropdown-item:hover {
-        background: var(--hover-color);
-        color: var(--primary-color);
-        transform: translateX(4px);
+        background-color: var(--hover-color);
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-light);
     }
     
     .dropdown-item.active {
-        background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-        color: #ffffff !important;
+        background-color: var(--hover-color);
+        color: var(--accent-color) !important;
+        border-left: 3px solid var(--accent-color);
         font-weight: 500;
-        box-shadow: var(--shadow-sm);
     }
     
     .dropdown-item i.nav-icon {
         font-size: 8px;
         margin-right: 10px;
-        color: var(--text-light);
-        transition: all var(--transition-fast);
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
     }
     
     .dropdown-item:hover i.nav-icon {
-        color: var(--primary-color);
+        color: var(--accent-color);
+        transform: translateX(2px);
     }
     
     .dropdown-item.active i.nav-icon {
-        color: #ffffff !important;
+        color: var(--accent-color) !important;
     }
     
     .dropdown-item i.ml-auto {
@@ -861,34 +899,54 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebarMenu');
     const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const mainContentWrapper = document.querySelector('.main-content-wrapper');
+    const header = document.querySelector('.header');
     
     // Toggle sidebar on mobile
-    sidebarToggle.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent event from bubbling up
-        sidebar.classList.toggle('show');
-        sidebarOverlay.classList.toggle('show');
-        document.body.classList.toggle('sidebar-open');
-    });
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+            document.body.classList.toggle('sidebar-open');
+        });
+    }
     
     // Close sidebar when clicking overlay
-    sidebarOverlay.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent event from bubbling up
-        sidebar.classList.remove('show');
-        sidebarOverlay.classList.remove('show');
-        document.body.classList.remove('sidebar-open');
-    });
-    
-    // We're removing this general document click handler as it might be causing issues with clickable elements
-    // Instead, we'll rely on the overlay click and specific navigation link clicks
+    if (sidebarOverlay) {
+        sidebarOverlay.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            sidebar.classList.remove('show');
+            sidebarOverlay.classList.remove('show');
+            document.body.classList.remove('sidebar-open');
+        });
+    }
     
     // Handle window resize
     window.addEventListener('resize', function() {
         if (window.innerWidth >= 992) {
             sidebar.classList.remove('show');
-            sidebarOverlay.classList.remove('show');
+            if (sidebarOverlay) sidebarOverlay.classList.remove('show');
             document.body.classList.remove('sidebar-open');
+            
+            // Reset main content and header positioning for desktop
+            if (mainContentWrapper) mainContentWrapper.style.marginLeft = '250px';
+            if (header) header.style.left = '250px';
+        } else {
+            // Adjust for mobile view
+            if (mainContentWrapper) mainContentWrapper.style.marginLeft = '0';
+            if (header) header.style.left = '0';
         }
     });
+    
+    // Initial setup based on window size
+    if (window.innerWidth >= 992) {
+        if (mainContentWrapper) mainContentWrapper.style.marginLeft = '250px';
+        if (header) header.style.left = '250px';
+    } else {
+        if (mainContentWrapper) mainContentWrapper.style.marginLeft = '0';
+        if (header) header.style.left = '0';
+    }
     
     // Add hover animation to nav links
     const navLinks = document.querySelectorAll('.nav-link');
