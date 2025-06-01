@@ -307,6 +307,79 @@ try {
             transform: translateY(-5px);
         }
 
+        /* Kanban View Styles */
+        .min-width-300 {
+            min-width: 300px;
+        }
+        
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .card {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            border-bottom: none;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .text-purple {
+            color: #6f42c1;
+        }
+        
+        /* Custom scrollbar styles */
+        .overflow-auto::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .overflow-auto::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .overflow-auto::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        .overflow-auto::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+        
+        /* List View Message Styles */
+        #listViewMessage {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        #listViewMessage i {
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        
+        #listViewMessage .h5 {
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        @media (max-width: 768px) {
+            .min-width-300 {
+                min-width: 260px;
+            }
+            
+            #listViewMessage {
+                margin: 1rem;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -370,47 +443,69 @@ try {
                     </div>
 
                     <!-- Top Filter Section -->
-                     <div class="card p-3 mb-4">
-                         <div class="row g-3 filter-row">
-                             <div class="col-md-3">
-                                 <select class="form-select">
-                                     <option selected>All Priority</option>
-                                     <!-- Priority options here -->
-                                 </select>
-                             </div>
-                              <div class="col-md-3">
-                                 <select class="form-select">
-                                     <option selected>Labels</option>
-                                     <!-- Label options here -->
-                                 </select>
-                             </div>
-                             <div class="col-md-3">
-                                 <select class="form-select">
-                                     <option selected>All Created By</option>
-                                     <!-- Created By options here -->
-                                 </select>
-                             </div>
-                              <div class="col-md-3">
-                                 <select class="form-select">
-                                     <option selected>All Assign To</option>
-                                     <!-- Assign To options here -->
-                                 </select>
-                             </div>
-                              <div class="col-md-3">
-                                 <select class="form-select">
-                                     <option selected>All Status</option>
-                                     <!-- Status options here -->
-                                 </select>
-                             </div>
-                             <div class="col-md-9">
-                                  <div class="input-group">
-                                     <input type="text" class="form-control" placeholder="Search...">
-                                     <button class="btn btn-outline-secondary" type="button">🔍</button>
-                                     <button class="btn btn-outline-secondary" type="button">✖️</button>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
+                    <div class="card p-3 mb-4">
+                        <div class="row g-3 filter-row">
+                            <!-- Mobile Filter Toggle Button (visible only on mobile) -->
+                            <div class="col-12 d-md-none mb-2">
+                                <button class="btn btn-outline-primary w-100" type="button" id="filterToggleBtn">
+                                    <i class="fas fa-filter me-2"></i> Show/Hide Filters
+                                </button>
+                            </div>
+                            
+                            <div class="collapse d-md-flex w-100" id="filterCollapse">
+                                <div class="row g-3 w-100">
+                                    <!-- First row of filters -->
+                                    <div class="col-md-3 col-sm-6">
+                                        <select class="form-select">
+                                            <option selected>All Priority</option>
+                                            <option>High</option>
+                                            <option>Medium</option>
+                                            <option>Low</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <select class="form-select">
+                                            <option selected>Labels</option>
+                                            <!-- Label options here -->
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <select class="form-select">
+                                            <option selected>All Created By</option>
+                                            <?php foreach ($usersList as $user): ?>
+                                                <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <select class="form-select">
+                                            <option selected>All Assign To</option>
+                                            <?php foreach ($usersList as $user): ?>
+                                                <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <select class="form-select">
+                                            <option selected>All Status</option>
+                                            <option>New</option>
+                                            <option>Processing</option>
+                                            <option>In Feedback</option>
+                                            <option>Completed</option>
+                                            <option>Rejected</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-9 col-sm-12">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search...">
+                                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                                            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-times"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <style>
                         .status-box {
@@ -435,9 +530,10 @@ try {
                     </style>
 
                 
-                    <!-- Main Content Area (Empty State) -->
+                    <!-- Main Content Area -->
                     <div id="tasksContentArea">
-                        <div class="table-responsive">
+                        <!-- Kanban Board View -->
+                        <div class="table-responsive" id="kanbanView">
                             <div class="d-flex flex-nowrap overflow-auto pb-3">
                                 <!-- New Tasks Column -->
                                 <div class="col-md-3 min-width-300 me-3">
@@ -527,49 +623,13 @@ try {
                         </div>
                     </div>
 
-                    <style>
-                        .min-width-300 {
-                            min-width: 300px;
-                        }
-                        .table-responsive {
-                            overflow-x: auto;
-                            -webkit-overflow-scrolling: touch;
-                        }
-                        .card {
-                            transition: transform 0.2s ease-in-out;
-                        }
-                        .card:hover {
-                            transform: translateY(-5px);
-                        }
-                        .card-header {
-                            border-bottom: none;
-                            border-radius: 10px 10px 0 0 !important;
-                        }
-                        .text-purple {
-                            color: #6f42c1;
-                        }
-                        @media (max-width: 768px) {
-                            .min-width-300 {
-                                min-width: 260px;
-                            }
-                        }
-
-                        /* Custom scrollbar styles */
-                        .overflow-auto::-webkit-scrollbar {
-                            height: 8px;
-                        }
-                        .overflow-auto::-webkit-scrollbar-track {
-                            background: #f1f1f1;
-                            border-radius: 4px;
-                        }
-                        .overflow-auto::-webkit-scrollbar-thumb {
-                            background: #888;
-                            border-radius: 4px;
-                        }
-                        .overflow-auto::-webkit-scrollbar-thumb:hover {
-                            background: #666;
-                        }
-                    </style>
+                    <!-- List View Message (Initially Hidden) -->
+                    <div id="listViewMessage" class="d-none">
+                        <div class="text-center text-muted p-5">
+                            <i class="fas fa-inbox fa-3x mb-3"></i>
+                            <p class="h5">There are no records to display</p>
+                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -598,25 +658,45 @@ document.addEventListener('DOMContentLoaded', function() {
     const listViewBtn = document.getElementById('listViewBtn');
     const kanbanViewButtons = document.getElementById('kanbanViewButtons');
     const listViewButtons = document.getElementById('listViewButtons');
-    const statusFilterRow = document.getElementById('statusFilterRow');
+    const kanbanView = document.getElementById('kanbanView');
+    const listViewMessage = document.getElementById('listViewMessage');
 
-    kanbanViewBtn.addEventListener('click', function() {
-        this.classList.add('active');
-        listViewBtn.classList.remove('active');
-        kanbanViewButtons.classList.remove('d-none');
-        listViewButtons.classList.add('d-none');
-        statusFilterRow.classList.remove('d-none');
-    });
+    function updateView(viewType) {
+        if (viewType === 'kanban') {
+            // Update button states
+            kanbanViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+            
+            // Update button groups
+            kanbanViewButtons.classList.remove('d-none');
+            listViewButtons.classList.add('d-none');
+            
+            // Show kanban view, hide list message
+            kanbanView.classList.remove('d-none');
+            listViewMessage.classList.add('d-none');
+        } else {
+            // Update button states
+            listViewBtn.classList.add('active');
+            kanbanViewBtn.classList.remove('active');
+            
+            // Update button groups
+            listViewButtons.classList.remove('d-none');
+            kanbanViewButtons.classList.add('d-none');
+            
+            // Hide kanban view, show list message
+            kanbanView.classList.add('d-none');
+            listViewMessage.classList.remove('d-none');
+        }
+    }
 
-    listViewBtn.addEventListener('click', function() {
-        this.classList.add('active');
-        kanbanViewBtn.classList.remove('active');
-        listViewButtons.classList.remove('d-none');
-        kanbanViewButtons.classList.add('d-none');
-        statusFilterRow.classList.add('d-none');
-    });
+    // Set initial view
+    updateView('kanban');
 
-    // Handle Add Task button clicks (both in header and content area)
+    // Add click event listeners
+    kanbanViewBtn.addEventListener('click', () => updateView('kanban'));
+    listViewBtn.addEventListener('click', () => updateView('list'));
+
+    // Handle Add Task button clicks
     document.querySelectorAll('[data-bs-target="#addTaskModal"]').forEach(button => {
         button.addEventListener('click', function() {
             addTaskModal.show();
@@ -629,7 +709,6 @@ document.addEventListener('DOMContentLoaded', function() {
         addTaskForm.addEventListener('submit', function(e) {
             e.preventDefault();
             // Add your form submission logic here
-            // After successful submission:
             addTaskModal.hide();
         });
     }
@@ -643,6 +722,39 @@ document.addEventListener('DOMContentLoaded', function() {
             option.value = user.id;
             option.textContent = user.name;
             assignToSelect.appendChild(option);
+        });
+    }
+
+    // Filter toggle functionality for mobile
+    const filterToggleBtn = document.getElementById('filterToggleBtn');
+    const filterCollapse = document.getElementById('filterCollapse');
+    
+    if (filterToggleBtn && filterCollapse) {
+        const bsCollapse = new bootstrap.Collapse(filterCollapse, {
+            toggle: false
+        });
+        
+        filterToggleBtn.addEventListener('click', function() {
+            bsCollapse.toggle();
+            
+            // Update button text based on collapse state
+            filterCollapse.addEventListener('shown.bs.collapse', function() {
+                filterToggleBtn.innerHTML = '<i class="fas fa-filter me-2"></i> Hide Filters';
+            });
+            
+            filterCollapse.addEventListener('hidden.bs.collapse', function() {
+                filterToggleBtn.innerHTML = '<i class="fas fa-filter me-2"></i> Show Filters';
+            });
+        });
+        
+        // Handle collapse on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) { // md breakpoint
+                filterCollapse.classList.add('d-md-flex');
+                bsCollapse.hide();
+            } else {
+                filterCollapse.classList.remove('d-md-flex');
+            }
         });
     }
 });

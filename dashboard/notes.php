@@ -21,42 +21,124 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Notes - Lead Management System</title>
+    <title>Notes | Lead Management System</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/dashboard_style.css">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <!-- Link to your custom CSS file (if you have one with common styles) -->
-    <!-- <link rel="stylesheet" href="css/dashboard_style.css"> -->
     <!-- Google Fonts (Poppins) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dashboard_style.css">
     <style>
+        :root {
+            --header-height: 60px;
+            --sidebar-width: 250px;
+        }
+
         body {
             font-family: 'Poppins', sans-serif;
+            margin: 0;
+            min-height: 100vh;
             background-color: #f8f9fa;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
-        /* Add any specific styles for your test page here */
 
-        /* Dashboard Layout Styles (copied from other dashboard pages) */
-        .dashboard-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        .sidebar {
-            background-color: #fff;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            height: 100vh;
+        /* Header Styles */
+        .header {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 1000;
-            transition: all 0.3s;
+            right: 0;
+            height: var(--header-height);
+            background: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1030;
         }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+            z-index: 1020;
+            transition: transform 0.3s ease;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            margin-top: var(--header-height);
+            padding: 20px;
+            min-height: calc(100vh - var(--header-height));
+            background-color: #f8f9fa;
+            transition: margin-left 0.3s ease;
+        }
+
+        /* Notes Container */
+        .notes-container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .notes-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            min-width: 300px;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.show {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .notes-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-actions {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            .btn-add-note {
+                width: 100%;
+            }
+        }
+
+        /* Overlay */
         .sidebar-overlay {
             display: none;
             position: fixed;
@@ -64,178 +146,212 @@ if (!isset($_SESSION['user_id'])) {
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 999;
+            background: rgba(0,0,0,0.5);
+            z-index: 1015;
         }
+
         .sidebar-overlay.show {
             display: block;
         }
-        .main-content-area {
-            margin-left: 16.666667%; /* col-md-2 width */
-            transition: all 0.3s;
+
+        /* Footer */
+        .footer {
+            margin-left: var(--sidebar-width);
+            padding: 1rem 0;
+            background: #fff;
+            border-top: 1px solid #dee2e6;
+            transition: margin-left 0.3s ease;
         }
-        @media (max-width: 767.98px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.show {
-                transform: translateX(0);
-            }
-            .main-content-area {
+
+        @media (max-width: 768px) {
+            .footer {
                 margin-left: 0;
             }
         }
+
+        /* Sidebar Toggle Button */
         .sidebar-toggle {
+            display: none; /* Hidden by default on desktop */
             position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 1001;
+            top: 15px;
+            left: 15px;
+            z-index: 1031;
+            padding: 8px;
             background: #fff;
             border: none;
             border-radius: 4px;
-            padding: 0.5rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .navbar {
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        footer {
-            margin-top: auto;
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-        }
-        /* Additional styles for notes page */
-        .notes-container {
-            min-height: calc(100vh - 60px); /* Adjust based on your header height */
-            padding: 20px;
-            background-color: #f8f9fa;
-        }
-        .notes-header {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-        }
-        .notes-content {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .btn-add-note {
-            padding: 8px 16px;
-            font-weight: 500;
-        }
-        .search-box {
-            min-width: 300px;
-        }
+
+        /* Mobile Styles */
         @media (max-width: 768px) {
-            .search-box {
-                min-width: 200px;
+            .sidebar-toggle {
+                display: block; /* Show on mobile */
             }
-            .notes-header {
-                flex-direction: column;
-                gap: 15px;
+
+            .sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
             }
-            .notes-header .d-flex {
-                width: 100%;
+
+            .sidebar.show {
+                transform: translateX(0);
             }
-            .search-box {
-                width: 100% !important;
+
+            .main-content {
+                margin-left: 0;
+            }
+
+            .footer {
+                margin-left: 0;
+            }
+
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 1015;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
+                opacity: 1;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Mobile Overlay -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    
-    <!-- Header first, outside the main container -->
-    <?php include '../includes/dashboard-header.php'; ?>
-    
-    <div class="dashboard-container container-fluid">
-        <div class="row">
-            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-                <?php include '../includes/sidebar.php'; ?>
-            </div>
-            
-            <!-- Main Content Area -->
-            <div class="col-md-9 col-lg-10 main-content-area">
+    <!-- Header -->
+    <header class="header">
+        <?php include '../includes/dashboard-header.php'; ?>
+    </header>
 
-            <!-- Main Content -->
-            <div class="notes-container">
-                <!-- Notes Header Section -->
-                <div class="notes-header d-flex justify-content-between align-items-center">
-                    <h2 class="h3 mb-0">Notes</h2>
-                    <div class="d-flex gap-3">
-                        <!-- Search Box -->
-                        <div class="input-group search-box">
-                            <input type="text" class="form-control" placeholder="Search notes..." aria-label="Search notes">
-                            <button class="btn btn-outline-secondary" type="button">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                        <!-- Add Note Button -->
-                        <button class="btn btn-primary btn-add-note" type="button" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                            <i class="fas fa-plus me-1"></i> Add Note
+    <!-- Sidebar Toggle Button -->
+    <button class="sidebar-toggle d-md-none" id="sidebarToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <?php include '../includes/sidebar.php'; ?>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="notes-container">
+            <!-- Notes Header -->
+            <div class="notes-header">
+                <h2 class="mb-0">Notes</h2>
+                <div class="search-actions">
+                    <!-- Search Box -->
+                    <div class="input-group search-box">
+                        <input type="text" class="form-control" placeholder="Search notes...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-search"></i>
                         </button>
                     </div>
-                </div>
-
-                <!-- Notes Content Card -->
-                <div class="notes-content">
-                    <div class="card-body">
-                        <div class="text-center py-5">
-                            <i class="fas fa-clipboard-list text-muted mb-3" style="font-size: 3rem;"></i>
-                            <p class="text-muted mb-0">No records to display</p>
-                        </div>
-                    </div>
+                    <!-- Add Note Button -->
+                    <button class="btn btn-primary btn-add-note" data-bs-toggle="modal" data-bs-target="#addNoteModal">
+                        <i class="fas fa-plus me-2"></i>Add Note
+                    </button>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <?php include '../includes/dashboard-footer.php'; ?>
+            <!-- Notes Content -->
+            <div class="notes-content">
+                <div class="text-center py-5">
+                    <i class="fas fa-clipboard-list text-muted mb-3" style="font-size: 3rem;"></i>
+                    <p class="text-muted mb-0">No records to display</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
+    </main>
 
-<!-- Include Add Note Modal -->
-<?php include '../includes/modals/add-note.php'; ?>
+    <!-- Footer -->
+    <footer class="footer">
+        <?php include '../includes/dashboard-footer.php'; ?>
+    </footer>
 
-<!-- Bootstrap 5 JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Add Note Modal -->
+    <?php include '../includes/modals/add-note.php'; ?>
 
-<!-- Custom JavaScript for Notes Page -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Bootstrap Modal
-    const addNoteModal = new bootstrap.Modal(document.getElementById('addNoteModal'));
-    
-    // Add Note button click handler
-    document.querySelector('.btn-add-note').addEventListener('click', function() {
-        addNoteModal.show();
-    });
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    // Handle modal form submission
-    const addNoteForm = document.getElementById('addNoteForm');
-    if (addNoteForm) {
-        addNoteForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Add your form submission logic here
-            // After successful submission:
-            addNoteModal.hide();
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get DOM elements
+        const sidebar = document.getElementById('sidebar');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const navbarToggler = document.querySelector('.navbar-toggler');
+
+        // Function to toggle sidebar
+        function toggleSidebar() {
+            sidebar.classList.toggle('show');
+            sidebarOverlay.classList.toggle('show');
+            document.body.style.overflow = sidebar.classList.contains('show') ? 'hidden' : '';
+        }
+
+        // Event listeners for sidebar toggle
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', toggleSidebar);
+        }
+
+        // Event listener for navbar toggler (if exists)
+        if (navbarToggler) {
+            navbarToggler.addEventListener('click', toggleSidebar);
+        }
+
+        // Close sidebar when clicking overlay
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            });
+        }
+
+        // Close sidebar when pressing Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
         });
-    }
-});
-</script>
 
-<!-- Sidebar toggle functionality is now handled in dashboard-header.php -->
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            if (sidebar.classList.contains('show') && 
+                !sidebar.contains(e.target) && 
+                !sidebarToggle.contains(e.target) &&
+                !navbarToggler.contains(e.target)) {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        });
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add any notes-specific JavaScript here
-});
-</script>
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+    </script>
 </body>
 </html>

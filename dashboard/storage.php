@@ -77,19 +77,21 @@ $storageItems = []; // Empty for now to show the "no records" message
         .dashboard-container {
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
+            margin-top: 60px; /* Space for fixed header */
         }
         
         .sidebar {
             background-color: #fff;
             box-shadow: var(--card-shadow);
-            height: 100vh;
+            width: 250px;
             position: fixed;
-            top: 0;
+            top: 60px; /* Position below header */
             left: 0;
+            bottom: 0;
             z-index: 1000;
             transition: var(--transition);
             border-right: 1px solid var(--border-color);
+            overflow-y: auto;
         }
         
         .sidebar-overlay {
@@ -109,20 +111,32 @@ $storageItems = []; // Empty for now to show the "no records" message
         }
         
         .main-content-area {
-            margin-left: 16.666667%; /* col-md-2 width */
-            transition: var(--transition);
-            padding: 1rem;
+            flex: 1;
+            margin-left: 250px; /* Match sidebar width */
+            padding: 20px;
+            min-height: calc(100vh - 60px); /* Subtract header height */
+            background-color: var(--light-bg);
         }
         
         @media (max-width: 767.98px) {
             .sidebar {
                 transform: translateX(-100%);
+                width: 100%;
+                max-width: 250px;
             }
+            
             .sidebar.show {
                 transform: translateX(0);
             }
+            
             .main-content-area {
                 margin-left: 0;
+                width: 100%;
+                padding: 15px;
+            }
+            
+            .dashboard-container {
+                flex-direction: column;
             }
         }
         
@@ -159,6 +173,15 @@ $storageItems = []; // Empty for now to show the "no records" message
             text-align: center;
             color: var(--text-muted);
             font-size: 0.875rem;
+            width: calc(100% - 250px);
+            margin-left: 250px;
+        }
+        
+        @media (max-width: 767.98px) {
+            footer {
+                width: 100%;
+                margin-left: 0;
+            }
         }
         
         /* Storage Management Specific Styles */
@@ -210,6 +233,25 @@ $storageItems = []; // Empty for now to show the "no records" message
             padding: 1rem 1.25rem;
             margin-bottom: 1.5rem;
             border: 1px solid var(--border-color);
+        }
+        
+        .storage-usage-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .storage-usage-text {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .storage-usage-buttons {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
         
         .storage-usage span {
@@ -269,17 +311,45 @@ $storageItems = []; // Empty for now to show the "no records" message
             color: var(--text-muted);
         }
         
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .btn-select-all {
+            color: var(--primary-color);
+            background: none;
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+        
+        .btn-select-all:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
         .btn-delete {
             background-color: var(--danger-color);
             color: white;
             border: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             transition: var(--transition);
             font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            white-space: nowrap;
         }
         
         .btn-delete:hover {
@@ -331,16 +401,6 @@ $storageItems = []; // Empty for now to show the "no records" message
         .form-check-input:checked {
             background-color: var(--primary-color);
             border-color: var(--primary-color);
-        }
-        
-        .action-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
-            padding: 0.75rem 1rem;
-            background-color: var(--light-bg);
-            border-radius: 8px;
         }
         
         .btn-sm {
@@ -408,6 +468,31 @@ $storageItems = []; // Empty for now to show the "no records" message
             max-width: 400px;
             text-align: center;
         }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 767.98px) {
+            .storage-usage-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .storage-usage-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .btn-select-all, .btn-delete {
+                flex: 1;
+                justify-content: center;
+                text-align: center;
+            }
+        }
+
+        /* Update the storage content area HTML structure */
+        .storage-content-area {
+            margin-bottom: 1.5rem;
+        }
     
     </style>
 </head>
@@ -456,18 +541,35 @@ $storageItems = []; // Empty for now to show the "no records" message
                             
                             <!-- Storage Content Area -->
                             <div class="storage-content-area" id="storageContentArea">
-                            </div>
-                            
-                            <!-- Action Buttons -->
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <button class="btn btn-sm btn-link text-decoration-none" id="selectAllButton">
-                                        Select All
-                                    </button>
+                                <div class="storage-usage">
+                                    <div class="storage-usage-header">
+                                        <div class="storage-usage-text">
+                                            <span>Storage Usage</span>
+                                            <span>0/100</span>
+                                        </div>
+                                        <div class="storage-usage-buttons">
+                                            <button class="btn-select-all" id="selectAllButton">
+                                                Select All
+                                            </button>
+                                            <button class="btn-delete" id="deleteButton">
+                                                <i class="fas fa-trash me-1"></i> Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
                                 </div>
-                                <button class="btn btn-delete" id="deleteButton">
-                                    <i class="fas fa-trash me-1"></i> Delete
-                                </button>
+
+                                <div class="table-responsive">
+                                    <table class="storage-table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-center py-4">There are no records to display.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -565,34 +667,28 @@ $storageItems = []; // Empty for now to show the "no records" message
                     storageTitle.textContent = this.textContent.trim();
                 }
                 
-                // Common storage usage HTML
-                const storageUsageHTML = `
-                    <div class="storage-usage mb-4">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <span>Storage Usage</span>
-                            <span>0/100</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-                    </div>
-                `;
-                
                 // Show content for both items - without checkboxes when no data
-                if (this.id === 'whatsappTemplate') {
-                    contentArea.innerHTML = storageUsageHTML + `
-                        <div class="table-responsive">
-                            <table class="storage-table">
-                                <tbody>
-                                    <tr>
-                                        <td class="text-center py-4">There are no records to display.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                if (this.id === 'whatsappTemplate' || this.id === 'taskTemplate') {
+                    contentArea.innerHTML = `
+                        <div class="storage-usage">
+                            <div class="storage-usage-header">
+                                <div class="storage-usage-text">
+                                    <span>Storage Usage</span>
+                                    <span>0/100</span>
+                                </div>
+                                <div class="storage-usage-buttons">
+                                    <button class="btn-select-all" id="selectAllButton">
+                                        Select All
+                                    </button>
+                                    <button class="btn-delete" id="deleteButton">
+                                        <i class="fas fa-trash me-1"></i> Delete
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
                         </div>
-                    `;
-                } else if (this.id === 'taskTemplate') {
-                    contentArea.innerHTML = storageUsageHTML + `
                         <div class="table-responsive">
                             <table class="storage-table">
                                 <tbody>
@@ -606,7 +702,9 @@ $storageItems = []; // Empty for now to show the "no records" message
                 }
                 
                 // Hide delete button when there's no data
-                deleteButton.classList.add('d-none');
+                if (deleteButton) {
+                    deleteButton.classList.add('d-none');
+                }
             });
         });
         

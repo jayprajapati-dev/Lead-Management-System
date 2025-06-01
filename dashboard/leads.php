@@ -567,7 +567,7 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
                             <div class="row g-3 filter-row">
                                 <!-- Mobile Filter Toggle Button (visible only on mobile) -->
                                 <div class="col-12 d-md-none mb-2">
-                                    <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                                    <button class="btn btn-outline-primary w-100" type="button" id="filterToggleBtn">
                                         <i class="fas fa-filter me-2"></i> Show/Hide Filters
                                     </button>
                                 </div>
@@ -924,6 +924,43 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
     <!-- Custom JavaScript -->
     <script src="js/leads.js"></script>
     <script src="js/lead-display.js"></script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter toggle functionality for mobile
+        const filterToggleBtn = document.getElementById('filterToggleBtn');
+        const filterCollapse = document.getElementById('filterCollapse');
+        
+        if (filterToggleBtn && filterCollapse) {
+            const bsCollapse = new bootstrap.Collapse(filterCollapse, {
+                toggle: false
+            });
+            
+            filterToggleBtn.addEventListener('click', function() {
+                bsCollapse.toggle();
+                
+                // Update button text based on collapse state
+                filterCollapse.addEventListener('shown.bs.collapse', function() {
+                    filterToggleBtn.innerHTML = '<i class="fas fa-filter me-2"></i> Hide Filters';
+                });
+                
+                filterCollapse.addEventListener('hidden.bs.collapse', function() {
+                    filterToggleBtn.innerHTML = '<i class="fas fa-filter me-2"></i> Show Filters';
+                });
+            });
+            
+            // Handle collapse on window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth >= 768) { // md breakpoint
+                    filterCollapse.classList.add('d-md-flex');
+                    bsCollapse.hide();
+                } else {
+                    filterCollapse.classList.remove('d-md-flex');
+                }
+            });
+        }
+    });
+    </script>
 
 <!-- Sidebar toggle functionality is now handled in dashboard-header.php -->
 </body>

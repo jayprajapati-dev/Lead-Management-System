@@ -39,11 +39,14 @@ if (!isset($_SESSION['user_id'])) {
             min-height: 100vh;
             margin: 0; /* Reset default body margin */
             padding: 0; /* Reset default body padding */
+            display: flex;
+            flex-direction: column;
         }
 
         .dashboard-container {
             display: flex;
-            min-height: 100vh;
+            flex: 1;
+            min-height: calc(100vh - 60px); /* Subtract header height */
         }
 
          /* Left Navigation Sidebar - Styling should primarily come from includes/sidebar.php */
@@ -51,10 +54,9 @@ if (!isset($_SESSION['user_id'])) {
         /* The fixed positioning and width are expected to be handled by includes/sidebar.php */
         .left-sidebar {
              flex-shrink: 0; /* Prevent shrinking */
-             /* Example styles, adjust based on actual sidebar.php */
              width: 250px; /* Assuming sidebar.php is 250px wide */
              position: fixed;
-             top: 0;
+             top: 60px; /* Below header */
              bottom: 0;
              left: 0;
              z-index: 1000;
@@ -65,11 +67,13 @@ if (!isset($_SESSION['user_id'])) {
 
          /* Main Content Area - Takes remaining space to the right of the left sidebar */
         .main-content-area {
-            flex-grow: 1;
+            flex: 1;
             display: flex; /* Use flexbox for internal layout */
             flex-direction: column; /* Stack header and content vertically */
             margin-left: 250px; /* Adjust based on actual left sidebar width */
-             min-height: calc(100vh - 0px); /* Ensure main content area is at least viewport height minus header/footer if they were fixed/of known height - adjust as needed */
+             min-height: calc(100vh - 60px); /* Ensure main content area is at least viewport height minus header/footer if they were fixed/of known height - adjust as needed */
+            padding-bottom: 60px; /* Space for footer */
+            position: relative;
         }
 
          /* Fixed Header within Main Content Area */
@@ -114,19 +118,21 @@ if (!isset($_SESSION['user_id'])) {
 
          /* Content Area Below Fixed Header */
         .content-below-header {
-            flex-grow: 1; /* Takes remaining vertical space */
+            flex: 1;
             display: flex; /* Use flexbox for calendar grid and right sidebar */
             padding-top: 60px; /* Add padding to avoid content hiding behind fixed header */
             flex-direction: row; /* Ensure horizontal layout on larger screens */
+            min-height: calc(100vh - 120px); /* Subtract header and footer height */
         }
 
          /* Calendar Main Area - Contains Calendar Grid and Right Filter Sidebar */
          .calendar-main-area {
-             flex-grow: 1; /* Calendar grid takes remaining horizontal space */
+             flex: 1; /* Calendar grid takes remaining horizontal space */
              display: flex; /* Flex container for calendar header and content */
              flex-direction: column; /* Stack calendar header and content */
              padding: 15px;
              order: 2; /* Set order to 2 to place it on the right */
+             margin-bottom: 20px; /* Space before footer */
          }
 
          /* Calendar Content Area - Contains the month/day/list views */
@@ -144,13 +150,13 @@ if (!isset($_SESSION['user_id'])) {
 
          /* Right Filter Sidebar */
          .right-filter-sidebar {
-             width: 280px; /* Fixed width for filter sidebar */
+             width: 280px;
              flex-shrink: 0;
              background-color: #fff;
-             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Add shadow on the right side now */
-             padding: 15px;
-             overflow-y: auto; /* Add scrolling if filter content is too tall */
-             order: 1; /* Set order to 1 to place it on the left */
+             box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+             padding: 20px;
+             overflow-y: auto;
+             order: 1;
          }
 
         @media (max-width: 767.98px) {
@@ -161,143 +167,130 @@ if (!isset($_SESSION['user_id'])) {
             
             .left-sidebar {
                 width: 100%; /* Full width on mobile */
-                position: static; /* Don't fix position on mobile */
-                height: auto; /* Auto height */
-                box-shadow: none;
+                position: fixed;
+                top: 60px;
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+            
+            .left-sidebar.show {
+                transform: translateX(0);
             }
             
             .main-content-area {
                 margin-left: 0; /* Remove margin */
                 width: 100%;
+                min-height: calc(100vh - 60px);
+                padding-bottom: 60px;
             }
             
             .fixed-header {
-                position: fixed; /* Keep header fixed on mobile */
-                left: 0;
                 width: 100%;
-                z-index: 1010;
+                left: 0;
             }
             
             .content-below-header {
                 flex-direction: column; /* Stack calendar and right sidebar */
-                padding-top: 110px; /* Add padding for fixed header and toggle button */
+                padding-top: 60px; /* Add padding for fixed header and toggle button */
             }
             
             .calendar-main-area {
                 width: 100%; /* Full width */
                 padding: 10px;
+                margin-bottom: 60px; /* Space for footer */
             }
             
             /* Right filter sidebar - slide in panel */
             .right-filter-sidebar {
                 position: fixed;
-                top: 60px; /* Position below fixed header */
-                right: -280px; /* Hide off-screen by default */
-                width: 280px; /* Fixed width */
-                height: calc(100vh - 60px); /* Full height minus header */
+                top: 120px; /* Below both headers */
+                right: -280px;
+                width: 280px;
+                height: calc(100vh - 120px);
                 background-color: #fff;
                 z-index: 1050;
-                transition: right 0.3s ease;
+                transition: transform 0.3s ease;
                 box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
-                padding: 15px;
+                padding: 20px;
                 overflow-y: auto;
+                transform: translateX(100%);
             }
             
             .right-filter-sidebar.show {
-                right: 0; /* Slide in when 'show' class is added */
+                transform: translateX(0);
+                right: 0;
             }
             
-            /* Sidebar toggle button for mobile (left side) */
-            .sidebar-toggle-btn {
+            /* Add Event Button in Filter Sidebar */
+            .right-filter-sidebar .add-event-btn {
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 4px;
+                width: 100%;
+                padding: 12px;
+                margin-bottom: 20px;
                 background: #5B47B3;
                 color: white;
                 border: none;
-                position: fixed;
-                top: 15px;
-                left: 15px;
-                z-index: 1060;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                border-radius: 8px;
+                font-weight: 500;
                 transition: all 0.2s ease;
-                font-size: 1.2rem;
             }
-            
-            .sidebar-toggle-btn:hover {
-                background: #4a3a9c;
-                transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+
+            .right-filter-sidebar .add-event-btn i {
+                margin-right: 8px;
             }
-            
-            .sidebar-toggle-btn:active {
-                transform: scale(0.95);
+
+            /* Filter Section Styles */
+            .right-filter-sidebar .filter-section {
+                background: #fff;
+                border-radius: 8px;
+                margin-bottom: 20px;
             }
-            
-            /* Filter toggle button for mobile */
-            .filter-toggle-btn {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                border-radius: 4px;
-                background: #5B47B3;
-                color: white;
-                border: none;
-                position: fixed;
-                top: 15px;
-                right: 15px;
-                z-index: 1060;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                transition: all 0.2s ease;
-                font-size: 1.2rem;
-            }
-            
-            .filter-toggle-btn:hover {
-                background: #4a3a9c;
-                transform: translateY(-2px);
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-            }
-            
-            .filter-toggle-btn:active {
-                transform: scale(0.95);
-            }
-            
-            /* Hide text labels on mobile, show only icons */
-            .btn-text {
-                display: none;
-            }
-            
-            /* Left sidebar mobile adjustments */
-            .left-sidebar .sidebar-content {
-                display: none;
-            }
-            
-            .left-sidebar.show .sidebar-content {
+
+            .right-filter-sidebar .filter-label {
+                font-size: 0.9rem;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 15px;
                 display: block;
             }
-            
-            /* Mobile overlay for both sidebars */
-            .sidebar-overlay {
+
+            .right-filter-sidebar .filter-checkboxes {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .right-filter-sidebar .form-check {
+                margin: 0;
+                padding: 8px 0;
+            }
+
+            /* Overlay styles */
+            .filter-overlay {
                 display: none;
                 position: fixed;
-                top: 0;
+                top: 120px; /* Start below headers */
                 left: 0;
-                width: 100%;
-                height: 100%;
+                right: 0;
+                bottom: 0;
                 background: rgba(0, 0, 0, 0.5);
-                z-index: 1040;
+                z-index: 1045;
                 opacity: 0;
                 transition: opacity 0.3s ease;
             }
-            
-            .sidebar-overlay.show {
+
+            .filter-overlay.show {
                 display: block;
                 opacity: 1;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .right-filter-sidebar {
+                width: 100%;
+                max-width: 320px;
             }
         }
 
@@ -647,15 +640,167 @@ if (!isset($_SESSION['user_id'])) {
             /* Styles for events within time slot */
         }
 
+        /* Footer Styles */
+        footer {
+            background-color: #fff;
+            border-top: 1px solid #dee2e6;
+            padding: 1rem 0;
+            position: relative;
+            bottom: 0;
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            z-index: 900;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 767.98px) {
+            footer {
+                width: 100%;
+                margin-left: 0;
+                position: relative;
+                bottom: 0;
+            }
+
+            /* Ensure content fills space */
+            .calendar-content-area {
+                min-height: calc(100vh - 240px); /* Subtract header, padding, and footer */
+            }
+        }
+
+        /* Mobile Filter Header Styles */
+        .mobile-filter-header {
+            display: none;
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1040;
+        }
+
+        .filter-toggle-btn {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            border-radius: 6px;
+            background: #5B47B3;
+            color: white;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+            transition: all 0.2s ease;
+        }
+
+        .filter-toggle-btn i {
+            margin-right: 8px;
+        }
+
+        .filter-toggle-btn:hover {
+            background: #4a3a9c;
+        }
+
+        /* Mobile View Toggle Buttons */
+        .mobile-filter-header .view-toggle .btn {
+            padding: 8px 12px;
+            font-size: 0.9rem;
+        }
+
+        .mobile-filter-header .view-toggle .btn i {
+            font-size: 1rem;
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 767.98px) {
+            .mobile-filter-header {
+                display: block;
+            }
+
+            .content-below-header {
+                padding-top: 120px !important;
+            }
+
+            .calendar-header .view-toggle {
+                display: none;
+            }
+
+            .right-filter-sidebar {
+                position: fixed;
+                top: 120px;
+                right: -280px;
+                width: 280px;
+                height: calc(100vh - 120px);
+                background-color: #fff;
+                z-index: 1050;
+                transition: right 0.3s ease;
+                box-shadow: -2px 0 10px rgba(0, 0, 0, 0.15);
+                padding: 15px;
+                overflow-y: auto;
+            }
+
+            .right-filter-sidebar.show {
+                right: 0;
+            }
+
+            .filter-overlay {
+                top: 120px;
+            }
+        }
+
+        /* Additional mobile optimizations */
+        @media (max-width: 576px) {
+            .mobile-filter-header .container-fluid {
+                padding: 0 12px;
+            }
+
+            .filter-toggle-btn {
+                padding: 6px 12px;
+            }
+
+            .mobile-filter-header .view-toggle .btn {
+                padding: 6px 10px;
+            }
+        }
+
     </style>
 </head>
 <body>
     <!-- Mobile Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     
-    <!-- Header first, outside the main container -->
-    <?php include '../includes/dashboard-header.php'; ?>
-    
+    <!-- Header -->
+    <header class="dashboard-header">
+        <?php include '../includes/dashboard-header.php'; ?>
+    </header>
+
+    <!-- Mobile Filter Header -->
+    <div class="mobile-filter-header">
+        <div class="container-fluid px-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="button" class="filter-toggle-btn">
+                    <i class="fas fa-filter"></i>
+                    <span>Filters</span>
+                </button>
+                <div class="view-toggle btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary active" data-view="month">
+                        <i class="fas fa-calendar-alt"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-view="day">
+                        <i class="fas fa-calendar-day"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-view="list">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Overlay -->
+    <div class="filter-overlay" id="filterOverlay"></div>
+
     <div class="dashboard-container container-fluid">
         <div class="row">
             <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
@@ -739,12 +884,12 @@ if (!isset($_SESSION['user_id'])) {
              <!-- Right Filter Sidebar -->
              <div class="right-filter-sidebar">
                   <button class="add-event-btn" data-bs-toggle="modal" data-bs-target="#addEventModal">
-                     <span class="d-none d-md-inline">Add Event</span>
-                     <i class="fas fa-plus d-md-none"></i>
+                     <i class="fas fa-plus"></i>
+                     <span>Add Event</span>
                  </button>
 
                  <div class="filter-section">
-                     <span class="filter-label">FILTER</span>
+                     <span class="filter-label">FILTER BY TYPE</span>
                      <div class="filter-checkboxes">
                          <div class="form-check">
                              <input class="form-check-input" type="checkbox" value="event" id="filterEvent" checked data-color="orange">
@@ -772,7 +917,6 @@ if (!isset($_SESSION['user_id'])) {
                          </div>
                      </div>
                  </div>
-                 <!-- You can add more filter sidebar content here -->
              </div>
 
         </div>
@@ -1218,6 +1362,76 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     // Add any calendar-specific JavaScript here
 });
+</script>
+
+<!-- Filter Toggle Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterToggleBtn = document.querySelector('.filter-toggle-btn');
+        const rightFilterSidebar = document.querySelector('.right-filter-sidebar');
+        const filterOverlay = document.getElementById('filterOverlay');
+        let isFilterOpen = false;
+
+        function toggleFilter() {
+            isFilterOpen = !isFilterOpen;
+            rightFilterSidebar.classList.toggle('show');
+            filterOverlay.classList.toggle('show');
+            
+            // Update button text
+            const buttonText = filterToggleBtn.querySelector('span');
+            buttonText.textContent = isFilterOpen ? 'Hide Filters' : 'Filters';
+            
+            // Update icon
+            const icon = filterToggleBtn.querySelector('i');
+            icon.className = isFilterOpen ? 'fas fa-times' : 'fas fa-filter';
+        }
+
+        // Toggle filter on button click
+        filterToggleBtn.addEventListener('click', toggleFilter);
+
+        // Close filter when clicking overlay
+        filterOverlay.addEventListener('click', () => {
+            if (isFilterOpen) {
+                toggleFilter();
+            }
+        });
+
+        // Close filter on window resize if in mobile view
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768 && isFilterOpen) {
+                toggleFilter();
+            }
+        });
+
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isFilterOpen) {
+                toggleFilter();
+            }
+        });
+
+        // Add touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        rightFilterSidebar.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, false);
+
+        rightFilterSidebar.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, false);
+
+        function handleSwipe() {
+            const swipeThreshold = 100;
+            const swipeLength = touchEndX - touchStartX;
+            
+            if (swipeLength < -swipeThreshold && isFilterOpen) {
+                toggleFilter();
+            }
+        }
+    });
 </script>
 </body>
 </html>
