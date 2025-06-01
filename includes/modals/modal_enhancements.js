@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
             enhanceFormElements(this);
         });
     });
+    
+    // Initialize form validation and submission
+    setupFormValidation();
+    setupFormSubmission();
 });
 
 /**
@@ -28,9 +32,6 @@ function initializeModals() {
     
     // Add required field indicators
     markRequiredFields();
-    
-    // Add form validation
-    setupFormValidation();
 }
 
 /**
@@ -123,43 +124,34 @@ function markRequiredFields() {
 }
 
 /**
+ * Get the appropriate badge class for a status
+ * @param {string} status - The status value
+ * @returns {string} - The badge class
+ */
+function getStatusBadgeClass(status) {
+    const classes = {
+        'new': 'bg-primary',
+        'processing': 'bg-purple',
+        'close-by': 'bg-warning',
+        'confirm': 'bg-success',
+        'cancel': 'bg-danger'
+    };
+    return classes[status.toLowerCase()] || 'bg-secondary';
+}
+
+/**
  * Setup form validation
  */
 function setupFormValidation() {
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll('.needs-validation');
     
-    forms.forEach(form => {
-        form.addEventListener('submit', function(event) {
+    Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
             if (!form.checkValidity()) {
                 event.preventDefault();
                 event.stopPropagation();
-                
-                // Highlight invalid fields
-                const invalidInputs = form.querySelectorAll(':invalid');
-                invalidInputs.forEach(input => {
-                    input.classList.add('is-invalid');
-                    
-                    // Add feedback message
-                    const formGroup = input.closest('.form-group, .mb-3');
-                    if (formGroup && !formGroup.querySelector('.invalid-feedback')) {
-                        const feedback = document.createElement('div');
-                        feedback.className = 'invalid-feedback';
-                        feedback.textContent = input.validationMessage || 'This field is required';
-                        formGroup.appendChild(feedback);
-                    }
-                });
             }
-            
             form.classList.add('was-validated');
-        });
-        
-        // Remove invalid class when input changes
-        form.querySelectorAll('input, select, textarea').forEach(input => {
-            input.addEventListener('input', function() {
-                if (this.checkValidity()) {
-                    this.classList.remove('is-invalid');
-                }
-            });
         });
     });
 }
@@ -188,4 +180,122 @@ function enhanceFormElements(modal) {
             firstInput.focus();
         }
     }, 300);
+}
+
+/**
+ * Setup form submission handling for the add lead form
+ */
+function setupFormSubmission() {
+    const addLeadForm = document.getElementById('addLeadForm');
+    const saveLeadBtn = document.getElementById('saveLeadBtn');
+    let isSubmitting = false;
+    
+    if (!addLeadForm || !saveLeadBtn) {
+        console.error('Form elements not found');
+                return;
+            }
+            
+    saveLeadBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+        
+        // Prevent multiple submissions
+        if (isSubmitting) return;
+            
+            // Validate form
+            if (!addLeadForm.checkValidity()) {
+                addLeadForm.classList.add('was-validated');
+                return;
+            }
+            
+        // Show loading state
+        isSubmitting = true;
+        const spinner = saveLeadBtn.querySelector('.spinner-border');
+        if (spinner) spinner.classList.remove('d-none');
+        saveLeadBtn.disabled = true;
+        
+        try {
+            // Submit form
+            const formData = new FormData(addLeadForm);
+            const response = await fetch('../dashboard/add-lead.php', {
+                method: 'POST',
+                body: formData
+            });
+            
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+            const data = await response.json();
+            console.log('Response:', data);
+                
+                if (data.status === 'success') {
+                // Get the selected status
+                const selectedStatus = formData.get('status').toLowerCase();
+                
+                // Show success message
+                showSuccessToast(selectedStatus);
+                        
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(document.getElementById('addLeadModal'));
+                if (modal) {
+                    modal.hide();
+                }
+                
+                // Reset form
+                addLeadForm.reset();
+                addLeadForm.classList.remove('was-validated');
+                        
+                // Update counts and reload page after delay
+                        setTimeout(() => {
+                    window.location.reload();
+                }, 2000);
+                                } else {
+                showErrorToast(data.message || 'Failed to add lead');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showErrorToast('Network error. Please try again.');
+        } finally {
+            // Reset submit button
+            isSubmitting = false;
+            const spinner = saveLeadBtn.querySelector('.spinner-border');
+            if (spinner) spinner.classList.add('d-none');
+            saveLeadBtn.disabled = false;
+        }
+    });
+}
+
+// Show success toast
+function showSuccessToast(status) {
+    const toast = document.getElementById('leadSuccessToast');
+    if (!toast) {
+        console.error('Success toast element not found');
+        return;
+    }
+    
+    const statusBadge = toast.querySelector('#successLeadStatus');
+    if (statusBadge) {
+        statusBadge.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+        statusBadge.className = 'badge bg-light text-dark';
+    }
+    
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
+                    }
+
+// Show error toast
+function showErrorToast(message) {
+    const toast = document.getElementById('leadErrorToast');
+    if (!toast) {
+        console.error('Error toast element not found');
+        return;
+                    }
+    
+    const messageEl = toast.querySelector('#leadErrorToastMessage');
+    if (messageEl) {
+        messageEl.textContent = message;
+    }
+    
+    const bsToast = new bootstrap.Toast(toast);
+    bsToast.show();
 }

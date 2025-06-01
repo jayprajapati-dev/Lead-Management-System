@@ -659,3 +659,82 @@ Stack trace:
 [31-May-2025 11:45:54 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\Lead-Management-System\includes\dashboard-header.php:12) in C:\xampp\htdocs\Lead-Management-System\includes\trial_functions.php on line 162
 [31-May-2025 11:46:26 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\Lead-Management-System\includes\dashboard-header.php:12) in C:\xampp\htdocs\Lead-Management-System\includes\trial_functions.php on line 162
 [31-May-2025 15:35:54 Europe/Berlin] Database connection error: No connection could be made because the target machine actively refused it
+[31-May-2025 20:05:05 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:05:05 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:05:05 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:05:05 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:05:05 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:05:08 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:05:08 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:05:08 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:05:08 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:05:08 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:05:24 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:05:24 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:05:24 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:05:24 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:05:24 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:05:25 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:05:25 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:05:25 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:05:25 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:05:25 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:05:36 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:05:36 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:05:36 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:05:36 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:05:36 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:05:50 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:05:50 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:05:50 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:05:50 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:05:50 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:07:10 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 447
+[31-May-2025 20:07:10 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 453
+[31-May-2025 20:07:10 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 459
+[31-May-2025 20:07:10 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 465
+[31-May-2025 20:07:10 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 471
+[31-May-2025 20:08:41 Europe/Berlin] PHP Warning:  Undefined variable $newLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 462
+[31-May-2025 20:08:41 Europe/Berlin] PHP Warning:  Undefined variable $processingLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 468
+[31-May-2025 20:08:41 Europe/Berlin] PHP Warning:  Undefined variable $closeByLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 474
+[31-May-2025 20:08:41 Europe/Berlin] PHP Warning:  Undefined variable $confirmLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 480
+[31-May-2025 20:08:41 Europe/Berlin] PHP Warning:  Undefined variable $cancelLeadsCount in C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php on line 486
+[01-Jun-2025 14:13:14 Europe/Berlin] Query execution error: MySQL server has gone away
+[01-Jun-2025 14:13:14 Europe/Berlin] Login error: MySQL server has gone away
+[01-Jun-2025 14:13:38 Europe/Berlin] Database connection error: No connection could be made because the target machine actively refused it
+[01-Jun-2025 14:29:50 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php:37) in C:\xampp\htdocs\Lead-Management-System\includes\trial_functions.php on line 162
+[01-Jun-2025 14:30:18 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 14:30:18 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 14:33:44 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Lead-Management-System\includes\dashboard_header.php on line 119
+[01-Jun-2025 14:35:04 Europe/Berlin] PHP Warning:  Trying to access array offset on value of type null in C:\xampp\htdocs\Lead-Management-System\includes\dashboard_header.php on line 119
+[01-Jun-2025 14:37:05 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 14:37:05 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 15:13:34 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:13:38 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:13:40 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:13:40 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:15:43 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:16:35 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:16:36 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:16:36 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:17:59 Europe/Berlin] PHP Warning:  Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\Lead-Management-System\includes\dashboard-header.php:12) in C:\xampp\htdocs\Lead-Management-System\includes\trial_functions.php on line 50
+[01-Jun-2025 15:20:13 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 15:20:13 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 15:20:53 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:23:30 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:23:46 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:24:43 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:25:09 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:25:15 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:25:46 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:26:16 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:26:45 Europe/Berlin] Error fetching dashboard data: Table 'crm_dashboard.vw_todays_leads_summary' doesn't exist
+[01-Jun-2025 15:27:16 Europe/Berlin] Database connection error: Unknown database 'crm_dashboard'
+[01-Jun-2025 15:28:16 Europe/Berlin] Database connection error: Unknown database 'crm_dashboard'
+[01-Jun-2025 15:33:38 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 15:33:38 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[01-Jun-2025 15:56:34 Europe/Berlin] Error fetching leads: Unknown column 'status' in 'field list'
+[01-Jun-2025 15:59:15 Europe/Berlin] Error fetching leads: Unknown column 'status' in 'field list'
+[01-Jun-2025 16:00:16 Europe/Berlin] Error fetching leads: Unknown column 'status' in 'field list'
+[01-Jun-2025 16:00:18 Europe/Berlin] Error fetching leads: Unknown column 'status' in 'field list'
+[01-Jun-2025 16:00:27 Europe/Berlin] Error fetching leads: Unknown column 'status' in 'field list'

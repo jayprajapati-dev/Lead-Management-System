@@ -165,7 +165,7 @@ try {
     // Return success response
     echo json_encode([
         'status' => 'success',
-        'message' => 'Lead created successfully',
+        'message' => 'Lead Inserted Successfully',
         'lead_id' => $lead_id
     ]);
 

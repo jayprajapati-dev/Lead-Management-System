@@ -1,4 +1,7 @@
 <?php
+// Start output buffering
+ob_start();
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -19,19 +22,33 @@ require_once '../includes/trial_functions.php';
 
 // Get user information
 $user_id = $_SESSION['user_id'];
-$sql = "SELECT * FROM users WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+try {
+    $sql = "SELECT * FROM users WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-// Check if trial is expired
-$trial_expired = isTrialExpired($user_id);
-$days_remaining = getTrialDaysRemaining($user_id);
+    // If user not found in database, clear session and redirect to login
+    if (!$user) {
+        session_destroy();
+        header("Location: " . SITE_URL . "/public/login.php?error=account_deleted");
+        exit;
+    }
 
-// Page title
-$page_title = "Upgrade Your Account";
+    // Check if trial is expired
+    $trial_expired = isTrialExpired($user_id);
+    $days_remaining = getTrialDaysRemaining($user_id);
+
+    // Page title
+    $page_title = "Upgrade Your Account";
+} catch (Exception $e) {
+    error_log("Error in upgrade.php: " . $e->getMessage());
+    session_destroy();
+    header("Location: " . SITE_URL . "/public/login.php?error=system_error");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>

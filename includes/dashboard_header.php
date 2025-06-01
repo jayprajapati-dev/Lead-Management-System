@@ -1,13 +1,30 @@
 <?php
-// Get user information if not already available
-if (isset($_SESSION['user_id']) && !isset($user)) {
-    $user_id = $_SESSION['user_id'];
-    $sql = "SELECT * FROM users WHERE id = ?";
-    $stmt = $conn->prepare($sql);
+// Get user information
+$user_id = $_SESSION['user_id'] ?? null;
+$user = null;
+$user_full_name = 'Guest';
+$userEmail = 'guest@example.com';
+$profile_image = SITE_URL . '/public/images/default-avatar.png';
+
+if ($user_id) {
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
     $result = $stmt->get_result();
     $user = $result->fetch_assoc();
+    
+    if ($user) {
+        $user_full_name = htmlspecialchars($user['first_name'] . ' ' . $user['last_name']);
+        $userEmail = htmlspecialchars($user['email']);
+        $profile_image = !empty($user['profile_image']) ? 
+            SITE_URL . '/uploads/profile_images/' . $user['profile_image'] : 
+            SITE_URL . '/public/images/default-avatar.png';
+    } else {
+        // User not found in database, clear session and redirect to login
+        session_destroy();
+        header("Location: " . SITE_URL . "/public/login.php");
+        exit;
+    }
 }
 
 // Get user's name for display

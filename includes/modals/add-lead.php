@@ -5,151 +5,172 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Get user information from session
-$loggedInFirstName = $_SESSION['user_first_name'] ?? '';
-$loggedInLastName = $_SESSION['user_last_name'] ?? '';
-$loggedInUserName = trim($loggedInFirstName . ' ' . $loggedInLastName);
 $loggedInUserId = $_SESSION['user_id'] ?? '';
-
-// If name is empty, try to get it from the database
-if (empty($loggedInUserName) && !empty($loggedInUserId)) {
-    try {
-        require_once '../includes/config.php';
-        $stmt = executeQuery(
-            "SELECT first_name, last_name FROM users WHERE id = ?",
-            [$loggedInUserId]
-        );
-        $result = $stmt->get_result();
-        if ($user = $result->fetch_assoc()) {
-            $loggedInUserName = trim($user['first_name'] . ' ' . $user['last_name']);
-        }
-    } catch (Exception $e) {
-        error_log("Error fetching user details: " . $e->getMessage());
-    }
-}
-
-// If still empty, use a default value
-if (empty($loggedInUserName)) {
-    $loggedInUserName = 'Unknown User';
-}
+$loggedInUserName = $_SESSION['user_first_name'] ?? 'Unknown User';
 ?>
-
-<!-- Include Modal Styles -->
-<link rel="stylesheet" href="../includes/modals/modal_styles.css">
 
 <!-- Add Lead Modal -->
 <div class="modal fade" id="addLeadModal" tabindex="-1" aria-labelledby="addLeadModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="addLeadModalLabel"><i class="fas fa-user-plus"></i> Add New Lead</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="addLeadForm">
+        <form id="addLeadForm" class="needs-validation" novalidate>
           <div class="row g-3">
             <!-- Status -->
             <div class="col-md-6">
-              <label for="leadStatus" class="form-label">Status:</label>
-              <select class="form-select" id="leadStatus" name="status">
+              <label for="leadStatus" class="form-label">Status: *</label>
+              <select class="form-select" id="leadStatus" name="status" required>
                 <option value="New" selected data-badge-class="badge-status-new">New</option>
                 <option value="Processing" data-badge-class="badge-status-processing">Processing</option>
                 <option value="Close-by" data-badge-class="badge-status-feedback">Close-by</option>
                 <option value="Confirm" data-badge-class="badge-status-confirm">Confirm</option>
                 <option value="Cancel" data-badge-class="badge-status-cancel">Cancel</option>
               </select>
-              <div class="form-text"><small>Current lead status in the pipeline</small></div>
+              <div class="invalid-feedback">Please select a status</div>
             </div>
 
             <!-- Source -->
             <div class="col-md-6">
-              <label for="leadSource" class="form-label">Source:</label>
-              <select class="form-select" id="leadSource" name="source">
-                <option value="Online" selected data-dot-class="source-dot-online">Online</option>
-                <option value="Offline" data-dot-class="source-dot-offline">Offline</option>
-                <option value="Website" data-dot-class="source-dot-website">Website</option>
-                <option value="Whatsapp" data-dot-class="source-dot-whatsapp">Whatsapp</option>
-                <option value="Customer Reminder" data-dot-class="source-dot-reminder">Customer Reminder</option>
-                <option value="Indiamart" data-dot-class="source-dot-indiamart">Indiamart</option>
-                <option value="Facebook" data-dot-class="source-dot-facebook">Facebook</option>
-                <option value="Google Form" data-dot-class="source-dot-google">Google Form</option>
+              <label for="leadSource" class="form-label">Source: *</label>
+              <select class="form-select" id="leadSource" name="source" required>
+                <option value="Online" selected>Online</option>
+                <option value="Website">Website</option>
+                <option value="Whatsapp">Whatsapp</option>
+                <option value="Facebook">Facebook</option>
+                <option value="Offline">Offline</option>
               </select>
-              <div class="form-text"><small>Where this lead originated from</small></div>
-            </div>
-
-            <!-- User (Auto-filled) -->
-            <div class="col-md-6">
-              <label for="leadUser" class="form-label">User:</label>
-              <input type="text" class="form-control" id="leadUser" value="<?php echo htmlspecialchars($loggedInUserName); ?>" readonly>
-              <input type="hidden" id="leadUserId" name="user_id" value="<?php echo htmlspecialchars($loggedInUserId); ?>">
-            </div>
-
-            <!-- Customer Mobile Number -->
-            <div class="col-md-6">
-              <label for="customerMobile" class="form-label">Customer Mobile Number: *</label>
-              <input type="text" class="form-control" id="customerMobile" name="customer_mobile" required>
-            </div>
-
-            <!-- Company Name -->
-            <div class="col-md-6">
-              <label for="companyName" class="form-label">Company Name (Optional):</label>
-              <input type="text" class="form-control" id="companyName" name="company_name">
-            </div>
-
-             <!-- Date -->
-             <div class="col-md-6">
-                <label for="leadDate" class="form-label">Date:</label>
-                <input type="date" class="form-control" id="leadDate" name="date">
+              <div class="invalid-feedback">Please select a source</div>
              </div>
 
             <!-- Customer Name -->
             <div class="col-md-6">
               <label for="customerName" class="form-label">Customer Name: *</label>
               <input type="text" class="form-control" id="customerName" name="customer_name" required>
+              <div class="invalid-feedback">Please enter customer name</div>
+            </div>
+
+            <!-- Customer Mobile Number -->
+            <div class="col-md-6">
+              <label for="customerMobile" class="form-label">Mobile Number: *</label>
+              <input type="tel" class="form-control" id="customerMobile" name="customer_mobile" required pattern="[0-9]{10}">
+              <div class="invalid-feedback">Please enter a valid 10-digit mobile number</div>
             </div>
 
             <!-- Email -->
             <div class="col-md-6">
-              <label for="customerEmail" class="form-label">Email (Optional):</label>
+              <label for="customerEmail" class="form-label">Email:</label>
               <input type="email" class="form-control" id="customerEmail" name="email">
+              <div class="invalid-feedback">Please enter a valid email address</div>
             </div>
 
-            <!-- Label -->
+            <!-- Company Name -->
             <div class="col-md-6">
-              <label for="leadLabel" class="form-label">Label (Optional):</label>
-              <select class="form-select" id="leadLabel" name="label">
-                <option value="" selected>Select</option>
-                <!-- Label options will be loaded dynamically if needed -->
-              </select>
-            </div>
-
-             <!-- Reference -->
-             <div class="col-md-6">
-                <label for="leadReference" class="form-label">Reference (Optional):</label>
-                <input type="text" class="form-control" id="leadReference" name="reference">
-             </div>
-
-            <!-- Address -->
-            <div class="col-12">
-              <label for="leadAddress" class="form-label">Address (Optional):</label>
-              <input type="text" class="form-control" id="leadAddress" name="address">
+              <label for="companyName" class="form-label">Company Name:</label>
+              <input type="text" class="form-control" id="companyName" name="company_name">
             </div>
 
             <!-- Comment -->
             <div class="col-12">
-              <label for="leadComment" class="form-label">Comment (Optional):</label>
-              <textarea class="form-control" id="leadComment" name="comment" rows="3"></textarea>
+              <label for="leadComment" class="form-label">Comment:</label>
+              <textarea class="form-control" id="leadComment" name="comment" rows="2"></textarea>
             </div>
 
+            <!-- Hidden Fields -->
+            <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($loggedInUserId); ?>">
+            <input type="hidden" name="date" value="<?php echo date('Y-m-d'); ?>">
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button type="submit" form="addLeadForm" class="btn btn-primary">Save Lead</button>
+        <button type="button" id="saveLeadBtn" class="btn btn-primary">
+          <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+          Save Lead
+        </button>
       </div>
     </div>
   </div>
 </div>
 
+<!-- Toast Container -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1070;">
+  <!-- Success Toast -->
+    <div id="leadSuccessToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+      <i class="fas fa-check-circle me-2"></i>
+                Lead added successfully with status: <span id="successLeadStatus" class="badge bg-light text-dark"></span>
+    </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+  
+  <!-- Error Toast -->
+    <div id="leadErrorToast" class="toast align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body">
+      <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="leadErrorToastMessage">An error occurred while adding the lead.</span>
+    </div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Toast Styles */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1070;
+}
+
+.toast {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: all 0.3s ease-out;
+    min-width: 300px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.875rem;
+    padding: 0.35em 0.65em;
+}
+
+/* Animation Styles */
+@keyframes badgeHighlight {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.badge-highlight {
+    animation: badgeHighlight 0.5s ease-in-out;
+}
+
+.highlight-status {
+    animation: statusHighlight 2s ease-in-out;
+}
+
+@keyframes statusHighlight {
+    0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+}
+</style>
+
+<!-- Include Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Include Modal Enhancements Script -->
 <script src="../includes/modals/modal_enhancements.js"></script>

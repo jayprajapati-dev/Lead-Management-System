@@ -1,17 +1,21 @@
 <?php
-// Start session if not already started - MUST be the first thing
+// Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Include configuration
+// Include configuration and required files
 require_once '../includes/config.php';
+require_once '../includes/trial_functions.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header('Location: ' . SITE_URL . '/login.php');
     exit();
 }
+
+// Check trial restrictions before any output
+enforceTrialRestrictions($_SESSION['user_id']);
 
 // Fetch all active users for dropdowns
 $usersList = [];
@@ -33,28 +37,52 @@ try {
 
 // Get user's email from session
 $userEmail = $_SESSION['user_email'] ?? 'Guest';
+
+// Only start HTML output after all checks and redirects
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leads Dashboard</title>
+    <title>Leads | Lead Management System</title>
     <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Link to your custom CSS file -->
-    <link rel="stylesheet" href="css/dashboard_style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts (Poppins) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Link to dashboard CSS files -->
+    <link rel="stylesheet" href="css/dashboard_style_new.css">
     <style>
+        /* Base styles */
+        body {
+            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .dashboard-container {
+            width: 100%;
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f8f9fa;
+            background-color: var(--secondary-color);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            color: var(--text-primary);
         }
         .card {
             border-radius: 15px;
@@ -75,21 +103,43 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
             position: relative;
             overflow: hidden;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .highlight-status {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            transform: scale(1.02);
+            border: 2px solid gold;
+            align-items: center;
         }
         .status-box .count-badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            right: 15px;
             background-color: rgba(255, 255, 255, 0.3);
+            color: white;
             border-radius: 50%;
-            padding: 5px 10px;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .badge-highlight {
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.6) !important;
         }
         /* Custom colors for status boxes */
-        .status-new { background-color: #20c997; } /* Teal */
+        .status-new { background-color: #0d6efd; } /* Blue */
         .status-processing { background-color: #6f42c1; } /* Dark Purple */
-        .status-close-by { background-color: #28a745; } /* Green */
-        .status-confirm { background-color: #1e7e34; } /* Dark Green */
+        .status-close-by { background-color: #ffc107; } /* Yellow */
+        .status-confirm { background-color: #198754; } /* Green */
         .status-cancel { background-color: #dc3545; } /* Red */
 
         .floating-button {
@@ -97,10 +147,39 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--shadow-md);
+            background-color: var(--primary-color);
+            color: var(--text-active);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity var(--transition-normal), transform var(--transition-normal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Adjust floating button for mobile */
+        @media (max-width: 767.98px) {
+            .floating-button {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 14px;
+            }
+        }
+        
+        .floating-button.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .floating-button:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-3px);
         }
 
          /* Adjustments for filter row alignment */
@@ -114,44 +193,33 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
 
         /* Updated styles for action buttons header */
         .action-buttons-top-bar {
-            background-color: #fff;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .action-buttons-top-bar .view-toggle-group {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .action-buttons-top-bar .view-toggle-group .btn {
-            padding: 0.375rem 0.75rem;
-            font-size: 1rem;
-            border-radius: 4px;
+            margin-bottom: 20px;
         }
 
         .action-buttons-top-bar .action-buttons-group {
             display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
         }
 
         .action-buttons-top-bar .action-buttons-group .btn {
-            padding: 0.5rem 1rem;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            white-space: nowrap;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
         }
 
-        .action-buttons-top-bar .page-title {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #2c3e50;
+        .action-buttons-top-bar .action-buttons-group .btn i {
+            font-size: 14px;
+        }
+
+        /* Ensure proper spacing between icon and text */
+        .action-buttons-top-bar .action-buttons-group .btn span {
+            display: inline-block;
+            margin-left: 4px;
         }
 
         @media (max-width: 768px) {
@@ -159,15 +227,18 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
                 flex-direction: column;
                 gap: 1rem;
             }
+            
             .action-buttons-top-bar .action-buttons-group {
                 width: 100%;
-                justify-content: flex-start;
+                flex-wrap: wrap;
             }
-            .action-buttons-top-bar .btn span {
+            
+            .action-buttons-top-bar .action-buttons-group .btn {
+                padding: 8px;
+            }
+            
+            .action-buttons-top-bar .action-buttons-group .btn span {
                 display: none;
-            }
-            .action-buttons-top-bar .btn {
-                padding: 0.5rem;
             }
         }
 
@@ -177,103 +248,240 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
             display: flex;
             flex-direction: column;
         }
-        .sidebar {
-            background-color: #fff;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            transition: all 0.3s;
+        /* Main content wrapper */
+        .main-content-wrapper {
+            margin-top: 60px;
+            margin-left: 250px;
+            padding: 1.5rem;
+            min-height: calc(100vh - 60px);
+            width: calc(100% - 250px);
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            background-color: var(--secondary-color);
+            position: relative;
+            overflow-x: hidden;
         }
+        
+        /* Custom styles for leads page */
+        /* All sidebar styling is now in dashboard_style_new.css */
         .sidebar-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0,0,0,0.5);
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(2px);
             z-index: 999;
-        }
-        .sidebar-overlay.show {
-            display: block;
-        }
-        /* Fix sizing issues */
-        body {
-            padding-top: 0; /* Remove any top padding */
-            margin-top: 0; /* Remove any top margin */
-        }
-        
-        .dashboard-container {
-            padding-top: 0; /* Remove any top padding */
-            margin-top: 0; /* Remove any top margin */
-        }
-        
-        .main-content-area {
-            padding-top: 0; /* Remove any top padding */
-            margin-top: 0; /* Remove any top margin */
-            transition: all 0.3s;
+            opacity: 0;
+            transition: opacity var(--transition-fast);
         }
         
         /* Responsive sidebar behavior */
         @media (max-width: 767.98px) {
             .sidebar {
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                z-index: 1000;
                 transform: translateX(-100%);
-                transition: transform 0.3s ease;
-                box-shadow: none;
+                width: 280px; /* Slightly wider on mobile for better touch targets */
+                z-index: 1050; /* Higher z-index to ensure it appears above other content */
             }
             .sidebar.show {
                 transform: translateX(0);
-                box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+                box-shadow: 5px 0 15px rgba(0, 0, 0, 0.2);
             }
-            .main-content-area {
-                width: 100%;
+            .main-content-wrapper {
                 margin-left: 0;
+                width: 100%;
+                padding: 1rem; /* Smaller padding on mobile */
             }
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: 0;
+            .header {
                 left: 0;
                 width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 999;
-                opacity: 0;
-                transition: opacity 0.3s ease;
             }
             .sidebar-overlay.show {
-                display: block;
                 opacity: 1;
+                pointer-events: all;
+            }
+            
+            /* Improve card padding on mobile */
+            .card {
+                padding: 15px !important;
+            }
+            
+            .crm-section-card {
+                padding: 15px !important;
+            }
+            
+            /* Improve touch targets */
+            .btn {
+                min-height: 38px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
-        .navbar {
+
+        /* Styles for active sidebar link */
+        /* Custom styles specific to leads page */
+        
+        /* Status box styling */
+        .status-box {
+            border-radius: 10px;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+        }
+        
+        .status-box:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Kanban Board Layout */
+        .kanban-wrapper {
+            position: relative;
+            margin: 0 -10px;
+        }
+
+        .kanban-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px 0;
+            min-height: calc(100vh - 300px);
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: #6c757d #f8f9fa;
+        }
+
+        /* Scrollbar styling */
+        .kanban-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .kanban-container::-webkit-scrollbar-track {
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .kanban-container::-webkit-scrollbar-thumb {
+            background: #6c757d;
+            border-radius: 4px;
+        }
+
+        .kanban-container::-webkit-scrollbar-thumb:hover {
+            background: #495057;
+        }
+
+        /* Column Styles */
+        .kanban-column {
+            flex: 0 0 300px;
+            margin: 0 10px;
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            max-height: calc(100vh - 250px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+
+        .kanban-column-header {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 600;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        footer {
-            margin-top: auto;
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-        }
-         /* Styles for active sidebar link */
-        .sidebar .nav-link.active {
-            color: #007bff; /* Bootstrap primary blue */
-            font-weight: 600;
-            /* Add other styles as needed, e.g., background-color */
-             background-color: #e9ecef; /* Light grey background */
-             border-radius: 5px;
-        }
-         .sidebar .nav-link.active i {
-             color: #007bff; /* Match icon color to text */
-         }
 
+        /* Lead Status Column Specific Styles */
+        .column-new .kanban-column-header {
+            background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+        }
+
+        .column-processing .kanban-column-header {
+            background: linear-gradient(135deg, #6610f2, #6f42c1);
+        }
+
+        .column-closeby .kanban-column-header {
+            background: linear-gradient(135deg, #fd7e14, #ffc107);
+        }
+
+        .column-confirm .kanban-column-header {
+            background: linear-gradient(135deg, #198754, #20c997);
+        }
+
+        .column-cancel .kanban-column-header {
+            background: linear-gradient(135deg, #dc3545, #dc3545);
+        }
+
+        .kanban-column-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            min-height: 200px;
+        }
+
+        /* Lead Count Badge */
+        .lead-count {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            min-width: 28px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Column Header Icons */
+        .kanban-column-header i {
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+
+        /* Lead Card Styles */
+        .lead-card {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 4px solid;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .lead-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Lead Card Status Colors */
+        .column-new .lead-card { border-left-color: #0d6efd; }
+        .column-processing .lead-card { border-left-color: #6610f2; }
+        .column-closeby .lead-card { border-left-color: #fd7e14; }
+        .column-confirm .lead-card { border-left-color: #198754; }
+        .column-cancel .lead-card { border-left-color: #dc3545; }
+
+        @media (min-width: 1200px) {
+            .kanban-column {
+                flex: 0 0 320px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -283,201 +491,239 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
     <!-- Header first, outside the main container -->
     <?php include '../includes/dashboard-header.php'; ?>
     
-    <div class="dashboard-container container-fluid">
-        <div class="row">
-            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-                <?php include '../includes/sidebar.php'; ?>
-            </div>
-            
-            <!-- Main Content Area -->
-            <div class="col-md-9 col-lg-10 main-content-area">
+    <!-- Mobile Toggle Button is handled in dashboard-header.php -->
+    
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebarMenu">
+        <?php include '../includes/sidebar.php'; ?>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content-wrapper">
                 
-                <!-- Main Content Body -->
-                <div class="dashboard-body">
-                    <!-- Page content goes here -->
+        <div class="dashboard-body">
+            <div class="container-fluid p-0">
                 <div class="container-fluid py-4">
                     <div class="crm-section-card pt-3">
                         <!-- Action Buttons Top Bar -->
                         <div class="d-flex justify-content-between align-items-center action-buttons-top-bar">
                             <div class="d-flex align-items-center view-toggle-group">
-                                <button type="button" class="btn btn-outline-secondary" id="gridViewBtn" title="Grid View">
+                                <button type="button" class="btn btn-outline-secondary active" id="gridViewBtn" title="Board View">
                                     <i class="fas fa-th-large"></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-secondary active" id="listViewBtn" title="List View">
+                                <button type="button" class="btn btn-outline-secondary" id="listViewBtn" title="List View">
                                     <i class="fas fa-list"></i>
                                 </button>
-                                <h2 class="page-title ms-3 mb-0">Leads</h2>
+                                <h2 class="page-title ms-3 mb-0">Leads Overview</h2>
                             </div>
                             
                             <!-- Board View Buttons -->
-                            <div class="action-buttons-group d-none" id="boardViewButtons">
-                                <button class="btn btn-primary" title="Add New Lead">
-                                    <i class="fas fa-plus"></i>
+                            <div class="action-buttons-group" id="boardViewButtons">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+                                    <i class="fas fa-plus-circle"></i>
                                     <span>Add</span>
                                 </button>
-                                <button class="btn btn-secondary" title="Board Settings">
+                                <button class="btn btn-secondary" title="Settings">
                                     <i class="fas fa-cog"></i>
                                     <span>Settings</span>
                                 </button>
-                                <button class="btn btn-info" title="Sort Leads">
+                                <button class="btn btn-info" title="Sort">
                                     <i class="fas fa-sort"></i>
                                     <span>Sort</span>
                                 </button>
-                             </div>
+                            </div>
 
                             <!-- List View Buttons -->
-                            <div class="action-buttons-group" id="listViewButtons">
-                                <button class="btn btn-primary" title="Add New Lead">
-                                    <i class="fas fa-plus"></i>
+                            <div class="action-buttons-group d-none" id="listViewButtons">
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addLeadModal">
+                                    <i class="fas fa-plus-circle"></i>
                                     <span>Add</span>
                                 </button>
-                                <button class="btn btn-secondary" title="Sort Leads">
+                                <button class="btn btn-info" title="Sort">
                                     <i class="fas fa-sort"></i>
                                     <span>Sort</span>
                                 </button>
-                                <button class="btn btn-info" title="Download Leads">
+                                <button class="btn btn-secondary" title="Download">
                                     <i class="fas fa-download"></i>
                                     <span>Download</span>
                                 </button>
-                                <button class="btn btn-warning" title="View Analytics">
+                                <button class="btn btn-warning" title="Graph">
                                     <i class="fas fa-chart-bar"></i>
                                     <span>Graph</span>
                                 </button>
-                                <button class="btn btn-dark" title="Manage Tags">
+                                <button class="btn btn-dark" title="Tag">
                                     <i class="fas fa-tags"></i>
                                     <span>Tag</span>
                                 </button>
-                                <button class="btn btn-danger" title="Delete Selected">
+                                <button class="btn btn-danger" title="Delete">
                                     <i class="fas fa-trash"></i>
                                     <span>Delete</span>
                                 </button>
-                              </div>
+                            </div>
                         </div>
 
                         <!-- Top Filter Section -->
                         <div class="card p-3 mb-4">
                             <div class="row g-3 filter-row">
-                                <!-- First row of filters -->
-                                <div class="col-md-3">
-                                    <label for="createdBySelect" class="form-label visually-hidden">Created By</label>
-                                    <select class="form-select" id="createdBySelect">
-                                        <option selected>Created By: All Lead</option>
-                                        <?php foreach ($usersList as $user): ?>
-                                            <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
+                                <!-- Mobile Filter Toggle Button (visible only on mobile) -->
+                                <div class="col-12 d-md-none mb-2">
+                                    <button class="btn btn-outline-primary w-100" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+                                        <i class="fas fa-filter me-2"></i> Show/Hide Filters
+                                    </button>
                                 </div>
-                                <div class="col-md-3">
-                                     <label for="assignToSelect" class="form-label visually-hidden">Assign To</label>
-                                    <select class="form-select" id="assignToSelect">
-                                        <option selected>Assign To: All Assign</option>
-                                         <?php foreach ($usersList as $user): ?>
-                                            <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                     <label for="labelsSelect" class="form-label visually-hidden">Labels</label>
-                                     <select class="form-select" id="labelsSelect">
-                                        <option selected>Labels: All Labels</option>
-                                         <!-- Options for Labels will go here -->
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                     <label for="sourceSelect" class="form-label visually-hidden">Source</label>
-                                     <select class="form-select" id="sourceSelect">
-                                        <option selected>Source: All Source</option>
-                                         <!-- Options for Source will go here -->
-                                    </select>
-                                </div>
+                                
+                                <div class="collapse d-md-flex w-100" id="filterCollapse">
+                                    <div class="row g-3 w-100">
+                                        <!-- First row of filters -->
+                                        <div class="col-md-3 col-sm-6">
+                                            <label for="createdBySelect" class="form-label visually-hidden">Created By</label>
+                                            <select class="form-select" id="createdBySelect">
+                                                <option selected>Created By: All Lead</option>
+                                                <?php foreach ($usersList as $user): ?>
+                                                    <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                             <label for="assignToSelect" class="form-label visually-hidden">Assign To</label>
+                                            <select class="form-select" id="assignToSelect">
+                                                <option selected>Assign To: All Assign</option>
+                                                 <?php foreach ($usersList as $user): ?>
+                                                    <option value="<?php echo $user['id']; ?>"><?php echo $user['name']; ?></option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                             <label for="labelsSelect" class="form-label visually-hidden">Labels</label>
+                                             <select class="form-select" id="labelsSelect">
+                                                <option selected>Labels: All Labels</option>
+                                                 <!-- Options for Labels will go here -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                             <label for="sourceSelect" class="form-label visually-hidden">Source</label>
+                                             <select class="form-select" id="sourceSelect">
+                                                <option selected>Source: All Source</option>
+                                                 <!-- Options for Source will go here -->
+                                            </select>
+                                        </div>
 
-                                <!-- Second row of filters -->
-                                <div class="col-md-3">
-                                     <label for="statusSelect" class="form-label visually-hidden">Status</label>
-                                     <select class="form-select" id="statusSelect">
-                                        <option selected>Status: All Status</option>
-                                         <!-- Options for Status will go here -->
-                                    </select>
-                                </div>
-                                <div class="col-md-3">
-                                     <label for="searchDateInput" class="form-label visually-hidden">Search By Date</label>
-                                    <div class="input-group">
-                                         <input type="text" class="form-control" id="searchDateInput" placeholder="Search By Date">
-                                         <button class="btn btn-outline-secondary" type="button">📅</button>
+                                        <!-- Second row of filters -->
+                                        <div class="col-md-3 col-sm-6">
+                                             <label for="statusSelect" class="form-label visually-hidden">Status</label>
+                                             <select class="form-select" id="statusSelect">
+                                                <option selected>Status: All Status</option>
+                                                 <!-- Options for Status will go here -->
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3 col-sm-6">
+                                             <label for="searchDateInput" class="form-label visually-hidden">Search By Date</label>
+                                            <div class="input-group">
+                                                 <input type="text" class="form-control" id="searchDateInput" placeholder="Search By Date">
+                                                 <button class="btn btn-outline-secondary" type="button"><i class="fas fa-calendar"></i></button>
+                                            </div>
+                                        </div>
+                                         <div class="col-md-6 col-sm-12">
+                                              <label for="searchInput" class="form-label visually-hidden">Search</label>
+                                             <div class="input-group">
+                                                <input type="text" class="form-control" id="searchInput" placeholder="Search...">
+                                                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+                                                <button class="btn btn-outline-secondary" type="button"><i class="fas fa-times"></i></button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                 <div class="col-md-6">
-                                      <label for="searchInput" class="form-label visually-hidden">Search</label>
-                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="searchInput" placeholder="Search...">
-                                        <button class="btn btn-outline-secondary" type="button">🔍</button>
-                                        <button class="btn btn-outline-secondary" type="button">✖️</button>
+                            </div>
+                        </div>                            <!-- Kanban Board -->
+                            <div class="kanban-wrapper">
+                                <div class="kanban-container" id="kanbanContainer">
+                                    <!-- New Column -->
+                                    <div class="kanban-column column-new">
+                                        <div class="kanban-column-header">
+                                            <div>
+                                                <i class="fas fa-clipboard-list"></i>
+                                                <span>New</span>
+                                            </div>
+                                            <span class="lead-count">0</span>
+                                        </div>
+                                        <div class="kanban-column-content" id="new-leads">
+                                            <div class="text-center text-muted p-3">
+                                                <i class="fas fa-inbox fa-2x mb-2"></i>
+                                                <p>No new leads yet</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Processing Column -->
+                                    <div class="kanban-column column-processing">
+                                        <div class="kanban-column-header">
+                                            <div>
+                                                <i class="fas fa-cog"></i>
+                                                <span>Processing</span>
+                                            </div>
+                                            <span class="lead-count">0</span>
+                                        </div>
+                                        <div class="kanban-column-content" id="processing-leads">
+                                            <div class="text-center text-muted p-3">
+                                                <i class="fas fa-cogs fa-2x mb-2"></i>
+                                                <p>No leads in processing</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Close-by Column -->
+                                    <div class="kanban-column column-closeby">
+                                        <div class="kanban-column-header">
+                                            <div>
+                                                <i class="fas fa-clock"></i>
+                                                <span>Close-by</span>
+                                            </div>
+                                            <span class="lead-count">0</span>
+                                        </div>
+                                        <div class="kanban-column-content" id="closeby-leads">
+                                            <div class="text-center text-muted p-3">
+                                                <i class="fas fa-hourglass-half fa-2x mb-2"></i>
+                                                <p>No close-by leads</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Confirm Column -->
+                                    <div class="kanban-column column-confirm">
+                                        <div class="kanban-column-header">
+                                            <div>
+                                                <i class="fas fa-check-circle"></i>
+                                                <span>Confirm</span>
+                                            </div>
+                                            <span class="lead-count">0</span>
+                                        </div>
+                                        <div class="kanban-column-content" id="confirm-leads">
+                                            <div class="text-center text-muted p-3">
+                                                <i class="fas fa-check-double fa-2x mb-2"></i>
+                                                <p>No confirmed leads</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Cancel Column -->
+                                    <div class="kanban-column column-cancel">
+                                        <div class="kanban-column-header">
+                                            <div>
+                                                <i class="fas fa-times-circle"></i>
+                                                <span>Cancel</span>
+                                            </div>
+                                            <span class="lead-count">0</span>
+                                        </div>
+                                        <div class="kanban-column-content" id="cancel-leads">
+                                            <div class="text-center text-muted p-3">
+                                                <i class="fas fa-ban fa-2x mb-2"></i>
+                                                <p>No cancelled leads</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Status Boxes Section -->
-                        <div class="row mb-4" id="statusBoxesRow">
-                            <div class="col-md col-sm-6">
-                                <div class="status-box status-new">
-                                    New <span class="count-badge">0</span>
-                                </div>
-                            </div>
-                            <div class="col-md col-sm-6">
-                                <div class="status-box status-processing">
-                                    Processing <span class="count-badge">0</span>
-                                </div>
-                            </div>
-                            <div class="col-md col-sm-6">
-                                <div class="status-box status-close-by">
-                                    Close-by <span class="count-badge">0</span>
-                                </div>
-                            </div>
-                            <div class="col-md col-sm-6">
-                                <div class="status-box status-confirm">
-                                    Confirm <span class="count-badge">0</span>
-                                </div>
-                            </div>
-                            <div class="col-md col-sm-6">
-                                <div class="status-box status-cancel">
-                                    Cancel <span class="count-badge">0</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Main Content Area -->
-                        <div class="card p-4">
-                            <!-- View Toggled Content -->
-                            <div id="leadsGridView" class="d-none">
-                                <div class="text-center text-muted mb-3 no-records-message">
-                                    There are no records to display (Grid View)
-                                </div>
-                                <!-- Placeholder for Grid View Lead Records -->
-                                <div class="row leads-grid-container">
-                                    <!-- Lead records will be dynamically loaded/displayed here in a grid format -->
-                                </div>
-                            </div>
-
-                            <div id="leadsListView">
-                                <div class="text-center text-muted mb-3 no-records-message">
-                                    There are no records to display (List View)
-                                </div>
-                                <!-- Placeholder for List View Lead Records -->
-                                <ul class="list-group leads-list-container d-none">
-                                     <!-- Lead records will be dynamically loaded/displayed here in a list format -->
-                                </ul>
-                            </div>
-                        </div>
-
-                        <!-- Floating Action Button -->
-                        <button class="btn btn-primary rounded-circle floating-button">↑</button>
-
-                        <!-- Bottom Loading Bar Placeholder -->
-                        <div class="progress fixed-bottom" style="height: 5px; z-index: 1001;">
-                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                        </div>
-
                     </div>
                     <!-- End Page content -->
                 </div>
@@ -493,7 +739,53 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
 
     <!-- Bootstrap 5 JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sidebar toggle and floating action button functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sidebar toggle functionality
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebarMenu.classList.toggle('show');
+                    sidebarOverlay.classList.toggle('show');
+                });
+            }
+            
+            if (sidebarOverlay) {
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebarMenu.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                });
+            }
+            
+            // Floating action button for scrolling to top
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+            
+            if (scrollToTopBtn) {
+                // Show button when user scrolls down 300px from the top
+                window.addEventListener('scroll', function() {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                        scrollToTopBtn.classList.add('show');
+                    } else {
+                        scrollToTopBtn.classList.remove('show');
+                    }
+                });
+                
+                // Scroll to top when button is clicked
+                scrollToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -545,62 +837,46 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
                 if (activeView === 'grid') {
                     listViewBtn.classList.remove('active');
                     gridViewBtn.classList.add('active');
-                    listView.classList.add('d-none');
-                    gridView.classList.remove('d-none');
+                    
+                    // Show board view buttons and hide list view buttons
                     boardViewButtons.classList.remove('d-none');
                     listViewButtons.classList.add('d-none');
-                    // Show status filter for Board View
-                    if (statusBoxesRow) statusBoxesRow.classList.remove('d-none');
-
-                     // Check for lead items and toggle messages/status based on data for grid view
-                    const gridLeadItemsContainer = gridView.querySelector('.leads-grid-container');
-                    const gridNoRecordsMessage = gridView.querySelector('.no-records-message');
-                     if (gridLeadItemsContainer && gridLeadItemsContainer.querySelectorAll('.lead-item').length > 0) {
-                         if (gridNoRecordsMessage) gridNoRecordsMessage.classList.add('d-none');
-                         // Status boxes are always shown in grid view
-                     } else {
-                         if (gridNoRecordsMessage) gridNoRecordsMessage.classList.remove('d-none');
-                         // Status boxes are always shown in grid view
-                     }
+                    
+                    // Show kanban board and hide list view message
+                    document.getElementById('kanbanContainer').classList.remove('d-none');
+                    if (document.getElementById('listViewMessage')) {
+                        document.getElementById('listViewMessage').classList.add('d-none');
+                    }
 
                 } else { // list view
                     gridViewBtn.classList.remove('active');
                     listViewBtn.classList.add('active');
-                    gridView.classList.add('d-none');
-                    listView.classList.remove('d-none');
-                    boardViewButtons.classList.add('d-none');
+                    
+                    // Show list view buttons and hide board view buttons
                     listViewButtons.classList.remove('d-none');
-
-                    // Hide status filter for List View
-                    if (statusBoxesRow) statusBoxesRow.classList.add('d-none');
-
-                    // Check for lead items and toggle messages/data based on data for list view
-                    const listLeadItemsContainer = listView.querySelector('.leads-list-container');
-                    const listNoRecordsMessage = listView.querySelector('.no-records-message');
-
-                    if (listLeadItemsContainer && listLeadItemsContainer.querySelectorAll('.lead-item').length > 0) {
-                         if (listNoRecordsMessage) listNoRecordsMessage.classList.add('d-none');
-                         listLeadItemsContainer.classList.remove('d-none'); // Show list items
+                    boardViewButtons.classList.add('d-none');
+                    
+                    // Hide kanban board and show list view message
+                    document.getElementById('kanbanContainer').classList.add('d-none');
+                    
+                    // Create or show the list view message
+                    let listViewMessage = document.getElementById('listViewMessage');
+                    if (!listViewMessage) {
+                        listViewMessage = document.createElement('div');
+                        listViewMessage.id = 'listViewMessage';
+                        listViewMessage.className = 'text-center text-muted p-5';
+                        listViewMessage.innerHTML = '<i class="fas fa-inbox fa-3x mb-3"></i><p class="h5">There are no records to display</p>';
+                        document.querySelector('.crm-section-card').appendChild(listViewMessage);
                     } else {
-                        if (listNoRecordsMessage) listNoRecordsMessage.classList.remove('d-none');
-                        listLeadItemsContainer.classList.add('d-none'); // Hide list items if no data
+                        listViewMessage.classList.remove('d-none');
                     }
                 }
-
-                 // Ensure the 'no records' message in the other view is hidden
-                 const otherViewElement = (activeView === 'grid') ? listView : gridView;
-                 const otherNoRecordsMessage = otherViewElement.querySelector('.no-records-message');
-                 if(otherNoRecordsMessage) otherNoRecordsMessage.classList.add('d-none');
-
             }
 
             // Initial setup: Set Board View as default active and update view display
-             // Check if elements exist before setting initial state
-             if (gridViewBtn && listViewBtn && boardViewButtons && listViewButtons && statusBoxesRow && gridView && listView) {
-                updateView('grid'); // Set initial view to Board (grid)
-             }
-
             if (gridViewBtn && listViewBtn) {
+                updateView('grid'); // Set initial view to Board view
+                
                 gridViewBtn.addEventListener('click', function() {
                     updateView('grid');
                 });
@@ -639,9 +915,15 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
 
     <!-- Include Add Lead Modal -->
     <?php include '../includes/modals/add-lead.php'; ?>
+    
+    <!-- Floating Action Button for scrolling to top -->
+    <button id="scrollToTopBtn" class="btn btn-primary floating-button d-flex align-items-center justify-content-center">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Custom JavaScript -->
     <script src="js/leads.js"></script>
+    <script src="js/lead-display.js"></script>
 
 <!-- Sidebar toggle functionality is now handled in dashboard-header.php -->
 </body>

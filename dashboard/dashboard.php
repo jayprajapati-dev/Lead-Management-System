@@ -1,4 +1,8 @@
 <?php
+// Include authentication check (must be first)
+require_once '../includes/auth_check.php';
+
+// Include other required files
 require_once '../includes/config.php';
 
 // Check if user is logged in
@@ -93,37 +97,43 @@ try {
                         <!-- Today's Leads Card -->
                         <div class="col-md-4 mb-4">
                             <div class="card dashboard-card">
-                                <div class="card-header">
-                                    <h4><i class="fas fa-user-plus me-2"></i>Today's Leads</h4>
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h4 class="mb-0"><i class="fas fa-user-plus me-2"></i>Today's Leads</h4>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body p-0">
                                     <ul class="nav nav-tabs card-tabs" role="tablist">
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab" aria-controls="new" aria-selected="true">New <span class="badge badge-count">0</span></button>
+                                            <button class="nav-link active" id="new-tab" data-bs-toggle="tab" data-bs-target="#new" type="button" role="tab">
+                                                New <span class="badge badge-count bg-primary">0</span>
+                                            </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button" role="tab" aria-controls="processing" aria-selected="false">Processing <span class="badge badge-count">0</span></button>
+                                            <button class="nav-link" id="processing-tab" data-bs-toggle="tab" data-bs-target="#processing" type="button" role="tab">
+                                                Processing <span class="badge badge-count bg-purple">0</span>
+                                            </button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="close-by-tab" data-bs-toggle="tab" data-bs-target="#close-by" type="button" role="tab" aria-controls="close-by" aria-selected="false">Close-By <span class="badge badge-count">0</span></button>
+                                            <button class="nav-link" id="close-by-tab" data-bs-toggle="tab" data-bs-target="#close-by" type="button" role="tab">
+                                                Close-By <span class="badge badge-count bg-warning">0</span>
+                                            </button>
                                         </li>
                                     </ul>
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="new" role="tabpanel" aria-labelledby="new-tab">
+                                    <div class="tab-content p-3">
+                                        <div class="tab-pane fade show active" id="new" role="tabpanel">
                                             <div class="empty-state">
                                                 <i class="fas fa-clipboard-list"></i>
                                                 <h5>No New Leads</h5>
                                                 <p>There are no new leads assigned to you today</p>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="processing" role="tabpanel" aria-labelledby="processing-tab">
+                                        <div class="tab-pane fade" id="processing" role="tabpanel">
                                             <div class="empty-state">
                                                 <i class="fas fa-spinner"></i>
                                                 <h5>No Processing Leads</h5>
                                                 <p>There are no leads in processing status today</p>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="close-by" role="tabpanel" aria-labelledby="close-by-tab">
+                                        <div class="tab-pane fade" id="close-by" role="tabpanel">
                                             <div class="empty-state">
                                                 <i class="fas fa-check-circle"></i>
                                                 <h5>No Close-By Leads</h5>
@@ -279,21 +289,24 @@ try {
                                     </div>
                                     <div class="card-body">
                                         <div class="analytics-info">
-                                            <div class="date-range"><i class="fas fa-calendar-alt me-2"></i>FROM 01-05-2025 TO 31-05-2025</div>
+                                            <div class="date-range"><i class="fas fa-calendar-alt me-2"></i>FROM 01-06-2025 TO 01-06-2025</div>
                                             <span class="staff-badge badge"><i class="fas fa-user-tie me-1"></i>Star Tech</span>
                                         </div>
-                                        <div class="no-data-message">
-                                            <i class="fas fa-chart-bar"></i>
-                                            <div class="no-data-text">No Lead Data Available</div>
-                                            <div class="no-data-count">0</div>
+                                        <div class="chart-container position-relative" style="height: 300px;">
+                                            <canvas id="leadStatusChart"></canvas>
+                                            <div class="loading-spinner d-none">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
                                         </div>
-                                        <div class="chart-legend">
-                                            <ul>
-                                                <li><span style="background-color: #2c5282;"></span> New</li>
-                                                <li><span style="background-color: #2b6cb0;"></span> Processing</li>
-                                                <li><span style="background-color: #3182ce;"></span> Close-by</li>
-                                                <li><span style="background-color: #4299e1;"></span> Confirm</li>
-                                                <li><span style="background-color: #63b3ed;"></span> Cancel</li>
+                                            </div>
+                                        </div>
+                                        <div class="chart-legend mt-3">
+                                            <ul class="list-unstyled d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                                <li><span class="legend-dot" style="background-color: #0d6efd;"></span> New</li>
+                                                <li><span class="legend-dot" style="background-color: #6610f2;"></span> Processing</li>
+                                                <li><span class="legend-dot" style="background-color: #ffc107;"></span> Close-by</li>
+                                                <li><span class="legend-dot" style="background-color: #198754;"></span> Confirm</li>
+                                                <li><span class="legend-dot" style="background-color: #dc3545;"></span> Cancel</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -309,24 +322,27 @@ try {
                                     </div>
                                     <div class="card-body">
                                         <div class="analytics-info">
-                                            <div class="date-range"><i class="fas fa-calendar-alt me-2"></i>FROM 01-05-2025 TO 31-05-2025</div>
+                                            <div class="date-range"><i class="fas fa-calendar-alt me-2"></i>FROM 01-06-2025 TO 01-06-2025</div>
                                             <span class="staff-badge badge"><i class="fas fa-user-tie me-1"></i>Star Tech</span>
                                         </div>
-                                        <div class="no-data-message">
-                                            <i class="fas fa-chart-line"></i>
-                                            <div class="no-data-text">No Source Data Available</div>
-                                            <div class="no-data-count">0</div>
+                                        <div class="chart-container position-relative" style="height: 300px;">
+                                            <canvas id="leadSourceChart"></canvas>
+                                            <div class="loading-spinner d-none">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
                                         </div>
-                                        <div class="chart-legend">
-                                            <ul>
-                                                <li><span style="background-color: #2c5282;"></span> Online</li>
-                                                <li><span style="background-color: #2b6cb0;"></span> Offline</li>
-                                                <li><span style="background-color: #3182ce;"></span> Website</li>
-                                                <li><span style="background-color: #4299e1;"></span> Whatsapp</li>
-                                                <li><span style="background-color: #63b3ed;"></span> Customer Reminder</li>
-                                                <li><span style="background-color: #90cdf4;"></span> Indiamart</li>
-                                                <li><span style="background-color: #bee3f8;"></span> Facebook</li>
-                                                <li><span style="background-color: #ebf8ff;"></span> Google Form</li>
+                                            </div>
+                                        </div>
+                                        <div class="chart-legend mt-3">
+                                            <ul class="list-unstyled d-flex flex-wrap justify-content-center gap-3 mb-0">
+                                                <li><span class="legend-dot" style="background-color: #0d6efd;"></span> Online</li>
+                                                <li><span class="legend-dot" style="background-color: #6c757d;"></span> Offline</li>
+                                                <li><span class="legend-dot" style="background-color: #198754;"></span> Website</li>
+                                                <li><span class="legend-dot" style="background-color: #ffc107;"></span> Whatsapp</li>
+                                                <li><span class="legend-dot" style="background-color: #6610f2;"></span> Customer Reminder</li>
+                                                <li><span class="legend-dot" style="background-color: #0dcaf0;"></span> Indiamart</li>
+                                                <li><span class="legend-dot" style="background-color: #20c997;"></span> Facebook</li>
+                                                <li><span class="legend-dot" style="background-color: #fd7e14;"></span> Google Form</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -441,10 +457,11 @@ try {
 
     <!-- Success Message Toast -->
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
             <div class="d-flex">
                 <div class="toast-body">
-                    Note saved successfully!
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span>Lead saved successfully!</span>
                 </div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
@@ -540,8 +557,8 @@ try {
                         <div class="col-md-4">
                             <label for="leadUser" class="form-label">User:</label>
                             <select class="form-select" id="leadUser" name="user_id">
-                                <!-- User options will be loaded here dynamically -->
-                                <option value="">Select User</option>
+                                <!-- Fixed user option as requested -->
+                                <option value="1" selected>Varun Dhavan</option>
                             </select>
                         </div>
                          <div class="col-md-6">
@@ -937,5 +954,71 @@ try {
             });
         });
     </script>
+
+    <!-- Add Chart.js before your custom scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Add your custom dashboard.js -->
+    <script src="js/dashboard.js"></script>
+
+    <style>
+        .chart-container {
+            position: relative;
+            margin: auto;
+        }
+        
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .chart-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .chart-center-text .total-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .chart-center-text .total-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .legend-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .chart-legend ul {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .chart-legend li {
+            display: inline-flex;
+            align-items: center;
+            margin-right: 15px;
+            font-size: 0.875rem;
+            color: #666;
+        }
+    </style>
 </body>
 </html>

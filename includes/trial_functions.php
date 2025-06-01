@@ -25,6 +25,7 @@ function isTrialExpired($user_id) {
         require_once __DIR__ . '/config.php';
     }
     
+    try {
     $sql = "SELECT status, trial_end_date FROM users WHERE id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
@@ -43,6 +44,15 @@ function isTrialExpired($user_id) {
             $now = new DateTime();
             return $now > $trial_end;
         }
+        } else {
+            // User not found in database
+            session_destroy();
+            header("Location: " . SITE_URL . "/public/login.php?error=account_deleted");
+            exit;
+        }
+    } catch (Exception $e) {
+        error_log("Error checking trial expiration: " . $e->getMessage());
+        return true; // Default to expired if there's an error
     }
     
     // Default to expired if we can't determine (safety measure)
@@ -142,6 +152,24 @@ function enforceTrialRestrictions($user_id) {
         return;
     }
     
+    try {
+        // First check if user exists
+        $check_sql = "SELECT id FROM users WHERE id = ?";
+        $check_stmt = $conn->prepare($check_sql);
+        $check_stmt->bind_param("i", $user_id);
+        $check_stmt->execute();
+        if ($check_stmt->get_result()->num_rows === 0) {
+            // User doesn't exist, clear session and redirect to login
+            session_destroy();
+            if (!headers_sent()) {
+                header("Location: " . SITE_URL . "/public/login.php?error=account_deleted");
+                exit;
+            } else {
+                echo "<script>window.location.href = '" . SITE_URL . "/public/login.php?error=account_deleted';</script>";
+                exit;
+            }
+    }
+    
     // Check if trial has expired
     if (isTrialExpired($user_id)) {
         // Get current page
@@ -158,8 +186,25 @@ function enforceTrialRestrictions($user_id) {
             $status_stmt->bind_param("i", $user_id);
             $status_stmt->execute();
             
-            // Redirect to upgrade page
+                // Try PHP redirect if headers haven't been sent
+                if (!headers_sent()) {
             header("Location: " . SITE_URL . "/dashboard/upgrade.php");
+                    exit;
+                } else {
+                    // Use JavaScript redirect as fallback
+                    echo "<script>window.location.href = '" . SITE_URL . "/dashboard/upgrade.php';</script>";
+                    exit;
+                }
+            }
+        }
+    } catch (Exception $e) {
+        error_log("Error enforcing trial restrictions: " . $e->getMessage());
+        // In case of error, redirect to login page
+        if (!headers_sent()) {
+            header("Location: " . SITE_URL . "/public/login.php?error=system_error");
+            exit;
+        } else {
+            echo "<script>window.location.href = '" . SITE_URL . "/public/login.php?error=system_error';</script>";
             exit;
         }
     }

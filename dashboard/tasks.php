@@ -288,6 +288,25 @@ try {
             }
         }
 
+        .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+        }
+        .bg-primary-subtle { background-color: rgba(13, 110, 253, 0.1); }
+        .bg-info-subtle { background-color: rgba(13, 202, 240, 0.1); }
+        .bg-warning-subtle { background-color: rgba(255, 193, 7, 0.1); }
+        .bg-success-subtle { background-color: rgba(25, 135, 84, 0.1); }
+        .bg-danger-subtle { background-color: rgba(220, 53, 69, 0.1); }
+        .card {
+            transition: transform 0.2s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
     </style>
 </head>
 <body>
@@ -393,48 +412,164 @@ try {
                          </div>
                      </div>
 
-                    <!-- Status Filter (Tabs) Section - Shown only in Kanban View -->
-                    <div class="row mb-4" id="statusFilterRow">
-                         <div class="col-md col-sm-6">
-                            <div class="status-box status-new">
-                                New <span class="count-badge">0</span>
-                            </div>
-                        </div>
-                        <div class="col-md col-sm-6">
-                            <div class="status-box status-processing">
-                                Processing <span class="count-badge">0</span>
-                            </div>
-                        </div>
-                         <div class="col-md col-sm-6">
-                            <div class="status-box status-in-feedback">
-                                In Feedback <span class="count-badge">0</span>
-                            </div>
-                        </div>
-                        <div class="col-md col-sm-6">
-                            <div class="status-box status-completed">
-                                Completed <span class="count-badge">0</span>
-                            </div>
-                        </div>
-                        <div class="col-md col-sm-6">
-                            <div class="status-box status-rejected">
-                                Rejected <span class="count-badge">0</span>
-                            </div>
-                        </div>
-                    </div>
+                    <style>
+                        .status-box {
+                            color: white;
+                            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            transition: transform 0.2s ease-in-out;
+                        }
+                        .status-box:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+                        }
+                        .count-badge {
+                            font-weight: 500;
+                            min-width: 30px;
+                            text-align: center;
+                        }
+                        @media (max-width: 768px) {
+                            .status-box {
+                                margin-bottom: 10px;
+                            }
+                        }
+                    </style>
 
-
+                
                     <!-- Main Content Area (Empty State) -->
                     <div id="tasksContentArea">
-                        <div class="empty-state-message">
-                            <p>There are no records to display</p>
+                        <div class="table-responsive">
+                            <div class="d-flex flex-nowrap overflow-auto pb-3">
+                                <!-- New Tasks Column -->
+                                <div class="col-md-3 min-width-300 me-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(45deg, #0d6efd, #0dcaf0) !important;">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-clipboard-list me-2"></i>
+                                                <span>New</span>
+                                            </div>
+                                            <span class="badge bg-white text-primary">0</span>
+                                        </div>
+                                        <div class="card-body text-center py-5">
+                                            <i class="fas fa-inbox fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted mb-3">No new tasks yet</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Processing Tasks Column -->
+                                <div class="col-md-3 min-width-300 me-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(45deg, #6610f2, #6f42c1);">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-cog me-2"></i>
+                                                <span>Processing</span>
+                                            </div>
+                                            <span class="badge bg-white text-purple">0</span>
+                                        </div>
+                                        <div class="card-body text-center py-5">
+                                            <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted">No tasks in processing</p>
+                                        </div>
+                            </div>
                         </div>
-                         <!-- Area where task data (Kanban board or list) would eventually be loaded -->
-                         <!-- Initially hidden as there are no records -->
-                         <div id="tasksDataDisplay" class="d-none">
-                             <!-- Dynamic task data will go here -->
-                         </div>
+
+                                <!-- In Feedback Tasks Column -->
+                                <div class="col-md-3 min-width-300 me-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(45deg, #fd7e14, #ffc107);">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-comments me-2"></i>
+                                                <span>In Feedback</span>
+                                            </div>
+                                            <span class="badge bg-white text-warning">0</span>
+                                        </div>
+                                        <div class="card-body text-center py-5">
+                                            <i class="fas fa-comment-dots fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted">No tasks in feedback</p>
+                                        </div>
+                            </div>
+                        </div>
+
+                                <!-- Completed Tasks Column -->
+                                <div class="col-md-3 min-width-300 me-3">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(45deg, #198754, #20c997);">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-check-circle me-2"></i>
+                                                <span>Completed</span>
+                                            </div>
+                                            <span class="badge bg-white text-success">0</span>
+                                        </div>
+                                        <div class="card-body text-center py-5">
+                                            <i class="fas fa-check-double fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted">No completed tasks</p>
+                                        </div>
+                            </div>
+                        </div>
+
+                                <!-- Rejected Tasks Column -->
+                                <div class="col-md-3 min-width-300">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(45deg, #dc3545, #dc3545);">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-times-circle me-2"></i>
+                                                <span>Rejected</span>
+                                            </div>
+                                            <span class="badge bg-white text-danger">0</span>
+                                        </div>
+                                        <div class="card-body text-center py-5">
+                                            <i class="fas fa-ban fa-3x text-muted mb-3"></i>
+                                            <p class="text-muted">No rejected tasks</p>
+                                        </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
                     </div>
 
+                    <style>
+                        .min-width-300 {
+                            min-width: 300px;
+                        }
+                        .table-responsive {
+                            overflow-x: auto;
+                            -webkit-overflow-scrolling: touch;
+                        }
+                        .card {
+                            transition: transform 0.2s ease-in-out;
+                        }
+                        .card:hover {
+                            transform: translateY(-5px);
+                        }
+                        .card-header {
+                            border-bottom: none;
+                            border-radius: 10px 10px 0 0 !important;
+                        }
+                        .text-purple {
+                            color: #6f42c1;
+                        }
+                        @media (max-width: 768px) {
+                            .min-width-300 {
+                                min-width: 260px;
+                            }
+                        }
+
+                        /* Custom scrollbar styles */
+                        .overflow-auto::-webkit-scrollbar {
+                            height: 8px;
+                        }
+                        .overflow-auto::-webkit-scrollbar-track {
+                            background: #f1f1f1;
+                            border-radius: 4px;
+                        }
+                        .overflow-auto::-webkit-scrollbar-thumb {
+                            background: #888;
+                            border-radius: 4px;
+                        }
+                        .overflow-auto::-webkit-scrollbar-thumb:hover {
+                            background: #666;
+                        }
+                    </style>
 
                 </div>
             </div>

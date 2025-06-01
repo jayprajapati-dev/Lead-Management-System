@@ -1,8 +1,39 @@
 -- Create database if not exists
 CREATE DATABASE IF NOT EXISTS crm_dashboard DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- Select the database
 USE crm_dashboard;
 
--- Users table with trial system
+-- Drop tables in correct order (respecting foreign key constraints)
+DROP TABLE IF EXISTS lead_tags;
+DROP TABLE IF EXISTS lead_notes;
+DROP TABLE IF EXISTS lead_activities;
+DROP TABLE IF EXISTS role_permissions;
+DROP TABLE IF EXISTS user_roles_map;
+DROP TABLE IF EXISTS user_permissions;
+DROP TABLE IF EXISTS user_roles;
+DROP TABLE IF EXISTS calendar_events;
+DROP TABLE IF EXISTS reminders;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS notes;
+DROP TABLE IF EXISTS notifications;
+DROP TABLE IF EXISTS leads;
+DROP TABLE IF EXISTS lead_sources;
+DROP TABLE IF EXISTS lead_status_types;
+DROP TABLE IF EXISTS sticky_notes;
+DROP TABLE IF EXISTS user_sessions;
+DROP TABLE IF EXISTS login_history;
+DROP TABLE IF EXISTS tags;
+DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS users;
+
+-- Drop views
+DROP VIEW IF EXISTS lead_statistics;
+DROP VIEW IF EXISTS user_performance;
+DROP VIEW IF EXISTS vw_todays_leads_summary;
+DROP VIEW IF EXISTS vw_todays_leads_by_source;
+
+-- Create users table first (since other tables reference it)
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
@@ -29,7 +60,7 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_email (email),
     INDEX idx_status (status),
     INDEX idx_trial_end (trial_end_date)
-) ENGINE=InnoDB;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Create sticky_notes table if it doesn't exist
 CREATE TABLE IF NOT EXISTS `sticky_notes` (
@@ -70,50 +101,101 @@ CREATE TABLE IF NOT EXISTS login_history (
     INDEX idx_user_login (user_id, login_time)
 ) ENGINE=InnoDB;
 
--- Lead sources table (defined before leads, as it's referenced by leads)
-CREATE TABLE IF NOT EXISTS lead_sources (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    description TEXT,
-    status ENUM('active', 'inactive') NOT NULL DEFAULT 'active',
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_status (status)
-) ENGINE=InnoDB;
+-- Drop existing tables if they exist
+DROP TABLE IF EXISTS `leads`;
+DROP TABLE IF EXISTS `lead_sources`;
+DROP TABLE IF EXISTS `lead_status_types`;
 
--- Lead statuses table (defined before leads, as its values are used in leads ENUM)
-CREATE TABLE IF NOT EXISTS lead_statuses (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(50) NOT NULL UNIQUE,
-    color VARCHAR(7) NOT NULL DEFAULT '#6c757d',
-    description TEXT,
-    is_system BOOLEAN NOT NULL DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
-
--- Leads table
-CREATE TABLE leads (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    phone VARCHAR(20),
-    country_code VARCHAR(10) NULL,
-    company VARCHAR(100),
-    lead_date DATE NULL,
-    reference VARCHAR(255) NULL,
-    address TEXT NULL,
-    comment TEXT NULL,
-    status ENUM('new', 'processing', 'close-by', 'confirm', 'cancel', 'contacted', 'qualified', 'closed', 'lost', 'proposal', 'negotiation', 'converted') NOT NULL DEFAULT 'new',
-    source_id INT NULL, -- Foreign key column
-    assigned_to INT NULL, -- Foreign key column (made NULLable to match modal)
-    created_by INT NOT NULL, -- Foreign key column
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (source_id) REFERENCES lead_sources(id) ON DELETE SET NULL, -- Added ON DELETE rule
-    FOREIGN KEY (assigned_to) REFERENCES users(id) ON DELETE SET NULL, -- Added ON DELETE rule
-    FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE -- Added ON DELETE rule
+-- Create lead_status_types table
+CREATE TABLE `lead_status_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `color_code` varchar(7) NOT NULL,
+  `display_order` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insert default status types
+INSERT INTO `lead_status_types` (`name`, `color_code`, `display_order`) VALUES
+('New', '#0d6efd', 1),
+('Processing', '#6610f2', 2),
+('Close-by', '#ffc107', 3),
+('Confirm', '#198754', 4),
+('Cancel', '#dc3545', 5);
+
+-- Create lead_sources table
+CREATE TABLE `lead_sources` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `color_code` varchar(7) NOT NULL,
+  `display_order` int(11) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Insert default sources
+INSERT INTO `lead_sources` (`name`, `color_code`, `display_order`) VALUES
+('Online', '#0d6efd', 1),
+('Offline', '#6c757d', 2),
+('Website', '#198754', 3),
+('Whatsapp', '#ffc107', 4),
+('Customer Reminder', '#6610f2', 5),
+('Indiamart', '#0dcaf0', 6),
+('Facebook', '#20c997', 7),
+('Google Form', '#fd7e14', 8);
+
+-- Create leads table
+CREATE TABLE `leads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(20) NOT NULL,
+  `company` varchar(100) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `source_id` int(11) NOT NULL,
+  `status_id` int(11) NOT NULL,
+  `assigned_to` int(11) NOT NULL,
+  `notes` text DEFAULT NULL,
+  `reference` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `submission_id` VARCHAR(50) UNIQUE,
+  PRIMARY KEY (`id`),
+  KEY `source_id` (`source_id`),
+  KEY `status_id` (`status_id`),
+  KEY `assigned_to` (`assigned_to`),
+  CONSTRAINT `leads_source_fk` FOREIGN KEY (`source_id`) REFERENCES `lead_sources` (`id`),
+  CONSTRAINT `leads_status_fk` FOREIGN KEY (`status_id`) REFERENCES `lead_status_types` (`id`),
+  CONSTRAINT `leads_user_fk` FOREIGN KEY (`assigned_to`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Update existing leads with a default submission_id
+UPDATE leads SET submission_id = CONCAT('legacy_', id) WHERE submission_id IS NULL;
+
+-- Create view for today's leads summary
+CREATE OR REPLACE VIEW `vw_todays_leads_summary` AS
+SELECT 
+    lst.name as status_name,
+    lst.color_code as status_color,
+    COUNT(l.id) as lead_count,
+    ROUND((COUNT(l.id) * 100.0) / NULLIF((SELECT COUNT(*) FROM leads WHERE DATE(created_at) = CURDATE()), 0), 1) as percentage
+FROM lead_status_types lst
+LEFT JOIN leads l ON lst.id = l.status_id AND DATE(l.created_at) = CURDATE()
+GROUP BY lst.id, lst.name, lst.color_code
+ORDER BY lst.display_order;
+
+-- Create view for today's leads by source
+CREATE OR REPLACE VIEW `vw_todays_leads_by_source` AS
+SELECT 
+    ls.name as source_name,
+    ls.color_code as source_color,
+    COUNT(l.id) as lead_count,
+    ROUND((COUNT(l.id) * 100.0) / NULLIF((SELECT COUNT(*) FROM leads WHERE DATE(created_at) = CURDATE()), 0), 1) as percentage
+FROM lead_sources ls
+LEFT JOIN leads l ON ls.id = l.source_id AND DATE(l.created_at) = CURDATE()
+GROUP BY ls.id, ls.name, ls.color_code
+ORDER BY ls.display_order;
 
 -- Lead notes table (existing structure is fine for comments)
 CREATE TABLE IF NOT EXISTS lead_notes (
@@ -175,74 +257,24 @@ CREATE TABLE IF NOT EXISTS settings (
     INDEX idx_group (setting_group)
 ) ENGINE=InnoDB;
 
--- Insert or ignore default lead statuses (combining original and modal statuses)
-INSERT IGNORE INTO lead_statuses (name, color, description, is_system) VALUES
-('New', '#007bff', 'New leads that need initial contact', TRUE),
-('Processing', '#17a2b8', 'Leads currently being processed', FALSE),
-('Close-by', '#ffc107', 'Leads close to conversion', FALSE),
-('Confirm', '#28a745', 'Confirmed leads', FALSE), -- Using success color
-('Cancel', '#dc3545', 'Cancelled leads', FALSE), -- Using danger color
-('Contacted', '#17a2b8', 'Leads that have been contacted', TRUE),
-('Qualified', '#28a745', 'Leads that have been qualified', TRUE),
-('Proposal', '#ffc107', 'Leads that have received a proposal', TRUE),
-('Negotiation', '#fd7e14', 'Leads in negotiation phase', TRUE),
-('Converted', '#20c997', 'Successfully converted leads', TRUE),
-('Lost', '#dc3545', 'Lost or unqualified leads', TRUE);
-
--- Insert or ignore default lead sources (combining original and modal sources)
-INSERT IGNORE INTO lead_sources (name, description) VALUES
-('Online', 'Leads from online channels'),
-('Offline', 'Leads from offline activities'),
-('Website', 'Leads from company website'),
-('Whatsapp', 'Leads from Whatsapp'),
-('Customer Reminder', 'Leads from customer reminders'),
-('Indiamart', 'Leads from Indiamart'),
-('Facebook', 'Leads from Facebook'),
-('Google Form', 'Leads from Google Forms'),
-('Referral', 'Leads from customer referrals'),
-('Social Media', 'Leads from social media platforms'),
-('Email Campaign', 'Leads from email marketing campaigns'),
-('Trade Show', 'Leads from trade shows and events'),
-('Cold Call', 'Leads from cold calling'),
-('Other', 'Leads from other sources');
-
--- Insert default tags (existing)
-INSERT IGNORE INTO tags (name, color) VALUES
-('Hot Lead', '#dc3545'),
-('VIP', '#ffc107'),
-('Follow Up', '#17a2b8'),
-('Potential', '#28a745'),
-('Long Term', '#6c757d');
-
--- Insert some default settings (existing)
-INSERT IGNORE INTO settings (setting_key, setting_value, setting_group, is_public) VALUES
-('company_name', 'CRM Dashboard', 'general', TRUE),
-('company_email', 'contact@example.com', 'general', TRUE),
-('company_phone', '+1 234 567 8900', 'general', TRUE),
-('company_address', '123 Business St, City, Country', 'general', TRUE),
-('default_lead_status', '1', 'leads', FALSE),
-('default_lead_source', '1', 'leads', FALSE),
-('items_per_page', '10', 'system', FALSE),
-('date_format', 'Y-m-d', 'system', FALSE),
-('time_format', 'H:i:s', 'system', FALSE);
-
--- Create lead statistics view (existing)
+-- Create lead statistics view
 CREATE OR REPLACE VIEW lead_statistics AS
 SELECT
-    l.status,
+    lst.name as status,
     COUNT(*) as total_leads,
     COUNT(CASE WHEN l.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) THEN 1 END) as new_leads,
-    COUNT(CASE WHEN l.status = 'new' THEN 1 END) as new_status_count,
-    COUNT(CASE WHEN l.status = 'contacted' THEN 1 END) as contacted_count,
-    COUNT(CASE WHEN l.status = 'qualified' THEN 1 END) as qualified_count,
-    COUNT(CASE WHEN l.status = 'closed' THEN 1 END) as closed_count,
-    COUNT(CASE WHEN l.status = 'lost' THEN 1 END) as lost_count,
+    COUNT(CASE WHEN lst.name = 'New' THEN 1 END) as new_status_count,
+    COUNT(CASE WHEN lst.name = 'Processing' THEN 1 END) as processing_count,
+    COUNT(CASE WHEN lst.name = 'Close-by' THEN 1 END) as close_by_count,
+    COUNT(CASE WHEN lst.name = 'Confirm' THEN 1 END) as confirm_count,
+    COUNT(CASE WHEN lst.name = 'Cancel' THEN 1 END) as cancel_count,
     COUNT(CASE WHEN l.assigned_to IS NOT NULL THEN 1 END) as assigned_leads,
     COUNT(CASE WHEN l.assigned_to IS NULL THEN 1 END) as unassigned_leads
 FROM leads l
-GROUP BY l.status;
+JOIN lead_status_types lst ON l.status_id = lst.id
+GROUP BY lst.name;
 
--- Create user performance view (existing)
+-- Create user performance view
 CREATE OR REPLACE VIEW user_performance AS
 SELECT
     u.id as user_id,
@@ -250,14 +282,15 @@ SELECT
     u.email as user_email,
     u.package as user_package,
     COUNT(DISTINCT l.id) as total_leads,
-    COUNT(DISTINCT CASE WHEN l.status = 'closed' THEN l.id END) as closed_leads,
-    COUNT(DISTINCT CASE WHEN l.status = 'lost' THEN l.id END) as lost_leads,
-    COUNT(DISTINCT CASE WHEN l.status = 'new' THEN l.id END) as new_leads,
-    COUNT(DISTINCT CASE WHEN l.status = 'contacted' THEN l.id END) as contacted_leads,
-    COUNT(DISTINCT CASE WHEN l.status = 'qualified' THEN l.id END) as qualified_leads,
+    COUNT(DISTINCT CASE WHEN lst.name = 'Confirm' THEN l.id END) as confirmed_leads,
+    COUNT(DISTINCT CASE WHEN lst.name = 'Cancel' THEN l.id END) as cancelled_leads,
+    COUNT(DISTINCT CASE WHEN lst.name = 'New' THEN l.id END) as new_leads,
+    COUNT(DISTINCT CASE WHEN lst.name = 'Processing' THEN l.id END) as processing_leads,
+    COUNT(DISTINCT CASE WHEN lst.name = 'Close-by' THEN l.id END) as close_by_leads,
     MAX(l.created_at) as last_lead_created
 FROM users u
 LEFT JOIN leads l ON u.id = l.assigned_to
+LEFT JOIN lead_status_types lst ON l.status_id = lst.id
 GROUP BY u.id, u.first_name, u.email, u.package;
 
 -- Additional tables for expanded functionality
