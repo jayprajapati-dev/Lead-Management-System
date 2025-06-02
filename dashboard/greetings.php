@@ -2147,349 +2147,311 @@ $greetings = [];
         }
 
         /* Enhanced Calendar Modal Styles */
-        .date-range-modal .modal-content {
-            border: none;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-
-        .date-range-modal .modal-header {
-            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
-            padding: 1.5rem;
-            border: none;
-        }
-
-        .date-range-modal .modal-title {
-            color: white;
-            font-size: 1.25rem;
-            font-weight: 600;
-        }
-
-        .date-range-modal .btn-close {
-            color: white;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-
-        .date-range-modal .btn-close:hover {
-            opacity: 1;
-        }
-
-        /* Calendar Sidebar */
-        .date-range-sidebar {
-            background: #F8FAFC;
-            border-right: 1px solid #E2E8F0;
-            padding: 1.5rem;
-        }
-
-        .date-option {
-            padding: 1rem 1.25rem;
-            margin-bottom: 0.75rem;
-            border-radius: 8px;
-            background: white;
-            color: #1E293B;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .date-option:hover {
-            background: #F1F5F9;
-            transform: translateY(-1px);
-        }
-
-        .date-option.active {
-            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-        }
-
-        /* Calendar Container */
-        .calendar-container {
-            padding: 1.5rem;
-            background: white;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .month-navigation {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .month-selector {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .month-selector select {
-            padding: 0.5rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .nav-btn {
-            padding: 0.5rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            background: white;
-            color: #1E293B;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .nav-btn:hover {
-            background: #F1F5F9;
-            border-color: #6366F1;
-            color: #6366F1;
-        }
-
-        /* Calendar Grid */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .calendar-day-header {
-            text-align: center;
-            font-weight: 600;
-            color: #64748B;
-            padding: 0.5rem;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 500;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
-        }
-
-        .calendar-day:not(.disabled):hover {
-            background: #F1F5F9;
-            border-color: #6366F1;
-            transform: translateY(-1px);
-        }
-
-        .calendar-day.selected {
-            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-        }
-
-        .calendar-day.today {
-            border: 2px solid #6366F1;
-            font-weight: 600;
-        }
-
-        .calendar-day.disabled {
-            color: #CBD5E1;
-            background: #F8FAFC;
-            cursor: not-allowed;
-        }
-
-        /* Custom Range Inputs */
-        .custom-range-input {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .custom-range-input input {
-            width: 70px;
-            padding: 0.5rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            margin-right: 0.5rem;
-        }
-
-        .custom-range-input span {
-            color: #64748B;
-            font-size: 0.95rem;
-        }
-
-        /* Selected Date Display */
-        .selected-dates {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #F8FAFC;
-            border-radius: 8px;
-            border: 1px solid #E2E8F0;
-        }
-
-        .selected-dates input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #E2E8F0;
-            border-radius: 6px;
-            background: white;
-            font-weight: 500;
-            color: #1E293B;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Form Type Selection Enhanced */
-        .form-type-selection {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 12px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            margin-bottom: 2rem;
-        }
-
-        .form-type-radio {
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-        }
-
-        .form-type-radio .form-check {
-            position: relative;
-            padding: 0;
-            margin: 0;
-        }
-
-        .form-type-radio .form-check-input {
-            position: absolute;
-            opacity: 0;
-        }
-
-        .form-type-radio .form-check-label {
-            display: flex;
-            align-items: center;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            background: #F8FAFC;
-            color: #64748B;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .form-type-radio .form-check-input:checked + .form-check-label {
-            background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
-        }
-
-        /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
             .date-range-modal .modal-dialog {
-                margin: 0.5rem;
+                margin: 0;
+                max-width: 100%;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
             }
 
+            .date-range-modal .modal-content {
+                height: 100%;
+                border-radius: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .date-range-modal .modal-body {
+                padding: 0;
+                flex: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            }
+
+            .date-range-modal .row {
+                margin: 0;
+                height: 100%;
+            }
+
+            /* Sidebar improvements */
             .date-range-sidebar {
-                border-right: none;
-                border-bottom: 1px solid #E2E8F0;
+                background: #F8FAFC;
                 padding: 1rem;
+                border-bottom: 1px solid #E2E8F0;
+                border-right: none;
             }
 
-            .date-option {
-                padding: 0.75rem 1rem;
-                margin-bottom: 0.5rem;
-            }
-
+            /* Calendar container improvements */
             .calendar-container {
                 padding: 1rem;
+                height: auto;
             }
 
             .calendar-grid {
-                gap: 0.25rem;
+                gap: 4px;
+                margin-bottom: 1.5rem;
             }
 
             .calendar-day {
+                min-height: 44px;
+                font-size: 1rem;
+                touch-action: manipulation; /* Prevent double-tap zoom */
+                -webkit-tap-highlight-color: transparent; /* Remove tap highlight on iOS */
+            }
+
+            .calendar-day-header {
                 font-size: 0.9rem;
+                padding: 0.75rem 0;
+                color: #64748B;
+                font-weight: 600;
             }
 
-            .form-type-radio {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .form-type-radio .form-check-label {
-                padding: 0.75rem 1.5rem;
-                justify-content: center;
-            }
-
-            .custom-range-input {
-                margin-top: 1rem;
-                padding: 0.75rem;
-            }
-
-            .selected-dates {
-                margin-top: 1rem;
-            }
-
-            .month-selector select {
-                font-size: 0.9rem;
-                padding: 0.4rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .date-range-modal .modal-header {
-                padding: 1rem;
-            }
-
-            .calendar-day {
-                font-size: 0.8rem;
-            }
-
+            /* Navigation improvements */
             .month-navigation {
                 gap: 0.5rem;
+                margin-bottom: 1rem;
             }
 
             .nav-btn {
-                padding: 0.4rem;
+                width: 44px;
+                height: 44px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: white;
+                border: 1px solid #E2E8F0;
+                border-radius: 8px;
+                font-size: 1.1rem;
+                color: #1E293B;
+                touch-action: manipulation;
+            }
+
+            .month-selector {
+                flex: 1;
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .month-selector select {
+                height: 44px;
+                padding: 0 1rem;
+                font-size: 1rem;
+                border: 1px solid #E2E8F0;
+                border-radius: 8px;
+                background-color: white;
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+                background-repeat: no-repeat;
+                background-position: right 0.75rem center;
+                background-size: 16px 12px;
+                flex: 1;
+            }
+
+            /* Date options improvements */
+            .date-option {
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+                border-radius: 8px;
+                background: white;
+                border: 1px solid #E2E8F0;
+                font-weight: 500;
+                touch-action: manipulation;
+            }
+
+            .date-option.active {
+                background: #4F46E5;
+                color: white;
+                border-color: #4F46E5;
+            }
+
+            /* Custom range inputs improvements */
+            .custom-range-input {
+                margin: 1rem 0;
+                padding: 1rem;
+                background: white;
+                border-radius: 8px;
+                border: 1px solid #E2E8F0;
             }
 
             .custom-range-input input {
-                width: 60px;
+                width: 100%;
+                height: 44px;
+                padding: 0 1rem;
+                margin-bottom: 0.5rem;
+                border: 1px solid #E2E8F0;
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+            /* Selected dates display improvements */
+            .selected-dates {
+                margin: 1rem;
+                padding: 1rem;
+                background: white;
+                border-radius: 8px;
+                border: 1px solid #E2E8F0;
+            }
+
+            .selected-dates input {
+                height: 44px;
+                padding: 0 1rem;
+                margin-bottom: 0.5rem;
+                font-size: 1rem;
+                background: #F8FAFC;
+            }
+
+            /* Footer improvements */
+            .date-range-modal .modal-footer {
+                padding: 1rem;
+                border-top: 1px solid #E2E8F0;
+                background: white;
+                position: sticky;
+                bottom: 0;
+                z-index: 1;
+            }
+
+            .date-range-modal .btn {
+                height: 44px;
+                font-size: 1rem;
+                font-weight: 500;
+                padding: 0 1.5rem;
+                border-radius: 8px;
+                width: 100%;
+                margin: 0.25rem 0;
+            }
+
+            /* Active states for touch */
+            .calendar-day:active,
+            .nav-btn:active,
+            .date-option:active {
+                opacity: 0.7;
+                transform: scale(0.98);
+                transition: all 0.1s ease;
+            }
+
+            /* Fix for iOS scroll bounce */
+            .modal.date-range-modal {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Improve calendar grid layout */
+            .calendar-grid {
+                display: grid;
+                grid-template-columns: repeat(7, 1fr);
+                gap: 4px;
+                padding: 0.5rem;
+                background: #F8FAFC;
+                border-radius: 8px;
+                margin-top: 0.5rem;
+            }
+
+            /* Improve calendar day appearance */
+            .calendar-day {
+                position: relative;
+                padding-top: 100%; /* Make it square */
+            }
+
+            .calendar-day span {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                font-weight: 500;
+                border-radius: 8px;
+                background: white;
+                border: 1px solid #E2E8F0;
+            }
+
+            .calendar-day.selected span {
+                background: #4F46E5;
+                color: white;
+                border-color: #4F46E5;
+            }
+
+            .calendar-day.today span {
+                border: 2px solid #4F46E5;
+                font-weight: 600;
             }
         }
 
-        /* High Contrast Mode */
-        @media (prefers-contrast: high) {
-            .date-option.active,
-            .calendar-day.selected,
-            .form-type-radio .form-check-input:checked + .form-check-label {
-                border: 2px solid #000;
+        /* Additional optimizations for very small screens */
+        @media (max-width: 360px) {
+            .calendar-day span {
+                font-size: 0.9rem;
             }
 
-            .calendar-day.today {
-                border-width: 3px;
+            .calendar-day-header {
+                font-size: 0.8rem;
+            }
+
+            .month-selector select,
+            .nav-btn {
+                height: 40px;
+                font-size: 0.9rem;
             }
         }
 
-        /* Animation Effects */
-        .date-range-modal .modal-content {
-            animation: modalSlideIn 0.3s ease;
+        /* Empty State Styles */
+        .greetings-content.empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
         }
 
-        @keyframes modalSlideIn {
+        .empty-state-icon {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 1.5rem;
+            background: #F8FAFC;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty-state-icon i {
+            font-size: 3rem;
+            color: #94A3B8;
+            opacity: 0.8;
+        }
+
+        .empty-state-text {
+            color: #475569;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state-subtext {
+            color: #64748B;
+            font-size: 0.95rem;
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        /* Empty State Animation */
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(-20px);
+                transform: translateY(20px);
             }
             to {
                 opacity: 1;
@@ -2497,102 +2459,48 @@ $greetings = [];
             }
         }
 
-        .date-option, .calendar-day {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .empty-state-icon,
+        .empty-state-text,
+        .empty-state-subtext {
+            animation: fadeInUp 0.6s ease forwards;
         }
 
-        .date-option:active, .calendar-day:active {
-            transform: scale(0.95);
+        .empty-state-icon {
+            animation-delay: 0.1s;
         }
 
-        /* Accessibility Improvements */
-        .calendar-day:focus-visible,
-        .date-option:focus-visible,
-        .nav-btn:focus-visible {
-            outline: 2px solid #6366F1;
-            outline-offset: 2px;
+        .empty-state-text {
+            animation-delay: 0.2s;
         }
 
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
+        .empty-state-subtext {
+            animation-delay: 0.3s;
         }
 
-        /* Empty state styles */
-        .greetings-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 200px;
-            background-color: #F8FAFC;
-            border-radius: 8px;
-            border: 2px dashed #E2E8F0;
-        }
-
-        .greetings-content p {
-            color: #64748B;
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin: 0;
-        }
-
-        /* Mobile responsive styles */
+        /* Mobile Responsive Adjustments */
         @media (max-width: 768px) {
-            .main-content-area {
-                margin-left: 0;
-                width: 100%;
-                padding: 16px;
+            .greetings-content.empty-state {
+                min-height: 250px;
+                padding: 1.5rem;
             }
 
-            .greetings-container {
-                padding: 16px;
+            .empty-state-icon {
+                width: 100px;
+                height: 100px;
+                margin-bottom: 1.25rem;
             }
 
-            .greetings-header {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
+            .empty-state-icon i {
+                font-size: 2.5rem;
             }
 
-            .greetings-filters {
-                flex-direction: column;
-                width: 100%;
+            .empty-state-text {
+                font-size: 1.1rem;
             }
 
-            .filter-group {
-                width: 100%;
-            }
-
-            .filter-select {
-                width: 100%;
-            }
-
-            .search-box {
-                width: 100%;
-            }
-
-            .search-input {
-                width: 100%;
-            }
-
-            .action-buttons {
-                justify-content: space-between;
-                width: 100%;
-            }
-
-            .action-buttons::before {
-                display: none;
-            }
-
-            .greetings-content {
-                min-height: 150px;
+            .empty-state-subtext {
+                font-size: 0.9rem;
+                padding: 0 1rem;
             }
         }
     </style>
@@ -2659,8 +2567,14 @@ $greetings = [];
                     </div>
                     
                     <!-- Content Area -->
-                    <div class="greetings-content" id="greetingsContent">
-                        <p>There are no records to display</p>
+                    <div class="greetings-content empty-state" id="greetingsContent">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <div class="empty-state-text">No Records Found</div>
+                        <div class="empty-state-subtext">
+                            There are currently no greetings to display. Click the "+" button to add your first greeting.
+                        </div>
                     </div>
                 </div>
         </div>
@@ -3437,7 +3351,7 @@ $greetings = [];
                 
                 // Empty cells for days before start of month
                 for (let i = 0; i < startDay; i++) {
-                    html += '<div class="calendar-day disabled"></div>';
+                    html += '<div class="calendar-day disabled"><span></span></div>';
                 }
 
                 // Days of the month
@@ -3457,13 +3371,13 @@ $greetings = [];
                              data-date="${year}-${month + 1}-${day}"
                              role="button"
                              tabindex="0">
-                            ${day}
+                            <span>${day}</span>
                         </div>`;
                 }
 
                 container.innerHTML = html;
 
-                // Add click handlers
+                // Add click handlers with improved touch feedback
                 container.querySelectorAll('.calendar-day:not(.disabled)').forEach(dayEl => {
                     dayEl.addEventListener('click', function() {
                         const selectedDate = new Date(this.dataset.date);
@@ -3473,6 +3387,12 @@ $greetings = [];
                         document.querySelectorAll('.calendar-day').forEach(d => 
                             d.classList.remove('selected'));
                         this.classList.add('selected');
+
+                        // Add touch feedback
+                        this.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
                     });
 
                     // Add keyboard accessibility
