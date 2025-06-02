@@ -52,6 +52,10 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts (Poppins) -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Country Flags CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
     <!-- Link to dashboard CSS files -->
     <link rel="stylesheet" href="css/dashboard_style_new.css">
     <style>
@@ -481,6 +485,26 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
             .kanban-column {
                 flex: 0 0 320px;
             }
+        }
+
+        /* Add Lead Modal Styles */
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+        }
+        
+        .country-flag-dropdown {
+            min-width: 100px;
+        }
+        
+        .country-flag-dropdown .flag-icon {
+            margin-right: 5px;
+        }
+        
+        .required-field::after {
+            content: "*";
+            color: red;
+            margin-left: 4px;
         }
     </style>
 </head>
@@ -961,6 +985,13 @@ $userEmail = $_SESSION['user_email'] ?? 'Guest';
         }
     });
     </script>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+    <!-- Add Lead JS -->
+    <script src="js/add-lead.js"></script>
 
 <!-- Sidebar toggle functionality is now handled in dashboard-header.php -->
 </body>

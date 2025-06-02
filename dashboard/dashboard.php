@@ -218,66 +218,48 @@ try {
                     </div>
                         
                         <!-- Sticky Notes Section -->
-                        <div class="row mt-5">
-                        <div class="col-12">
-                            <div class="sticky-notes-section card dashboard-card" style="min-height: 300px;">
-                                <div class="card-header">
-                                    <h4><i class="fas fa-sticky-note"></i> Sticky Notes</h4>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNoteModal">
-                                        <i class="fas fa-plus me-1"></i> Add Note
-                                    </button>
-                                </div>
-                                <div class="card-body">
-                            <!-- Container for displaying sticky notes -->
-                            <div id="stickyNotesContainer" class="row g-3 mt-2">
-                                            <?php
-                                            // Fetch existing notes for the logged-in user
-                                            if (isLoggedIn()) {
-                                                $userId = $_SESSION['user_id'];
-                                                try {
-                                                    $notesStmt = executeQuery("SELECT id, content, created_at FROM sticky_notes WHERE user_id = ? ORDER BY created_at DESC", [$userId]);
-                                                    $notesResult = $notesStmt->get_result();
-                                                    if ($notesResult->num_rows > 0) {
-                                                        while ($note = $notesResult->fetch_assoc()) {
-                                                            // Format the note creation date
-                                                            $createdDate = new DateTime($note['created_at']);
-                                                            $formattedDate = $createdDate->format('M d, Y');
-                                                            
-                                                            // Output HTML for each note with professional styling
-                                                            echo '<div class="col-md-6 col-lg-4 mb-3">
-                                                                <div class="sticky-note" data-note-id="' . htmlspecialchars($note['id']) . '">
-                                                                    <span class="note-pin"></span>
-                                                                    <span class="delete-note" data-note-id="' . htmlspecialchars($note['id']) . '" title="Delete note">
-                                                                        <i class="fas fa-times"></i>
-                                                                    </span>
-                                                                    <div class="note-content">' . htmlspecialchars($note['content']) . '</div>
-                                                                    <div class="note-date">' . $formattedDate . '</div>
-                                                                </div>
-                                                            </div>';
-                                                        }
-                                                    } else {
-                                                        echo '<div class="col-12 empty-notes-state">
-                                                            <i class="fas fa-sticky-note"></i>
-                                                            <h5>No Notes Yet</h5>
-                                                            <p>Click the "Add Note" button to create your first note</p>
-                                                        </div>';
-                                                    }
-                                                    $notesStmt->close();
-                                                } catch (Exception $e) {
-                                                    error_log("Error fetching sticky notes for user " . $userId . ": " . $e->getMessage());
-                                                    echo '<div class="col-12">
-                                                        <div class="alert alert-danger">
-                                                            <i class="fas fa-exclamation-circle me-2"></i>
-                                                            Error loading notes. Please try again later.
-                                                        </div>
-                                                    </div>';
-                                                }
-                                            }
-                                            ?>
-                                        </div>
+                        <div class="sticky-notes-section mt-4">
+                            <div class="section-header d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">Sticky Notes</h5>
+                                <button class="btn btn-sm add-note-btn" onclick="showAddNoteForm()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+
+                            <!-- Add Note Form -->
+                            <div id="addNoteForm" class="add-note-form" style="display: none;">
+                                <div class="sticky-note-form">
+                                    <textarea id="noteContent" placeholder="Enter your note here..." class="form-control"></textarea>
+                                    <div class="form-buttons mt-2">
+                                        <button class="btn btn-secondary btn-sm" onclick="hideAddNoteForm()">Cancel</button>
+                                        <button class="btn btn-primary btn-sm" onclick="saveNote()">Submit</button>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Sticky Notes Grid -->
+                            <div class="sticky-notes-grid" id="stickyNotesContainer">
+                                <?php
+                                // Get user's notes
+                                $notes_query = $conn->prepare("SELECT id, content FROM notes WHERE user_id = ? ORDER BY created_at DESC");
+                                $notes_query->bind_param("i", $_SESSION['user_id']);
+                                $notes_query->execute();
+                                $notes_result = $notes_query->get_result();
+                                
+                                while ($note = $notes_result->fetch_assoc()):
+                                ?>
+                                <div class="sticky-note" data-note-id="<?php echo $note['id']; ?>">
+                                    <button class="delete-btn" data-note-id="<?php echo $note['id']; ?>" onclick="confirmDelete(<?php echo $note['id']; ?>)">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                    <div class="note-content">
+                                        <?php echo htmlspecialchars($note['content']); ?>
+                                    </div>
+                                    <div class="note-fold"></div>
+                                </div>
+                                <?php endwhile; ?>
+                            </div>
+                        </div>
                    <!-- Analytics Cards Section -->
                    <div class="row mt-5">
                             <!-- Lead Status Card -->
@@ -433,281 +415,33 @@ try {
         </div>
     </div>
 
-    <!-- Add Note Modal -->
-    <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade delete-modal" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addNoteModalLabel">Add Notes</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="noteContent" class="form-label">Notes:*</label>
-                        <textarea class="form-control" id="noteContent" rows="5" placeholder="Enter Notes" required></textarea>
+                <div class="modal-body text-center p-4">
+                    <div class="warning-icon mb-3">
+                        <i class="fas fa-exclamation"></i>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveNoteButton">Submit</button>
+                    <h4 class="modal-title mb-3">Are You Sure?</h4>
+                    <div class="modal-buttons">
+                        <button type="button" class="btn btn-delete" onclick="deleteNote()">Yes, Delete It!</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Success Message Toast -->
-    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
-        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+    <!-- Success Toast -->
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="successToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-atomic="true">
             <div class="d-flex">
-                <div class="toast-body">
-                    <i class="fas fa-check-circle me-2"></i>
-                    <span>Lead saved successfully!</span>
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                <div class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
             </div>
         </div>
     </div>
-
-<!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteNoteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body text-center">
-                <div class="warning-icon mb-3">
-                    <i class="fas fa-exclamation"></i>
-                </div>
-                <h4>Are You Sure?</h4>
-                <p>Do you really want to delete this note? This process cannot be undone.</p>
-            </div>
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="confirmDeleteNoteButton">Yes, Delete It!</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Analytics Filter Modal -->
-<div class="modal fade" id="analyticsFilterModal" tabindex="-1" aria-labelledby="analyticsFilterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="analyticsFilterModalLabel">Filter Analytics</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <label for="startDate" class="form-label">Start Date:</label>
-                    <input type="date" class="form-control" id="startDate">
-                </div>
-                <div class="mb-3">
-                    <label for="endDate" class="form-label">End Date:</label>
-                    <input type="date" class="form-control" id="endDate">
-                </div>
-                <div class="mb-3">
-                    <label for="filterUser" class="form-label">User:</label>
-                    <select class="form-select" id="filterUser">
-                        <option value="">Select User</option>
-                        <!-- User options will be loaded here by JavaScript -->
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="applyAnalyticsFilterButton">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Lead Modal -->
-<div class="modal fade" id="addLeadModal" tabindex="-1" aria-labelledby="addLeadModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg"> <!-- Use modal-lg for larger size -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addLeadModalLabel">Add Lead</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addLeadForm" action="save_lead.php" method="POST">
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label for="leadStatus" class="form-label">Status:</label>
-                            <select class="form-select" id="leadStatus" name="status">
-                                <option value="New">New</option>
-                                <option value="Processing">Processing</option>
-                                <option value="Close-by">Close-by</option>
-                                <option value="Confirm">Confirm</option>
-                                <option value="Cancel">Cancel</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="leadSource" class="form-label">Source:</label>
-                            <select class="form-select" id="leadSource" name="source">
-                                <option value="Online">Online</option>
-                                <option value="Offline">Offline</option>
-                                <option value="Website">Website</option>
-                                <option value="Whatsapp">Whatsapp</option>
-                                <option value="Customer Reminder">Customer Reminder</option>
-                                <option value="Indiamart">Indiamart</option>
-                                <option value="Facebook">Facebook</option>
-                                <option value="Google Form">Google Form</option>
-                            </select>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="leadUser" class="form-label">User:</label>
-                            <select class="form-select" id="leadUser" name="user_id">
-                                <!-- Fixed user option as requested -->
-                                <option value="1" selected>Varun Dhavan</option>
-                            </select>
-                        </div>
-                         <div class="col-md-6">
-                            <label for="customerMobileNumber" class="form-label">Customer Mobile Number:<span class="text-danger">*</span></label>
-                             <div class="input-group">
-                                  <!-- Country code dropdown - placeholder -->
-                                 <select class="form-select country-code" name="country_code" style="flex: 0 0 auto; width: auto;">
-                                     <option value="+91">+91</option>
-                                      <!-- Add more country codes as needed -->
-                                 </select>
-                                 <input type="text" class="form-control" id="customerMobileNumber" name="mobile_number" placeholder="Enter Mobile Number" required>
-                             </div>
-                         </div>
-                        <div class="col-md-6">
-                            <label for="companyName" class="form-label">Company Name (Optional):</label>
-                            <input type="text" class="form-control" id="companyName" name="company_name" placeholder="Enter Company Name">
-                        </div>
-                         <div class="col-md-6">
-                             <label for="leadDate" class="form-label">Date:</label>
-                             <input type="date" class="form-control" id="leadDate" name="lead_date" value="<?php echo date('Y-m-d'); ?>">
-                         </div>
-                        <div class="col-md-6">
-                            <label for="customerName" class="form-label">Customer Name:<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="customerName" name="customer_name" placeholder="Enter Customer Name" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="customerEmail" class="form-label">Email (Optional):</label>
-                            <input type="email" class="form-control" id="customerEmail" name="customer_email" placeholder="Enter Customer Email">
-                        </div>
-                        <div class="col-md-6">
-                            <label for="leadLabel" class="form-label">Label (Optional):</label>
-                            <select class="form-select" id="leadLabel" name="label">
-                                <option value="">Select...</option>
-                                 <!-- Label options will likely be loaded here dynamically from your tags table -->
-                            </select>
-                        </div>
-                         <div class="col-md-6">
-                             <label for="leadReference" class="form-label">Reference (Optional):</label>
-                             <input type="text" class="form-control" id="leadReference" name="reference" placeholder="Enter Reference">
-                         </div>
-                        <div class="col-12">
-                            <label for="leadAddress" class="form-label">Address (Optional):</label>
-                            <textarea class="form-control" id="leadAddress" name="address" rows="2" placeholder="Enter Address"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label for="leadComment" class="form-label">Comment (Optional):</label>
-                            <textarea class="form-control" id="leadComment" name="comment" rows="3" placeholder="Enter Comment"></textarea>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" form="addLeadForm" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Add Reminder Modal -->
-<div class="modal fade" id="addReminderModal" tabindex="-1" aria-labelledby="addReminderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addReminderModalLabel">Add Reminder</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addReminderForm">
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label">Recurrence:</label>
-                            <div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderOnce" value="Once" checked>
-                                    <label class="form-check-label" for="reminderOnce">Once</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderDaily" value="Daily">
-                                    <label class="form-check-label" for="reminderDaily">Daily</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderWeekly" value="Weekly">
-                                    <label class="form-check-label" for="reminderWeekly">Weekly</label>
-                                </div>
-                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderMonthly" value="Monthly">
-                                    <label class="form-check-label" for="reminderMonthly">Monthly</label>
-                                </div>
-                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderQuarterly" value="Quarterly">
-                                    <label class="form-check-label" for="reminderQuarterly">Quarterly</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderHalfYearly" value="HalfYearly">
-                                    <label class="form-check-label" for="reminderHalfYearly">Half Yearly</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="recurrence" id="reminderYearly" value="Yearly">
-                                    <label class="form-check-label" for="reminderYearly">Yearly</label>
-                                </div>
-                            </div>
-                        </div>
-                         <div class="col-md-6">
-                            <label for="reminderDateTime" class="form-label">Date & Time:<span class="text-danger">*</span></label>
-                             <!-- You might want separate date and time inputs here for better browser support and control -->
-                            <input type="datetime-local" class="form-control" id="reminderDateTime" name="reminder_datetime" value="<?php echo date('Y-m-d H:i'); ?>" required>
-                         </div>
-                        <div class="col-md-6">
-                            <label for="reminderUser" class="form-label">User:<span class="text-danger">*</span></label>
-                            <select class="form-select" id="reminderUser" name="user_id" required>
-                                 <!-- User options will be loaded here dynamically (similar to leadUser) -->
-                                <option value="">Select User</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="reminderTemplate" class="form-label">Reminder Template:</label>
-                            <select class="form-select" id="reminderTemplate" name="template">
-                                <option value="">Select...</option>
-                                <!-- Reminder template options will likely be loaded here dynamically -->
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label for="reminderTitle" class="form-label">Title:<span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="reminderTitle" name="title" placeholder="Enter Title" required>
-                        </div>
-                        <div class="col-12">
-                            <label for="reminderMessage" class="form-label">Message:</label>
-                            <textarea class="form-control" id="reminderMessage" name="message" rows="3" placeholder="Enter Message"></textarea>
-                        </div>
-                         <div class="col-12">
-                             <label class="form-label">Automation:</label>
-                              <div>
-                                  <div class="form-check form-switch">
-                                      <input class="form-check-input" type="checkbox" id="whatsappAutomation" name="whatsapp_automation">
-                                      <label class="form-check-label" for="whatsappAutomation">Whatsapp Automation</label>
-                                  </div>
-                              </div>
-                         </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" form="addReminderForm" class="btn btn-primary">Submit</button>
-            </div>
-        </div>
-    </div>
-</div>
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -722,28 +456,10 @@ try {
             });
             
             // Handle sticky note deletion
-            document.querySelectorAll('.delete-note').forEach(button => {
+            document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const noteId = this.getAttribute('data-note-id');
-                    if (confirm('Are you sure you want to delete this note?')) {
-                        // Send AJAX request to delete note
-                        const xhr = new XMLHttpRequest();
-                        xhr.open('POST', 'ajax/delete_note.php', true);
-                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                        xhr.onload = function() {
-                            if (xhr.status === 200) {
-                                // Remove note from DOM
-                                const noteElement = document.querySelector(`.sticky-note[data-note-id="${noteId}"]`).closest('.col-md-6');
-                                noteElement.remove();
-                                
-                                // Check if there are no notes left
-                                if (document.querySelectorAll('.sticky-note').length === 0) {
-                                    document.getElementById('stickyNotesContainer').innerHTML = '<p class="text-muted mt-2 no-notes-message">There are no records to display.</p>';
-                                }
-                            }
-                        };
-                        xhr.send('note_id=' + noteId);
-                    }
+                    confirmDelete(noteId);
                 });
             });
             
@@ -842,118 +558,6 @@ try {
             }
         });
     </script>
-    <!-- Add Note Modal -->
-    <div class="modal fade" id="addNoteModal" tabindex="-1" aria-labelledby="addNoteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addNoteModalLabel"><i class="fas fa-sticky-note me-2"></i>Add New Note</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="addNoteForm">
-                        <div class="mb-3">
-                            <label for="noteContent" class="form-label">Note Content</label>
-                            <textarea class="form-control" id="noteContent" rows="5" placeholder="Enter your note here..."></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="saveNoteBtn">Save Note</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Add Note functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Save Note button click handler
-            const saveNoteBtn = document.getElementById('saveNoteBtn');
-            if (saveNoteBtn) {
-                saveNoteBtn.addEventListener('click', function() {
-                    const noteContent = document.getElementById('noteContent').value.trim();
-                    if (!noteContent) {
-                        alert('Please enter note content');
-                        return;
-                    }
-
-                    // Send AJAX request to save the note
-                    fetch('save_note.php', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'content=' + encodeURIComponent(noteContent)
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Close the modal
-                            const modal = bootstrap.Modal.getInstance(document.getElementById('addNoteModal'));
-                            modal.hide();
-                            
-                            // Clear the form
-                            document.getElementById('noteContent').value = '';
-                            
-                            // Refresh the notes section
-                            location.reload();
-                        } else {
-                            alert('Error saving note: ' + data.message);
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error saving note:', error);
-                        alert('An error occurred while saving your note. Please try again.');
-                    });
-                });
-            }
-
-            // Delete Note functionality
-            document.querySelectorAll('.delete-note').forEach(button => {
-                button.addEventListener('click', function() {
-                    const noteId = this.getAttribute('data-note-id');
-                    if (confirm('Are you sure you want to delete this note?')) {
-                        // Send AJAX request to delete the note
-                        fetch('delete_note.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: 'note_id=' + encodeURIComponent(noteId)
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                // Remove the note from the DOM
-                                const noteElement = document.querySelector(`.sticky-note[data-note-id="${noteId}"]`).closest('.col-md-6');
-                                noteElement.remove();
-                                
-                                // If no notes left, show empty state
-                                if (document.querySelectorAll('.sticky-note').length === 0) {
-                                    const emptyState = `
-                                        <div class="col-12 empty-notes-state">
-                                            <i class="fas fa-sticky-note"></i>
-                                            <h5>No Notes Yet</h5>
-                                            <p>Click the "Add Note" button to create your first note</p>
-                                        </div>
-                                    `;
-                                    document.getElementById('stickyNotesContainer').innerHTML = emptyState;
-                                }
-                            } else {
-                                alert('Error deleting note: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error deleting note:', error);
-                            alert('An error occurred while deleting your note. Please try again.');
-                        });
-                    }
-                });
-            });
-        });
-    </script>
 
     <!-- Add Chart.js before your custom scripts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -1019,6 +623,298 @@ try {
             font-size: 0.875rem;
             color: #666;
         }
+
+        .sticky-notes-section {
+            padding: 20px;
+        }
+
+        .section-header {
+            padding: 10px 0;
+        }
+
+        .add-note-btn {
+            background: none;
+            border: none;
+            color: #4CAF50;
+            font-size: 20px;
+        }
+
+        .add-note-btn:hover {
+            color: #388E3C;
+        }
+
+        .sticky-notes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .sticky-note {
+            background: #00e676;
+            min-height: 200px;
+            padding: 20px;
+            position: relative;
+            border-radius: 2px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .sticky-note:hover {
+            transform: translateY(-5px);
+        }
+
+        .sticky-note .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 16px;
+            opacity: 0.7;
+            cursor: pointer;
+            padding: 5px;
+            z-index: 1;
+            transition: opacity 0.2s ease;
+        }
+
+        .sticky-note .delete-btn:hover {
+            opacity: 1;
+        }
+
+        .note-content {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            font-size: 14px;
+        }
+
+        .note-fold {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.1) 50%);
+        }
+
+        .add-note-form {
+            max-width: 300px;
+            margin-bottom: 20px;
+        }
+
+        .sticky-note-form textarea {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 10px;
+            resize: vertical;
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Delete Modal Styles */
+        .delete-modal .modal-content {
+            border-radius: 10px;
+            border: none;
+        }
+
+        .delete-modal .modal-body {
+            text-align: center;
+        }
+
+        .warning-icon {
+            width: 60px;
+            height: 60px;
+            background: #FFF3CD;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .warning-icon i {
+            color: #FF9800;
+            font-size: 24px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-delete {
+            background-color: #2F2B3D;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+
+        .btn-cancel {
+            background-color: white;
+            color: #6c757d;
+            border: 1px solid #6c757d;
+            padding: 8px 20px;
+            border-radius: 5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .empty-state i {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .empty-state h5 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .delete-modal .btn-delete:hover {
+            background-color: #1a1a1a;
+        }
+
+        .delete-modal .btn-cancel:hover {
+            background-color: #f8f9fa;
+        }
     </style>
+
+    <script>
+    let currentDeleteId = null;
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+
+    function showAddNoteForm() {
+        document.getElementById('addNoteForm').style.display = 'block';
+    }
+
+    function hideAddNoteForm() {
+        document.getElementById('addNoteForm').style.display = 'none';
+        document.getElementById('noteContent').value = '';
+    }
+
+    function saveNote() {
+        const content = document.getElementById('noteContent').value.trim();
+        if (!content) return;
+
+        fetch('ajax/save-note.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ content: content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Show success message
+                document.querySelector('.toast-body').textContent = 'Note added successfully!';
+                successToast.show();
+                
+                // Clear form and hide it
+                hideAddNoteForm();
+                
+                // Refresh the page to show new note
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1000);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function confirmDelete(noteId) {
+        if (!noteId) return;
+        currentDeleteId = noteId;
+        deleteModal.show();
+    }
+
+    function deleteNote() {
+        if (!currentDeleteId) return;
+        
+        fetch('ajax/delete-note.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: currentDeleteId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                // Hide modal
+                deleteModal.hide();
+                
+                // Show success message
+                document.querySelector('.toast-body').textContent = 'Note deleted successfully!';
+                successToast.show();
+                
+                // Remove the note from view
+                const noteElement = document.querySelector(`.sticky-note[data-note-id="${currentDeleteId}"]`);
+                if (noteElement) {
+                    noteElement.remove();
+                }
+                
+                // Reset currentDeleteId
+                currentDeleteId = null;
+                
+                // If no notes left, show empty state
+                const remainingNotes = document.querySelectorAll('.sticky-note');
+                if (remainingNotes.length === 0) {
+                    const container = document.getElementById('stickyNotesContainer');
+                    container.innerHTML = `
+                        <div class="empty-state text-center p-4">
+                            <i class="fas fa-sticky-note fa-3x text-muted mb-3"></i>
+                            <h5>No Notes Yet</h5>
+                            <p class="text-muted">Click the "+" button to add your first note</p>
+                        </div>
+                    `;
+                }
+            } else {
+                // Show error message
+                document.querySelector('.toast-body').textContent = data.message || 'Error deleting note';
+                successToast.show();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            document.querySelector('.toast-body').textContent = 'Error deleting note';
+            successToast.show();
+        });
+    }
+
+    // Close form when clicking outside
+    document.addEventListener('click', function(e) {
+        const form = document.getElementById('addNoteForm');
+        const addButton = document.querySelector('.add-note-btn');
+        if (form.style.display === 'block' && 
+            !form.contains(e.target) && 
+            !addButton.contains(e.target)) {
+            hideAddNoteForm();
+        }
+    });
+    </script>
 </body>
 </html>

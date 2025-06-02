@@ -13,7 +13,32 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
-// You can include any necessary data fetching logic here for the test page
+// Get current page and rows per page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$rows_per_page = isset($_GET['rows']) ? (int)$_GET['rows'] : 10;
+$offset = ($page - 1) * $rows_per_page;
+
+// Get total number of notes
+$total_query = $conn->prepare("SELECT COUNT(*) as total FROM notes WHERE user_id = ?");
+$total_query->bind_param("i", $_SESSION['user_id']);
+$total_query->execute();
+$total_result = $total_query->get_result();
+$total_rows = $total_result->fetch_assoc()['total'];
+$total_pages = ceil($total_rows / $rows_per_page);
+
+// Get notes for current page
+$notes = [];
+try {
+    $stmt = $conn->prepare("SELECT id, content, created_at FROM notes WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?");
+    $stmt->bind_param("iii", $_SESSION['user_id'], $rows_per_page, $offset);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $notes[] = $row;
+    }
+} catch (Exception $e) {
+    error_log("Error fetching notes: " . $e->getMessage());
+}
 
 ?>
 <!DOCTYPE html>
@@ -224,6 +249,33 @@ if (!isset($_SESSION['user_id'])) {
                 opacity: 1;
             }
         }
+
+        .table th {
+            background-color: #f8f9fa;
+        }
+        .action-buttons {
+            white-space: nowrap;
+        }
+        .action-buttons .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .search-box {
+            max-width: 300px;
+        }
+        .pagination-info {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        .no-records {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        .no-records i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -268,9 +320,87 @@ if (!isset($_SESSION['user_id'])) {
 
             <!-- Notes Content -->
             <div class="notes-content">
-                <div class="text-center py-5">
-                    <i class="fas fa-clipboard-list text-muted mb-3" style="font-size: 3rem;"></i>
-                    <p class="text-muted mb-0">No records to display</p>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Note</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php if (empty($notes)): ?>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="no-records">
+                                        <i class="fas fa-clipboard-list"></i>
+                                        <p class="mb-0">There are no records to display</p>
+                                    </div>
+                                </td>
+                            </tr>
+                            <?php else: ?>
+                                <?php foreach ($notes as $index => $note): ?>
+                                <tr>
+                                    <td><?php echo $offset + $index + 1; ?></td>
+                                    <td><?php echo htmlspecialchars($note['content']); ?></td>
+                                    <td>Note</td>
+                                    <td class="action-buttons">
+                                        <button class="btn btn-warning btn-sm edit-note" data-id="<?php echo $note['id']; ?>">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-danger btn-sm delete-note" data-id="<?php echo $note['id']; ?>">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="pagination-info">
+                        Rows per page: 
+                        <select id="rowsPerPage" class="form-select form-select-sm d-inline-block w-auto ms-1">
+                            <option value="10" <?php echo $rows_per_page == 10 ? 'selected' : ''; ?>>10</option>
+                            <option value="25" <?php echo $rows_per_page == 25 ? 'selected' : ''; ?>>25</option>
+                            <option value="50" <?php echo $rows_per_page == 50 ? 'selected' : ''; ?>>50</option>
+                        </select>
+                        <span class="ms-3"><?php echo ($offset + 1) . ' - ' . min($offset + $rows_per_page, $total_rows) . ' of ' . $total_rows; ?></span>
+                    </div>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination mb-0">
+                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=1" aria-label="First">
+                                    <span aria-hidden="true">&laquo;&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item <?php echo $page <= 1 ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <input type="number" class="form-control form-control-sm text-center" 
+                                       style="width: 60px;" value="<?php echo $page; ?>" 
+                                       min="1" max="<?php echo $total_pages; ?>">
+                            </li>
+                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            <li class="page-item <?php echo $page >= $total_pages ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="?page=<?php echo $total_pages; ?>" aria-label="Last">
+                                    <span aria-hidden="true">&raquo;&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
@@ -283,6 +413,26 @@ if (!isset($_SESSION['user_id'])) {
 
     <!-- Add Note Modal -->
     <?php include '../includes/modals/add-note.php'; ?>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteNoteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Are You Sure?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <i class="fas fa-exclamation-circle text-warning fa-3x mb-3"></i>
+                    <p class="mb-0">Do you really want to delete this note?</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Yes, Delete It!</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
@@ -350,6 +500,43 @@ if (!isset($_SESSION['user_id'])) {
                 sidebarOverlay.classList.remove('show');
                 document.body.style.overflow = '';
             }
+        });
+
+        // Handle delete button clicks
+        let noteToDelete = null;
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteNoteModal'));
+        
+        document.querySelectorAll('.delete-note').forEach(button => {
+            button.addEventListener('click', function() {
+                noteToDelete = this.dataset.id;
+                deleteModal.show();
+            });
+        });
+        
+        // Handle delete confirmation
+        document.getElementById('confirmDelete').addEventListener('click', function() {
+            if (noteToDelete) {
+                fetch('ajax/delete-note.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: noteToDelete })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        deleteModal.hide();
+                        window.location.reload();
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+        
+        // Handle rows per page change
+        document.getElementById('rowsPerPage').addEventListener('change', function() {
+            window.location.href = '?rows=' + this.value;
         });
     });
     </script>

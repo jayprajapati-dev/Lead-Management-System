@@ -20,7 +20,6 @@ DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS leads;
 DROP TABLE IF EXISTS lead_sources;
 DROP TABLE IF EXISTS lead_status_types;
-DROP TABLE IF EXISTS sticky_notes;
 DROP TABLE IF EXISTS user_sessions;
 DROP TABLE IF EXISTS login_history;
 DROP TABLE IF EXISTS tags;
@@ -61,18 +60,6 @@ CREATE TABLE IF NOT EXISTS users (
     INDEX idx_status (status),
     INDEX idx_trial_end (trial_end_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Create sticky_notes table if it doesn't exist
-CREATE TABLE IF NOT EXISTS `sticky_notes` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
-  `content` text NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `user_id` (`user_id`),
-  CONSTRAINT `sticky_notes_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- User sessions for tracking active sessions
 CREATE TABLE IF NOT EXISTS user_sessions (
@@ -341,15 +328,12 @@ CREATE TABLE IF NOT EXISTS reminders (
 -- Notes table (for general notes, separate from lead notes)
 CREATE TABLE IF NOT EXISTS notes (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(255) NOT NULL,
-    content TEXT NOT NULL,
-    color VARCHAR(7) DEFAULT '#ffffff',
-    is_pinned BOOLEAN DEFAULT FALSE,
     user_id INT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    INDEX idx_user_id (user_id)
+    INDEX idx_user_notes (user_id, created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Calendar events table

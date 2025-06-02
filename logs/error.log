@@ -817,3 +817,14 @@ Stack trace:
 [02-Jun-2025 13:49:35 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 964
 [02-Jun-2025 13:49:35 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 972
 [02-Jun-2025 13:49:35 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 972
+[02-Jun-2025 21:10:39 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 21:20:27 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 21:22:40 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 21:43:23 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 21:43:34 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 21:50:11 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 21:50:13 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
+[02-Jun-2025 21:50:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
+[02-Jun-2025 21:50:13 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[02-Jun-2025 21:50:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[02-Jun-2025 21:56:54 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
