@@ -128,6 +128,11 @@ body {
     color: #6366f1;
 }
 
+.icon-button.active {
+    background: #f1f5f9;
+    color: #6366f1;
+}
+
 /* Mobile Menu Button */
 .mobile-menu-btn {
     display: none;
@@ -284,33 +289,133 @@ body {
     position: absolute;
     top: calc(100% + 0.5rem);
     right: 0;
-    background: white;
+    background-color: white;
     border: 1px solid #e5e7eb;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
-    min-width: 240px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    min-width: 280px;
     display: none;
-    z-index: 1000;
+    z-index: 1001; /* Increased z-index to ensure it appears above other elements */
     overflow: hidden;
+    backdrop-filter: none;
+}
+
+/* Mobile dropdown positioning */
+@media (max-width: 768px) {
+    .dropdown-menu {
+        position: fixed;
+        top: 60px; /* Adjust based on your header height */
+        right: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        max-width: 350px;
+        margin: 0 auto;
+    }
+    
+    /* Ensure the dropdown has a solid background */
+    #profileDropdown {
+        background-color: white;
+    }
 }
 
 .dropdown-menu.show {
     display: block;
 }
 
-.dropdown-item {
+.profile-header {
+    padding: 1rem;
     display: flex;
     align-items: center;
     gap: 0.75rem;
+    background-color: #f0f4f8;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #6366f1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1rem;
+}
+
+.user-email {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.profile-menu-items {
+    padding: 0.5rem 0;
+    background-color: white;
+}
+
+.badge {
+    background-color: #e5e7eb;
+    color: #4b5563;
+    border-radius: 9999px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    min-width: 1.5rem;
+    text-align: center;
+    display: inline-block;
+}
+
+/* Add this to make the Today's Leads text more prominent */
+.user-name {
+    font-weight: 600;
+    color: #1f2937;
+    font-size: 1.1rem;
+}
+
+.user-email {
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.referral-link-container {
+    padding: 0;
+    background-color: white;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 0.75rem 1rem;
     color: #4b5563;
     text-decoration: none;
     transition: all 0.2s;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.dropdown-item i {
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+    color: #6b7280;
 }
 
 .dropdown-item:hover {
-    background: #f8fafc;
-    color: #6366f1;
+    background: #f1f5f9;
+    color: #4f46e5;
 }
 
 .dropdown-divider {
@@ -326,15 +431,18 @@ body {
     background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     color: white;
     padding: 0.75rem 1rem;
-    margin: 0.75rem;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
+    margin: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
     text-decoration: none;
-    transition: opacity 0.2s;
+    font-weight: 500;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
 }
 
 .referral-button:hover {
-    opacity: 0.9;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     color: white;
 }
 
@@ -423,32 +531,56 @@ body {
 
     <!-- Profile Dropdown -->
     <div class="dropdown-menu" id="profileDropdown">
-        <div class="dropdown-item">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </div>
-        <div class="dropdown-item">
-            <i class="fas fa-sync"></i>
-            <span>Sync Data</span>
-        </div>
-        <div class="dropdown-item">
-            <i class="fas fa-credit-card"></i>
-            <span>Billing</span>
-        </div>
-        <div class="dropdown-item">
-            <i class="fas fa-box"></i>
-            <span>Packages</span>
+        <div class="profile-header">
+            <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="user-info">
+                <div class="user-name"><?php echo htmlspecialchars($user_name); ?></div>
+                <div class="user-email"><?php echo htmlspecialchars($user_email); ?></div>
+            </div>
         </div>
         <div class="dropdown-divider"></div>
-        <a href="logout.php" class="dropdown-item">
-            <i class="fas fa-sign-out-alt"></i>
-            <span>Logout</span>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a href="#" class="referral-button">
-            <i class="fas fa-gift"></i>
-            <span>Set up a Referral Link and earn free Points</span>
-        </a>
+        <div class="profile-menu-items">
+            <a href="profile.php" class="dropdown-item">
+                <div>
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </div>
+            </a>
+            <a href="sync-data.php" class="dropdown-item">
+                <div>
+                    <i class="fas fa-sync"></i>
+                    <span>Sync Data</span>
+                </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="billing.php" class="dropdown-item">
+                <div>
+                    <i class="fas fa-credit-card"></i>
+                    <span>Billing</span>
+                </div>
+            </a>
+            <a href="packages.php" class="dropdown-item">
+                <div>
+                    <i class="fas fa-box"></i>
+                    <span>Packages</span>
+                </div>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="logout.php" class="dropdown-item">
+                <div>
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </div>
+            </a>
+        </div>
+        <div class="referral-link-container">
+            <a href="#" class="referral-button">
+                <i class="fas fa-gift"></i>
+                <span>Set up a Referral Link and earn free Points</span>
+            </a>
+        </div>
     </div>
 </header>
 
@@ -514,6 +646,31 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupDropdown(buttonId, dropdownId) {
         const button = document.getElementById(buttonId);
         const dropdown = document.getElementById(dropdownId);
+        
+        if (!button || !dropdown) return; // Skip if elements don't exist
+        
+        // Position the dropdown relative to the button
+        function positionDropdown() {
+            if (window.innerWidth <= 768) {
+                // On mobile, center the dropdown
+                dropdown.style.right = 'auto';
+                dropdown.style.left = '50%';
+                dropdown.style.transform = 'translateX(-50%)';
+                dropdown.style.maxWidth = '350px';
+                dropdown.style.width = 'calc(100% - 20px)';
+                // Ensure solid background
+                dropdown.style.backgroundColor = 'white';
+            } else {
+                // On desktop, align with the button
+                dropdown.style.right = '10px';
+                dropdown.style.left = 'auto';
+                dropdown.style.transform = 'none';
+                dropdown.style.maxWidth = 'none';
+                dropdown.style.width = 'auto';
+                // Ensure solid background
+                dropdown.style.backgroundColor = 'white';
+            }
+        }
 
         button.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -523,10 +680,26 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.dropdown-menu').forEach(d => {
                 d.classList.remove('show');
             });
+            
+            // Remove active state from all buttons
+            document.querySelectorAll('.icon-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
 
             // Toggle current dropdown
             if (!isActive) {
+                positionDropdown();
                 dropdown.classList.add('show');
+                
+                // Add active state to button
+                button.classList.add('active');
+            }
+        });
+        
+        // Update position on resize
+        window.addEventListener('resize', () => {
+            if (dropdown.classList.contains('show')) {
+                positionDropdown();
             }
         });
     }
@@ -538,6 +711,18 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('click', () => {
         document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
             dropdown.classList.remove('show');
+        });
+        
+        // Remove active state from buttons
+        document.querySelectorAll('.icon-button').forEach(button => {
+            button.classList.remove('active');
+        });
+    });
+    
+    // Prevent clicks inside dropdown from closing it
+    document.querySelectorAll('.dropdown-menu').forEach(dropdown => {
+        dropdown.addEventListener('click', (e) => {
+            e.stopPropagation();
         });
     });
 });

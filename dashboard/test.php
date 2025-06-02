@@ -50,12 +50,15 @@ if (!isset($_SESSION['user_id'])) {
         .sidebar {
             background-color: #fff;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-            height: 100vh;
+            height: calc(100vh - 56px); /* Subtract header height */
             position: fixed;
-            top: 0;
+            top: 56px; /* Start below header */
             left: 0;
+            width: 16.666667%; /* col-md-2 width */
+            overflow-y: auto;
             z-index: 1000;
             transition: all 0.3s;
+            padding-top: 1rem;
         }
         .sidebar-overlay {
             display: none;
@@ -73,28 +76,30 @@ if (!isset($_SESSION['user_id'])) {
         .main-content-area {
             margin-left: 16.666667%; /* col-md-2 width */
             transition: all 0.3s;
+            padding-top: 1rem;
+            min-height: calc(100vh - 56px); /* Subtract header height */
         }
         @media (max-width: 767.98px) {
             .sidebar {
                 transform: translateX(-100%);
+                width: 250px; /* Fixed width on mobile */
+                top: 56px; /* Below header */
+                z-index: 1030;
             }
             .sidebar.show {
                 transform: translateX(0);
             }
             .main-content-area {
                 margin-left: 0;
+                width: 100%;
+            }
+            body.sidebar-open {
+                overflow: hidden; /* Prevent scrolling when sidebar is open */
             }
         }
+        /* We're using the navbar-toggler from header instead of this */
         .sidebar-toggle {
-            position: fixed;
-            top: 1rem;
-            left: 1rem;
-            z-index: 1001;
-            background: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 0.5rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none; /* Hide this since we're using header toggle */
         }
         .navbar {
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -108,26 +113,24 @@ if (!isset($_SESSION['user_id'])) {
 </head>
 <body>
 
-<div class="dashboard-container">
-    <div class="row g-0">
-        <!-- Mobile Toggle Button -->
-        <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-            <i class="fas fa-bars"></i>
-        </button>
-        <!-- Mobile Overlay -->
-        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<!-- Header -->
+<?php include '../includes/dashboard-header.php'; ?>
+
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="container-fluid dashboard-container">
+    <div class="row">
         <!-- Sidebar -->
-        <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
+        <div class="col-md-3 col-lg-2 d-md-block sidebar" id="sidebarMenu">
             <?php include '../includes/sidebar.php'; ?>
         </div>
-
+        
         <!-- Main Content Area -->
-        <div class="col-md-9 col-lg-10 main-content-area">
-            <!-- Header -->
-            <?php include '../includes/dashboard-header.php'; ?>
+        <div class="col-md-9 col-lg-10 ms-sm-auto px-md-4 main-content-area">
 
             <!-- Main Content -->
-            <div class="container-fluid py-4">
+            <div class="container-fluid py-4 px-3">
                 <div class="crm-section-card">
                     <h2>Test Page Content</h2>
                     <p>This is a test page to verify the dashboard layout and sidebar toggle.</p>
@@ -145,8 +148,42 @@ if (!isset($_SESSION['user_id'])) {
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 
-<!-- Script for sidebar toggle (handled by includes/sidebar.php) -->
-<!-- No additional script needed here for the toggle itself -->
+<!-- Script for sidebar toggle functionality -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get references to sidebar elements
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarToggle = document.querySelector('.navbar-toggler'); // Using header toggle button
+        
+        // Toggle sidebar when the toggle button is clicked
+        if (sidebarToggle) {
+            sidebarToggle.addEventListener('click', function() {
+                sidebarMenu.classList.toggle('show');
+                sidebarOverlay.classList.toggle('show');
+                document.body.classList.toggle('sidebar-open');
+            });
+        }
+        
+        // Close sidebar when clicking on the overlay
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', function() {
+                sidebarMenu.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.classList.remove('sidebar-open');
+            });
+        }
+        
+        // Close sidebar when window is resized to desktop size
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 768) {
+                sidebarMenu.classList.remove('show');
+                sidebarOverlay.classList.remove('show');
+                document.body.classList.remove('sidebar-open');
+            }
+        });
+    });
+</script>
 
 </body>
 </html>

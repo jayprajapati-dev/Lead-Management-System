@@ -26,7 +26,6 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/dashboard_style.css">
     <style>
         :root {
             --primary-color: #57439F;
@@ -38,60 +37,99 @@ if (!isset($_SESSION['user_id'])) {
             --sidebar-width: 250px;
         }
 
-        /* General Styles */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #F8FAFC;
             color: var(--text-primary);
-            padding-top: var(--header-height);
-            min-height: 100vh;
             margin: 0;
             overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Page Title */
+        .dashboard-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            background: white;
+            box-shadow: var(--card-shadow);
+            height: var(--header-height);
+        }
+
+        .dashboard-container {
+            display: flex;
+            min-height: calc(100vh - var(--header-height));
+            padding-top: var(--header-height);
+            position: relative;
+        }
+
+        .main-content-area {
+            flex: 1;
+            padding: 2rem;
+            margin-left: var(--sidebar-width);
+            transition: margin-left 0.3s ease;
+            background-color: #F8FAFC;
+            min-height: calc(100vh - var(--header-height));
+            display: flex;
+            flex-direction: column;
+        }
+
         .page-title {
-            font-size: 2rem;
+            font-size: 1.75rem;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 2rem;
-            padding: 1rem 0;
+            padding: 0;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
         }
 
-        /* Reports Grid */
         .reports-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
-            padding: 0 1rem;
+            padding: 0;
         }
 
-        /* Report Card */
         .report-card {
             background: white;
             border-radius: 12px;
             box-shadow: var(--card-shadow);
             overflow: hidden;
+            height: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #E2E8F0;
+        }
+
+        .report-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .report-card-header {
-            background: var(--primary-light);
-            padding: 1rem;
-            text-align: center;
+            background: white;
+            padding: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
         }
 
         .report-card-header h2 {
             color: var(--primary-color);
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 600;
             margin: 0;
+            text-align: left;
         }
 
-        /* Report List */
         .report-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            background: white;
         }
 
         .report-item {
@@ -102,6 +140,8 @@ if (!isset($_SESSION['user_id'])) {
             border-bottom: 1px solid #E2E8F0;
             cursor: pointer;
             transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--text-primary);
         }
 
         .report-item:last-child {
@@ -112,137 +152,142 @@ if (!isset($_SESSION['user_id'])) {
             background-color: #F1F5F9;
         }
 
+        .report-item-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex: 1;
+        }
+
+        .report-item-icon {
+            color: var(--primary-color);
+            width: 20px;
+            text-align: center;
+        }
+
         .report-item span {
             color: var(--text-secondary);
             font-weight: 500;
+            font-size: 0.95rem;
         }
 
-        .report-item i {
-            color: var(--primary-color);
+        .report-item i.fa-chevron-right {
+            color: var(--text-secondary);
             font-size: 0.875rem;
+            opacity: 0.5;
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
 
-        /* Sidebar Styles */
-        .sidebar {
-            position: fixed;
-            top: var(--header-height);
-            right: 0;
-            bottom: 0;
-            width: var(--sidebar-width);
-            background: white;
-            box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
-            z-index: 1020;
-            overflow-y: auto;
-            transition: transform 0.3s ease;
+        .report-item:hover i.fa-chevron-right {
+            opacity: 1;
+            transform: translateX(2px);
         }
 
-        /* Main Content Area */
-        .main-content-area {
-            margin-right: var(--sidebar-width);
-            padding: 20px;
-            min-height: calc(100vh - var(--header-height));
-            transition: margin-right 0.3s ease;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            :root {
-                --sidebar-width: 240px;
-            }
-
-            .sidebar {
-                transform: translateX(100%);
-            }
-
-            .sidebar.show {
-                transform: translateX(0);
-            }
-
-            .main-content-area {
-                margin-right: 0;
-                width: 100%;
-                padding: 16px;
-            }
-
+        @media (max-width: 1200px) {
             .reports-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                padding: 0;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .main-content-area {
+                margin-left: 0;
+                padding: 1.5rem;
             }
 
             .page-title {
                 font-size: 1.5rem;
-                padding: 0.75rem 0;
-                margin-bottom: 1rem;
+                margin-bottom: 1.5rem;
             }
 
-            /* Overlay for mobile */
-            .sidebar-overlay {
-                display: none;
-                position: fixed;
-                top: var(--header-height);
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 1015;
-            }
-
-            .sidebar-overlay.show {
-                display: block;
+            .dashboard-footer {
+                margin-left: 0;
             }
         }
 
-        /* Report Card Responsive Adjustments */
-        @media (max-width: 576px) {
+        @media (max-width: 767.98px) {
+            .reports-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .report-card-header {
+                padding: 1rem;
+            }
+
             .report-card-header h2 {
                 font-size: 1.125rem;
             }
 
             .report-item {
-                padding: 0.75rem 1rem;
+                padding: 0.875rem 1.25rem;
+            }
+
+            .report-item span {
                 font-size: 0.875rem;
             }
 
-            .report-item i {
-                font-size: 0.75rem;
+            .dashboard-container {
+                flex-direction: column;
+            }
+
+            .main-content-area {
+                padding: 1rem;
+            }
+
+            .dashboard-footer {
+                padding: 0.75rem 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+                padding: 0 1rem;
             }
         }
 
-        /* Improved Scrollbar for Sidebar */
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
+        /* Accessibility Improvements */
+        .report-item:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: -2px;
         }
 
-        .sidebar::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .report-item:focus:not(:focus-visible) {
+            outline: none;
         }
 
-        .sidebar::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-
-        /* High Contrast and Accessibility Improvements */
+        /* High Contrast Mode */
         @media (prefers-contrast: high) {
-            .sidebar {
-                border-left: 2px solid #000;
+            .report-card {
+                border: 2px solid var(--text-primary);
+            }
+
+            .report-item {
+                border-bottom: 2px solid var(--text-primary);
             }
         }
 
-        /* Touch-friendly adjustments */
-        @media (hover: none) {
-            .report-item {
-                padding: 0.875rem 1rem;
-            }
+        /* Footer Styles */
+        .dashboard-footer {
+            background: white;
+            padding: 1rem 0;
+            border-top: 1px solid #E2E8F0;
+            margin-top: auto;
+            width: 100%;
+        }
 
-            .report-item:active {
-                background-color: var(--primary-light);
-            }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .footer-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
         }
     </style>
 </head>
@@ -261,43 +306,78 @@ if (!isset($_SESSION['user_id'])) {
 
         <!-- Main Content Area -->
         <div class="main-content-area">
-            <div class="container-fluid">
+            <div class="container-fluid px-0">
                 <h1 class="page-title">General Reports</h1>
 
                 <div class="reports-grid">
                     <!-- Lead Reports Card -->
                     <div class="report-card">
                         <div class="report-card-header">
-                            <h2>Lead</h2>
+                            <h2>Lead Reports</h2>
                         </div>
                         <ul class="report-list">
-                            <li class="report-item" onclick="location.href='reports/lead-status.php'" tabindex="0">
-                                <span>Status Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-status.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-chart-bar report-item-icon"></i>
+                                        <span>Status Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/lead-status-time.php'" tabindex="0">
-                                <span>Status With Time Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-status-time.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-clock report-item-icon"></i>
+                                        <span>Status With Time Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/lead-third-party.php'" tabindex="0">
-                                <span>Third Party Source Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-third-party.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-external-link-alt report-item-icon"></i>
+                                        <span>Third Party Source Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/lead-source.php'" tabindex="0">
-                                <span>Source Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-source.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-filter report-item-icon"></i>
+                                        <span>Source Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/lead-label.php'" tabindex="0">
-                                <span>Label Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-label.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-tags report-item-icon"></i>
+                                        <span>Label Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/lead-staff-source.php'" tabindex="0">
-                                <span>Staff & Source Wise Lead Status Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-staff-source.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-users report-item-icon"></i>
+                                        <span>Staff & Source Wise Lead Status Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/lead-staff-label.php'" tabindex="0">
-                                <span>Staff & Label Wise Lead Status Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/lead-staff-label.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-user-tag report-item-icon"></i>
+                                        <span>Staff & Label Wise Lead Status Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -305,29 +385,58 @@ if (!isset($_SESSION['user_id'])) {
                     <!-- Task Reports Card -->
                     <div class="report-card">
                         <div class="report-card-header">
-                            <h2>Task</h2>
+                            <h2>Task Reports</h2>
                         </div>
                         <ul class="report-list">
-                            <li class="report-item" onclick="location.href='reports/task-status.php'" tabindex="0">
-                                <span>Status Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/task-status.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-tasks report-item-icon"></i>
+                                        <span>Status Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/task-label.php'" tabindex="0">
-                                <span>Label Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/task-label.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-tag report-item-icon"></i>
+                                        <span>Label Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/task-priority.php'" tabindex="0">
-                                <span>Priority Wise Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/task-priority.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-flag report-item-icon"></i>
+                                        <span>Priority Wise Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
-                            <li class="report-item" onclick="location.href='reports/task-delay.php'" tabindex="0">
-                                <span>Delay Task Report</span>
-                                <i class="fas fa-chevron-right"></i>
+                            <li>
+                                <a href="reports/task-delay.php" class="report-item" tabindex="0">
+                                    <div class="report-item-content">
+                                        <i class="fas fa-hourglass-half report-item-icon"></i>
+                                        <span>Delay Task Report</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
+
+            <!-- Footer -->
+            <footer class="dashboard-footer">
+                <div class="footer-content">
+                    <div class="footer-text">
+                        © 2024 Lead Management System. All rights reserved.
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
 
@@ -345,40 +454,44 @@ if (!isset($_SESSION['user_id'])) {
                 }
             });
         });
-    </script>
 
-    <!-- Mobile Sidebar Toggle Script -->
-    <script>
+        // Mobile sidebar toggle
         document.addEventListener('DOMContentLoaded', function() {
             const sidebarMenu = document.getElementById('sidebarMenu');
-            const sidebarOverlay = document.getElementById('sidebarOverlay');
             const toggleSidebarBtn = document.querySelector('.navbar-toggler');
-
-            // Add overlay div if not present
-            if (!sidebarOverlay) {
-                const overlay = document.createElement('div');
-                overlay.id = 'sidebarOverlay';
-                overlay.className = 'sidebar-overlay';
-                document.body.appendChild(overlay);
-            }
 
             if (toggleSidebarBtn) {
                 toggleSidebarBtn.addEventListener('click', () => {
                     sidebarMenu.classList.toggle('show');
-                    document.getElementById('sidebarOverlay').classList.toggle('show');
+                    
+                    // Add overlay if not present
+                    let overlay = document.getElementById('sidebarOverlay');
+                    if (!overlay) {
+                        overlay = document.createElement('div');
+                        overlay.id = 'sidebarOverlay';
+                        overlay.className = 'sidebar-overlay';
+                        document.body.appendChild(overlay);
+                    }
+                    overlay.classList.toggle('show');
                 });
             }
 
-            document.getElementById('sidebarOverlay').addEventListener('click', () => {
-                sidebarMenu.classList.remove('show');
-                document.getElementById('sidebarOverlay').classList.remove('show');
+            // Close sidebar on overlay click
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('sidebar-overlay')) {
+                    sidebarMenu.classList.remove('show');
+                    e.target.classList.remove('show');
+                }
             });
 
             // Close sidebar on window resize (if in mobile view)
             window.addEventListener('resize', () => {
-                if (window.innerWidth > 768) {
+                if (window.innerWidth > 991.98) {
                     sidebarMenu.classList.remove('show');
-                    document.getElementById('sidebarOverlay').classList.remove('show');
+                    const overlay = document.getElementById('sidebarOverlay');
+                    if (overlay) {
+                        overlay.classList.remove('show');
+                    }
                 }
             });
         });

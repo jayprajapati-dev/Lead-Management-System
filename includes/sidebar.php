@@ -104,6 +104,7 @@ if (isset($_SESSION['user_id'])) {
         display: flex;
         flex-direction: column;
         border-right: 1px solid var(--border-color);
+        padding-bottom: 100px; /* Add significant padding at the bottom */
     }
 
     .sidebar-container.collapsed {
@@ -354,94 +355,149 @@ if (isset($_SESSION['user_id'])) {
     }
 
     /* Free Trial Section */
-    .free-trial-section {
+    /* Sidebar Footer */
+    .sidebar-footer {
         margin-top: auto;
-        padding: 18px 15px;
-        background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-dark) 100%);
+        padding: 0 15px 15px;
+        width: 100%;
+    }
+    
+    .free-trial-section {
+        margin: 0;
+        margin-bottom: 20px; /* Add bottom margin */
+        padding: 20px;
+        background: linear-gradient(135deg, #4F46E5 0%, #4338CA 100%);
         color: white;
-        border-radius: 6px;
-        margin: 15px 10px;
-        box-shadow: var(--shadow-sm);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        transition: all var(--transition-fast);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
     }
-    
+
+    .free-trial-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+        pointer-events: none;
+    }
+
+    .trial-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        font-size: 24px;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .trial-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .trial-days {
+        font-size: 24px;
+        font-weight: 700;
+        margin: 8px 0;
+        color: #FCD34D;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .trial-text {
+        font-size: 13px;
+        opacity: 0.9;
+        margin-bottom: 12px;
+        line-height: 1.4;
+    }
+
+    .trial-button {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        width: 100%;
+        display: inline-block;
+    }
+
+    .trial-button:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
     /* Premium section styling */
     .premium-section {
-        background: linear-gradient(135deg, #20c997 0%, #0ca678 100%);
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
     }
-    
-    .premium-icon {
-        background: rgba(255, 255, 255, 0.2);
-    }
-    
+
     /* Expired section styling */
     .expired-section {
-        background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
-    }
-    
-    .expired-icon {
-        background: rgba(255, 255, 255, 0.2);
+        background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
     }
 
     .sidebar-container.collapsed .free-trial-section {
         opacity: 0;
         pointer-events: none;
-        transform: scale(0.9);
+        transform: scale(0.9) translateX(-10px);
     }
 
-    .free-trial-section .trial-icon {
-        width: 32px;
-        height: 32px;
-        background: var(--primary-color);
-        color: var(--text-active);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 8px;
-        font-size: 14px;
-        box-shadow: var(--shadow-sm);
-    }
+    @media (max-width: 768px) {
+        .free-trial-section {
+            margin: 10px;
+            margin-bottom: 30px; /* Add more bottom margin for mobile */
+            padding: 15px;
+            position: relative; /* Ensure proper positioning */
+            bottom: 0; /* Stick to bottom */
+            max-height: none; /* Ensure no height restriction */
+            z-index: 10; /* Ensure it's above other elements */
+        }
 
-    .free-trial-section .trial-text {
-        font-size: 11px;
-        color: var(--text-secondary);
-        margin-bottom: 4px;
-        font-weight: 500;
-    }
+        .trial-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+        }
 
-    .free-trial-section .trial-days {
-        font-size: 15px;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin-bottom: 8px;
-    }
+        .trial-title {
+            font-size: 14px;
+        }
 
-    .upgrade-btn {
-        background: var(--primary-color);
-        color: var(--text-active);
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all var(--transition-fast);
-        text-transform: uppercase;
-        box-shadow: var(--shadow-sm);
-        letter-spacing: 0.5px;
-        display: inline-block;
-        text-decoration: none;
-    }
-    
-    .upgrade-btn:hover {
-        background: var(--primary-dark);
-        transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
+        .trial-days {
+            font-size: 20px;
+        }
+
+        .trial-text {
+            font-size: 12px;
+        }
+
+        .trial-button {
+            padding: 6px 16px;
+            font-size: 12px;
+        }
     }
 
     /* Responsive Design */
@@ -455,6 +511,12 @@ if (isset($_SESSION['user_id'])) {
             box-shadow: none;
             z-index: 1030;
             width: 280px;
+            height: 100vh; /* Full viewport height */
+            max-height: none; /* Remove max-height restriction */
+            overflow-y: auto; /* Enable scrolling */
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 150px; /* Add significant padding at bottom for mobile */
         }
         
         .sidebar.show {
@@ -477,6 +539,11 @@ if (isset($_SESSION['user_id'])) {
         
         .header {
             left: 0;
+        }
+        
+        /* Ensure the free trial section is visible */
+        .sidebar-section {
+            flex: 1 0 auto; /* Allow it to grow but not shrink */
         }
     }
     
@@ -583,6 +650,53 @@ if (isset($_SESSION['user_id'])) {
     .dropdown-container {
         position: relative;
         margin: 4px 8px;
+        width: 100%;
+    }
+    
+    /* Nested Dropdown Styles */
+    .nested-dropdown {
+        position: relative;
+        width: 100%;
+    }
+    
+    .nested-dropdown-menu {
+        display: none;
+        padding-left: 20px;
+        background-color: var(--sidebar-bg-light);
+        border-radius: 8px;
+        margin-top: 5px;
+        overflow: hidden;
+    }
+    
+    .nested-dropdown-menu.show {
+        display: block;
+    }
+    
+    .nested-dropdown-item {
+        display: flex;
+        align-items: center;
+        padding: 8px 15px;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    }
+    
+    .nested-dropdown-item:hover {
+        background-color: rgba(0, 0, 0, 0.05);
+        color: var(--primary-color);
+    }
+    
+    .nested-dropdown-item i {
+        margin-right: 10px;
+        font-size: 0.7rem;
+        width: 15px;
+        text-align: center;
+    }
+    
+    .nested-dropdown-item.active {
+        color: var(--primary-color);
+        background-color: rgba(var(--primary-rgb), 0.1);
     }
     
     .dropdown-toggle {
@@ -762,7 +876,8 @@ if (isset($_SESSION['user_id'])) {
             <span>Reports</span>
         </a>
         <!-- General Settings Dropdown -->
-            <a class="nav-link dropdown-toggle <?php echo in_array($current_page, ['web-settings.php', 'lead-trash.php', 'attributes.php', 'templates.php', 'automation-rules.php']) ? 'active' : ''; ?>" href="#">
+        <div class="dropdown-container" id="generalSettingsDropdown">
+            <a class="nav-link dropdown-toggle <?php echo in_array($current_page, ['web-settings.php', 'lead-trash.php', 'attributes.php', 'templates.php', 'automation-rules.php']) ? 'active' : ''; ?>" href="javascript:void(0);" onclick="toggleDropdown(event, 'generalSettingsDropdown')">
                 <i class="fas fa-cog"></i>
                 <span>General Settings</span>
                 <i class="fas fa-chevron-down dropdown-icon"></i>
@@ -776,59 +891,198 @@ if (isset($_SESSION['user_id'])) {
                     <i class="fas fa-circle nav-icon"></i>
                     <span>Lead Trash</span>
                 </a>
-                <a class="dropdown-item <?php echo $current_page === 'attributes.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/attributes.php">
-                    <i class="fas fa-circle nav-icon"></i>
-                    <span>Attributes</span>
-                    <i class="fas fa-chevron-right ml-auto"></i>
-                </a>
-                <a class="dropdown-item <?php echo $current_page === 'templates.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/templates.php">
-                    <i class="fas fa-circle nav-icon"></i>
-                    <span>Templates</span>
-                    <i class="fas fa-chevron-right ml-auto"></i>
-                </a>
-                <a class="dropdown-item <?php echo $current_page === 'automation-rules.php' ? 'active' : ''; ?>" href="<?php echo SITE_URL; ?>/dashboard/automation-rules.php">
-                    <i class="fas fa-circle nav-icon"></i>
-                    <span>Automation Rules</span>
-                    <i class="fas fa-chevron-right ml-auto"></i>
-                </a>
+                <div class="nested-dropdown" id="attributesDropdown">
+                    <a class="dropdown-item dropdown-toggle <?php echo $current_page === 'attributes.php' ? 'active' : ''; ?>" href="javascript:void(0);" onclick="toggleNestedDropdown(event, 'attributesDropdown')">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <span>Attributes</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </a>
+                    <div class="nested-dropdown-menu">
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/attributes.php?type=lead_status">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>Lead Status</span>
+                        </a>
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/attributes.php?type=lead_source">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>Lead Source</span>
+                        </a>
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/attributes.php?type=lead_label">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>Lead Label</span>
+                        </a>
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/attributes.php?type=task_status">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>Task Status</span>
+                        </a>
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/attributes.php?type=task_label">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>Task Label</span>
+                        </a>
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/attributes.php?type=lead_followup">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>Lead Follow Up...</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nested-dropdown" id="templatesDropdown">
+                    <a class="dropdown-item dropdown-toggle <?php echo $current_page === 'templates.php' ? 'active' : ''; ?>" href="javascript:void(0);" onclick="toggleNestedDropdown(event, 'templatesDropdown')">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <span>Templates</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </a>
+                    <div class="nested-dropdown-menu">
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/templates.php?type=general">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>General Template</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="nested-dropdown" id="automationRulesDropdown">
+                    <a class="dropdown-item dropdown-toggle <?php echo $current_page === 'automation-rules.php' ? 'active' : ''; ?>" href="javascript:void(0);" onclick="toggleNestedDropdown(event, 'automationRulesDropdown')">
+                        <i class="fas fa-circle nav-icon"></i>
+                        <span>Automation Rules</span>
+                        <i class="fas fa-chevron-down ml-auto"></i>
+                    </a>
+                    <div class="nested-dropdown-menu">
+                        <a class="nested-dropdown-item" href="<?php echo SITE_URL; ?>/dashboard/automation-rules.php?type=whatsapp">
+                            <i class="far fa-circle nav-icon"></i>
+                            <span>WhatsApp Automation Rules</span>
+                        </a>
+                    </div>
+                </div>
             </div>
+        </div>
     </nav>
 </div>
 
-<!-- Free Trial Info -->
-<?php if ($user_status === 'active'): ?>
-    <div class="free-trial-section premium-section">
-        <div class="trial-icon premium-icon">
-            <i class="fas fa-gem"></i>
+<!-- Free Trial Section -->
+<div class="sidebar-footer">
+    <?php if ($user_status !== 'premium'): ?>
+        <div class="free-trial-section <?php echo $is_trial_expired ? 'expired-section' : ''; ?>">
+            <div class="trial-icon">
+                <?php if ($is_trial_expired): ?>
+                    <i class="fas fa-clock"></i>
+                <?php else: ?>
+                    <i class="fas fa-gift"></i>
+                <?php endif; ?>
+            </div>
+            
+            <?php if ($is_trial_expired): ?>
+                <div class="trial-title">Trial Expired</div>
+                <div class="trial-text">Your free trial has ended. Upgrade now to continue using all features.</div>
+                <a href="upgrade.php" class="trial-button">Upgrade Now</a>
+            <?php else: ?>
+                <div class="trial-title">Free Trial</div>
+                <div class="trial-days"><?php echo $trial_days_remaining; ?> Days</div>
+                <div class="trial-text">Remaining in your free trial</div>
+                <a href="upgrade.php" class="trial-button">Upgrade to Premium</a>
+            <?php endif; ?>
         </div>
-        <div class="trial-text">Premium Plan</div>
-        <div class="trial-days"><?php echo ucfirst($user_status); ?></div>
-    </div>
-<?php elseif ($is_trial_expired): ?>
-    <div class="free-trial-section expired-section">
-        <div class="trial-icon expired-icon">
-            <i class="fas fa-exclamation-circle"></i>
+    <?php else: ?>
+        <div class="free-trial-section premium-section">
+            <div class="trial-icon">
+                <i class="fas fa-crown"></i>
+            </div>
+            <div class="trial-title">Premium Member</div>
+            <div class="trial-text">Thank you for being a premium member!</div>
         </div>
-        <div class="trial-text">Trial Expired</div>
-        <div class="trial-days">Upgrade Now</div>
-        <a href="<?php echo SITE_URL; ?>/dashboard/upgrade.php" class="upgrade-btn">Upgrade Now</a>
-    </div>
-<?php else: ?>
-    <div class="free-trial-section">
-        <div class="trial-icon">
-            <i class="fas fa-crown"></i>
-        </div>
-        <div class="trial-text">Free Trial</div>
-        <div class="trial-days"><?php echo $trial_days_remaining; ?> Day<?php echo $trial_days_remaining !== 1 ? 's' : ''; ?> Left</div>
-        <a href="<?php echo SITE_URL; ?>/dashboard/upgrade.php" class="upgrade-btn">Upgrade Now</a>
-    </div>
-<?php endif; ?>
+    <?php endif; ?>
+</div>
 
 <script>
     // Add dropdown functionality
     document.addEventListener('DOMContentLoaded', function() {
         const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
         const freeTrialSection = document.querySelector('.free-trial-section');
+        
+        // Function to save dropdown state to localStorage
+        function saveDropdownState(dropdownId, isOpen) {
+            try {
+                localStorage.setItem('dropdown_' + dropdownId, isOpen ? 'open' : 'closed');
+            } catch (e) {
+                console.log('localStorage not available');
+            }
+        }
+        
+        // Function to get dropdown state from localStorage
+        function getDropdownState(dropdownId) {
+            try {
+                return localStorage.getItem('dropdown_' + dropdownId) === 'open';
+            } catch (e) {
+                console.log('localStorage not available');
+                return false;
+            }
+        }
+        
+        // Function to toggle dropdown
+        window.toggleDropdown = function(event, dropdownId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const dropdown = document.getElementById(dropdownId);
+            if (!dropdown) return;
+            
+            const toggle = dropdown.querySelector('.dropdown-toggle');
+            const menu = dropdown.querySelector('.dropdown-menu');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.dropdown-container').forEach(container => {
+                if (container.id !== dropdownId) {
+                    container.querySelector('.dropdown-toggle')?.classList.remove('open');
+                    container.querySelector('.dropdown-menu')?.classList.remove('show');
+                    saveDropdownState(container.id, false);
+                }
+            });
+            
+            // Toggle current dropdown
+            const isOpen = toggle.classList.toggle('open');
+            menu.classList.toggle('show');
+            
+            // Save state to localStorage
+            saveDropdownState(dropdownId, isOpen);
+            
+            // Adjust free trial section position
+            setTimeout(adjustFreeTrialPosition, 50);
+        };
+        
+        // Function to toggle nested dropdown
+        window.toggleNestedDropdown = function(event, dropdownId) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const nestedDropdown = document.getElementById(dropdownId);
+            if (!nestedDropdown) return;
+            
+            const toggle = nestedDropdown.querySelector('.dropdown-toggle');
+            const menu = nestedDropdown.querySelector('.nested-dropdown-menu');
+            
+            // Close other nested dropdowns
+            document.querySelectorAll('.nested-dropdown').forEach(container => {
+                if (container.id !== dropdownId) {
+                    container.querySelector('.dropdown-toggle')?.classList.remove('open');
+                    container.querySelector('.nested-dropdown-menu')?.classList.remove('show');
+                    saveDropdownState(container.id, false);
+                }
+            });
+            
+            // Toggle current nested dropdown
+            const isOpen = toggle.classList.toggle('open');
+            menu.classList.toggle('show');
+            
+            // Save state to localStorage
+            saveDropdownState(dropdownId, isOpen);
+            
+            // Make sure parent dropdown is also open
+            const parentDropdown = nestedDropdown.closest('.dropdown-container');
+            if (parentDropdown && isOpen) {
+                parentDropdown.querySelector('.dropdown-toggle')?.classList.add('open');
+                parentDropdown.querySelector('.dropdown-menu')?.classList.add('show');
+                saveDropdownState(parentDropdown.id, true);
+            }
+            
+            // Adjust free trial section position
+            setTimeout(adjustFreeTrialPosition, 50);
+        };
         
         // Fix positioning of free trial section when dropdown is open
         function adjustFreeTrialPosition() {
@@ -842,51 +1096,152 @@ if (isset($_SESSION['user_id'])) {
                     // Add some margin to the free trial section
                     freeTrialSection.style.marginTop = (dropdownBottom - sidebarBottom + 10) + 'px';
                 } else {
-                    freeTrialSection.style.marginTop = '10px';
+                    freeTrialSection.style.marginTop = 'auto'; // Use auto to push to bottom
                 }
             } else if (freeTrialSection) {
-                freeTrialSection.style.marginTop = '10px';
+                freeTrialSection.style.marginTop = 'auto'; // Use auto to push to bottom
+            }
+            
+            // Ensure the free trial section is visible on mobile
+            if (window.innerWidth <= 991.98 && freeTrialSection) {
+                // Make sure the free trial section is visible in the viewport
+                const viewportHeight = window.innerHeight;
+                const freeTrialHeight = freeTrialSection.offsetHeight;
+                const freeTrialTop = freeTrialSection.getBoundingClientRect().top;
+                
+                // If the free trial section would be cut off, scroll to make it visible
+                if (freeTrialTop + freeTrialHeight > viewportHeight) {
+                    // Add more space at the bottom
+                    document.querySelector('.sidebar-footer').style.paddingBottom = '50px';
+                    
+                    // If the trial section is not fully visible, ensure it's in view
+                    if (freeTrialTop > viewportHeight / 2) {
+                        freeTrialSection.scrollIntoView({behavior: 'smooth', block: 'end'});
+                    }
+                }
             }
         }
         
+        // For any legacy dropdown toggles without the onclick attribute
         dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Close any other open dropdowns first
-                dropdownToggles.forEach(otherToggle => {
-                    if (otherToggle !== this && otherToggle.classList.contains('open')) {
-                        otherToggle.classList.remove('open');
-                        otherToggle.nextElementSibling.classList.remove('show');
+            if (!toggle.hasAttribute('onclick')) {
+                toggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Close any other open dropdowns first
+                    dropdownToggles.forEach(otherToggle => {
+                        if (otherToggle !== this && otherToggle.classList.contains('open')) {
+                            otherToggle.classList.remove('open');
+                            const nextMenu = otherToggle.nextElementSibling;
+                            if (nextMenu && nextMenu.classList.contains('dropdown-menu')) {
+                                nextMenu.classList.remove('show');
+                            }
+                        }
+                    });
+                    
+                    // Toggle current dropdown
+                    this.classList.toggle('open');
+                    const dropdownMenu = this.nextElementSibling;
+                    if (dropdownMenu && dropdownMenu.classList.contains('dropdown-menu')) {
+                        dropdownMenu.classList.toggle('show');
                     }
-                });
-                
-                // Toggle current dropdown
-                this.classList.toggle('open');
-                const dropdownMenu = this.nextElementSibling;
-                dropdownMenu.classList.toggle('show');
-                
-                // Adjust free trial section position
-                setTimeout(adjustFreeTrialPosition, 50);
-            });
-        });
-        
-        // Auto-open dropdown if a child is active
-        const activeDropdownItem = document.querySelector('.dropdown-item.active');
-        if (activeDropdownItem) {
-            const parentDropdown = activeDropdownItem.closest('.dropdown-container');
-            if (parentDropdown) {
-                const dropdownToggle = parentDropdown.querySelector('.dropdown-toggle');
-                const dropdownMenu = parentDropdown.querySelector('.dropdown-menu');
-                if (dropdownToggle && dropdownMenu) {
-                    dropdownToggle.classList.add('open');
-                    dropdownMenu.classList.add('show');
                     
                     // Adjust free trial section position
                     setTimeout(adjustFreeTrialPosition, 50);
+                });
+            }
+        });
+        
+        // Restore dropdown states from localStorage or auto-open if a child is active
+        function restoreDropdownStates() {
+            // First check for active items
+            const activeDropdownItem = document.querySelector('.dropdown-item.active');
+            if (activeDropdownItem) {
+                const parentDropdown = activeDropdownItem.closest('.dropdown-container');
+                if (parentDropdown) {
+                    const dropdownToggle = parentDropdown.querySelector('.dropdown-toggle');
+                    const dropdownMenu = parentDropdown.querySelector('.dropdown-menu');
+                    if (dropdownToggle && dropdownMenu) {
+                        dropdownToggle.classList.add('open');
+                        dropdownMenu.classList.add('show');
+                        saveDropdownState(parentDropdown.id, true);
+                    }
+                }
+                
+                // If it's in a nested dropdown, open that too
+                const nestedParent = activeDropdownItem.closest('.nested-dropdown');
+                if (nestedParent) {
+                    const nestedToggle = nestedParent.querySelector('.dropdown-toggle');
+                    const nestedMenu = nestedParent.querySelector('.nested-dropdown-menu');
+                    if (nestedToggle && nestedMenu) {
+                        nestedToggle.classList.add('open');
+                        nestedMenu.classList.add('show');
+                        saveDropdownState(nestedParent.id, true);
+                    }
                 }
             }
+            
+            // Then restore states from localStorage
+            try {
+                // Restore main dropdowns
+                document.querySelectorAll('.dropdown-container').forEach(container => {
+                    if (getDropdownState(container.id)) {
+                        const toggle = container.querySelector('.dropdown-toggle');
+                        const menu = container.querySelector('.dropdown-menu');
+                        if (toggle && menu) {
+                            toggle.classList.add('open');
+                            menu.classList.add('show');
+                        }
+                    }
+                });
+                
+                // Restore nested dropdowns
+                document.querySelectorAll('.nested-dropdown').forEach(container => {
+                    if (getDropdownState(container.id)) {
+                        const toggle = container.querySelector('.dropdown-toggle');
+                        const menu = container.querySelector('.nested-dropdown-menu');
+                        if (toggle && menu) {
+                            toggle.classList.add('open');
+                            menu.classList.add('show');
+                            
+                            // Make sure parent is open too
+                            const parentDropdown = container.closest('.dropdown-container');
+                            if (parentDropdown) {
+                                parentDropdown.querySelector('.dropdown-toggle')?.classList.add('open');
+                                parentDropdown.querySelector('.dropdown-menu')?.classList.add('show');
+                            }
+                        }
+                    }
+                });
+            } catch (e) {
+                console.log('Error restoring dropdown states:', e);
+            }
+            
+            // Adjust free trial section position
+            setTimeout(adjustFreeTrialPosition, 50);
         }
+        
+        // Call restore function
+        restoreDropdownStates();
+        
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(e) {
+            // Close main dropdowns when clicking outside
+            if (!e.target.closest('.dropdown-container')) {
+                document.querySelectorAll('.dropdown-container').forEach(container => {
+                    container.querySelector('.dropdown-toggle')?.classList.remove('open');
+                    container.querySelector('.dropdown-menu')?.classList.remove('show');
+                });
+            }
+            
+            // Close nested dropdowns when clicking outside
+            if (!e.target.closest('.nested-dropdown')) {
+                document.querySelectorAll('.nested-dropdown').forEach(container => {
+                    container.querySelector('.dropdown-toggle')?.classList.remove('open');
+                    container.querySelector('.nested-dropdown-menu')?.classList.remove('show');
+                });
+            }
+        });
         
         // Adjust on window resize
         window.addEventListener('resize', adjustFreeTrialPosition);

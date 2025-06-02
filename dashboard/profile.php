@@ -239,66 +239,189 @@ $timezones = [
     <!-- Link to your custom CSS file -->
     <link rel="stylesheet" href="css/dashboard_style.css">
     <style>
-        html, body {
-            height: 100%;
-        }
+        /* Layout styling */
         body {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            padding-top: 60px; /* Space for fixed header */
         }
-        .dashboard-container {
-            flex: 1 0 auto;
-            display: flex;
-            flex-direction: column;
+        
+        /* Sidebar styling */
+        .sidebar {
+            position: fixed;
+            top: 60px; /* Header height */
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+            padding: 0;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            background-color: #fff;
+            overflow-y: auto;
+            width: 16.66667%; /* col-md-2 */
+            height: calc(100vh - 60px);
         }
-        .main-content-area {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
+        
+        /* Main content area */
+        .main-content {
+            margin-top: 20px;
         }
-        .dashboard-body {
-            flex: 1 0 auto;
-            padding-bottom: 30px;
+        
+        /* Profile page container */
+        .profile-page-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            padding: 20px;
+            margin-bottom: 30px;
         }
+        
+        /* Footer styling */
         .footer {
-            flex-shrink: 0;
-            margin-top: auto;
-            clear: both;
             position: relative;
             width: 100%;
+            border-top: 1px solid #dee2e6;
+            margin-top: 50px;
+        }
+        
+        /* Mobile overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1029;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar-overlay.show {
+            display: block;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 767.98px) {
+            .sidebar {
+                position: fixed;
+                top: 60px;
+                left: -100%;
+                transition: all 0.3s;
+                z-index: 1030;
+                width: 80%;
+                max-width: 300px;
+                height: calc(100vh - 60px);
+            }
+            
+            .sidebar.show {
+                left: 0;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                width: 100%;
+            }
+            
+            /* Use the existing navbar-toggler from header */
+            .navbar-toggler {
+                display: block;
+            }
+        }
+        
+        /* Profile page container styling moved to single definition above */
+        
+        /* Profile styling */
+        .profile-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        .nav-tabs .nav-link {
+            color: #6c757d;
+            font-weight: 500;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: #6366f1;
+            border-bottom: 2px solid #6366f1;
+        }
+        
+        
+        /* Password toggle button styling */
+        .toggle-password {
+            cursor: pointer;
+        }
+        
+        /* Password strength meter styling */
+        .password-strength {
+            margin-top: 5px;
+        }
+        
+        .password-strength .progress {
+            height: 5px;
+            margin-bottom: 5px;
+        }
+        
+        /* Form styling */
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 0.25rem rgba(99, 102, 241, 0.25);
+        }
+        
+        .btn-primary {
+            background-color: #6366f1;
+            border-color: #6366f1;
+        }
+        
+        .btn-primary:hover {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-container container-fluid">
-        <div class="row">
-            <!-- Mobile Toggle Button -->
-            <button class="sidebar-toggle d-md-none" id="sidebarToggle">
-                <i class="fas fa-bars"></i>
-            </button>
-
-            <!-- Mobile Overlay -->
-            <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-            <div class="col-md-3 col-lg-2 sidebar" id="sidebarMenu">
-<?php include '../includes/sidebar.php'; ?>
-            </div>
-            <div class="col-md-9 col-lg-10 main-content-area">
 <?php include '../includes/dashboard-header.php'; ?>
-                <div class="dashboard-body">
-                    <div class="profile-page-container">
-                        <h2>Profile Account</h2>
 
-                        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+<!-- Mobile Overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block sidebar" id="sidebarMenu" style="top: 60px; height: calc(100vh - 60px); overflow-y: auto;">
+            <?php include '../includes/sidebar.php'; ?>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 ms-sm-auto px-md-4 main-content">
+                <div class="dashboard-body container py-4">
+                    <div class="profile-page-container">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="mb-0"><i class="fas fa-user-circle me-2 text-primary"></i>Profile Account</h2>
+                            <nav aria-label="breadcrumb">
+                                <ol class="breadcrumb mb-0">
+                                    <li class="breadcrumb-item"><a href="../dashboard/">Dashboard</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                                </ol>
+                            </nav>
+                        </div>
+
+                        <ul class="nav nav-tabs nav-fill mb-4" id="profileTabs" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link <?php echo !isset($_GET['tab']) || $_GET['tab'] === 'personal-info' ? 'active' : ''; ?>" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="<?php echo !isset($_GET['tab']) || $_GET['tab'] === 'personal-info' ? 'true' : 'false'; ?>">Personal Info</button>
+                                <button class="nav-link <?php echo !isset($_GET['tab']) || $_GET['tab'] === 'personal-info' ? 'active' : ''; ?>" id="personal-info-tab" data-bs-toggle="tab" data-bs-target="#personal-info" type="button" role="tab" aria-controls="personal-info" aria-selected="<?php echo !isset($_GET['tab']) || $_GET['tab'] === 'personal-info' ? 'true' : 'false'; ?>">
+                                    <i class="fas fa-user me-2"></i>Personal Info
+                                </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link <?php echo isset($_GET['tab']) && $_GET['tab'] === 'change-password' ? 'active' : ''; ?>" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#change-password" type="button" role="tab" aria-controls="change-password" aria-selected="<?php echo isset($_GET['tab']) && $_GET['tab'] === 'change-password' ? 'true' : 'false'; ?>">Change Password</button>
+                                <button class="nav-link <?php echo isset($_GET['tab']) && $_GET['tab'] === 'change-password' ? 'active' : ''; ?>" id="change-password-tab" data-bs-toggle="tab" data-bs-target="#change-password" type="button" role="tab" aria-controls="change-password" aria-selected="<?php echo isset($_GET['tab']) && $_GET['tab'] === 'change-password' ? 'true' : 'false'; ?>">
+                                    <i class="fas fa-lock me-2"></i>Change Password
+                                </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link <?php echo isset($_GET['tab']) && $_GET['tab'] === 'store-authentication' ? 'active' : ''; ?>" id="store-authentication-tab" data-bs-toggle="tab" data-bs-target="#store-authentication" type="button" role="tab" aria-controls="store-authentication" aria-selected="<?php echo isset($_GET['tab']) && $_GET['tab'] === 'store-authentication' ? 'true' : 'false'; ?>">Change Store Authentication</button>
+                                <button class="nav-link <?php echo isset($_GET['tab']) && $_GET['tab'] === 'store-authentication' ? 'active' : ''; ?>" id="store-authentication-tab" data-bs-toggle="tab" data-bs-target="#store-authentication" type="button" role="tab" aria-controls="store-authentication" aria-selected="<?php echo isset($_GET['tab']) && $_GET['tab'] === 'store-authentication' ? 'true' : 'false'; ?>">
+                                    <i class="fas fa-store me-2"></i>Store Authentication
+                                </button>
                             </li>
                         </ul>
                         <?php if (!empty($success_message)): ?>
@@ -319,23 +442,30 @@ $timezones = [
                             <div class="tab-pane fade <?php echo !isset($_GET['tab']) || $_GET['tab'] === 'personal-info' ? 'show active' : ''; ?>" id="personal-info" role="tabpanel" aria-labelledby="personal-info-tab">
                                 <div class="row mt-4">
                                     <div class="col-md-4 text-center">
-                                        <div class="profile-card p-4 bg-light rounded shadow-sm">
-                                            <div class="avatar-upload-area mb-3">
-                                                <img src="<?php echo $userAvatar; ?>" alt="User Avatar" class="rounded-circle mb-3 shadow" width="120" height="120" id="profile-image">
+                                        <div class="profile-card p-4 rounded shadow-sm">
+                                            <div class="avatar-upload-area mb-3 text-center">
+                                                <div class="position-relative d-inline-block mb-3">
+                                                    <img src="<?php echo $userAvatar; ?>" alt="User Avatar" class="rounded-circle shadow" width="120" height="120" id="profile-image" style="object-fit: cover;">
+                                                    <label for="profile-photo-upload" class="position-absolute bottom-0 end-0 bg-white rounded-circle p-2 shadow-sm" style="cursor: pointer;" data-bs-toggle="tooltip" title="Change Photo">
+                                                        <i class="fas fa-camera text-primary"></i>
+                                                    </label>
+                                                </div>
                                                 <form method="post" action="" enctype="multipart/form-data" id="profile-image-form">
-                                                    <div class="d-grid gap-2">
-                                                        <label for="profile-photo-upload" class="btn btn-outline-primary btn-sm"><i class="fas fa-camera me-2"></i>Change Photo</label>
-                                                        <input type="file" id="profile-photo-upload" name="profile_image" class="d-none" accept="image/jpeg,image/png,image/gif,image/webp" onchange="document.getElementById('profile-image-form').submit();">
-                                                        <input type="hidden" name="upload_profile_image" value="1">
-                                                    </div>
+                                                    <input type="file" id="profile-photo-upload" name="profile_image" class="d-none" accept="image/jpeg,image/png,image/gif,image/webp" onchange="document.getElementById('profile-image-form').submit();">
+                                                    <input type="hidden" name="upload_profile_image" value="1">
                                                 </form>
                                                 <div class="mt-2 small text-muted">Max size: 2MB. Formats: JPG, PNG, GIF, WEBP</div>
                                             </div>
                                             <div class="user-info text-center">
-                                                <h5 class="mb-1"><?php echo $userFirstName . ' ' . $userLastName; ?></h5>
-                                                <p class="text-muted mb-2"><?php echo $userEmail; ?></p>
-                                                <div class="badge bg-primary mb-2"><?php echo $userPackage; ?> Plan</div>
-                                                <p class="small text-muted">Account Status: <?php echo $userStatus; ?></p>
+                                                <h4 class="mb-1"><?php echo $userFirstName . ' ' . $userLastName; ?></h4>
+                                                <p class="text-muted mb-3"><?php echo $userEmail; ?></p>
+                                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                                    <div class="badge bg-primary"><?php echo $userPackage; ?> Plan</div>
+                                                    <div class="badge bg-<?php echo $userStatus === 'Active' ? 'success' : 'warning'; ?>"><?php echo $userStatus; ?></div>
+                                                </div>
+                                                <div class="d-grid gap-2 mt-3">
+                                                    <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-crown me-2"></i>Upgrade Plan</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -525,6 +655,10 @@ $timezones = [
             </div>
         </div>
     </div>
+<!-- Footer -->
+<?php include '../includes/dashboard-footer.php'; ?>
+
+
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
@@ -532,6 +666,31 @@ $timezones = [
     <!-- Custom JavaScript for Profile Page -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Use the existing toggle button from header
+            const sidebar = document.getElementById('sidebarMenu');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            
+            // Find the toggle button that already exists in the header
+            const existingToggle = document.querySelector('.navbar-toggler');
+            
+            if (existingToggle && sidebar && sidebarOverlay) {
+                // Remove any existing event listeners
+                const newToggle = existingToggle.cloneNode(true);
+                existingToggle.parentNode.replaceChild(newToggle, existingToggle);
+                
+                // Add our sidebar toggle functionality
+                newToggle.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    sidebar.classList.toggle('show');
+                    sidebarOverlay.classList.toggle('show');
+                });
+                
+                sidebarOverlay.addEventListener('click', function() {
+                    sidebar.classList.remove('show');
+                    sidebarOverlay.classList.remove('show');
+                });
+            }
+            
             // Handle tab navigation from URL parameters
             const urlParams = new URLSearchParams(window.location.search);
             const tabParam = urlParams.get('tab');
@@ -555,6 +714,7 @@ $timezones = [
                     window.history.replaceState(null, '', url.toString());
                 });
             });
+            
             // Password toggle functionality
             const togglePasswordButtons = document.querySelectorAll('.toggle-password');
             if (togglePasswordButtons) {
@@ -706,40 +866,5 @@ $timezones = [
             });
         });
     </script>
-    
-    <style>
-        /* Additional styles for footer positioning */
-        .dashboard-container {
-            min-height: calc(100vh - 60px); /* Adjust based on footer height */
-            position: relative;
-            padding-bottom: 60px; /* Footer height */
-        }
-        
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px; /* Set footer height */
-            line-height: 60px; /* Vertically center the text */
-            background-color: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-        }
-        
-        /* Password toggle button styling */
-        .toggle-password {
-            cursor: pointer;
-        }
-        
-        /* Password strength meter styling */
-        .password-strength {
-            margin-top: 5px;
-        }
-        
-        .password-strength .progress {
-            height: 5px;
-            margin-bottom: 5px;
-        }
-    </style>
-<?php include '../includes/dashboard-footer.php'; ?>
 </body>
-</html> 
+</html>

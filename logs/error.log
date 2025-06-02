@@ -766,3 +766,54 @@ Stack trace:
 [02-Jun-2025 11:27:44 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
 [02-Jun-2025 11:27:44 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
 [02-Jun-2025 11:27:44 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[02-Jun-2025 11:56:42 Europe/Berlin] Query execution error: Table 'crm_dashboard.lead_status' doesn't exist
+[02-Jun-2025 11:56:42 Europe/Berlin] Error fetching lead status data: Table 'crm_dashboard.lead_status' doesn't exist
+[02-Jun-2025 11:58:06 Europe/Berlin] Query execution error: Table 'crm_dashboard.lead_status' doesn't exist
+[02-Jun-2025 11:58:06 Europe/Berlin] Error fetching lead status time data: Table 'crm_dashboard.lead_status' doesn't exist
+[02-Jun-2025 11:59:38 Europe/Berlin] Error fetching third-party source data: Unknown column 'is_third_party' in 'where clause'
+[02-Jun-2025 12:01:45 Europe/Berlin] Query execution error: Table 'crm_dashboard.lead_status' doesn't exist
+[02-Jun-2025 12:01:45 Europe/Berlin] Error fetching source data: Table 'crm_dashboard.lead_status' doesn't exist
+[02-Jun-2025 12:03:39 Europe/Berlin] Error fetching label data: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 12:07:04 Europe/Berlin] Error fetching label data: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 12:07:48 Europe/Berlin] Error fetching task status data: Table 'crm_dashboard.task_status' doesn't exist
+[02-Jun-2025 12:08:28 Europe/Berlin] Error fetching task priority data: Table 'crm_dashboard.task_priorities' doesn't exist
+[02-Jun-2025 12:11:30 Europe/Berlin] Error fetching staff source data: Unknown column 'role' in 'where clause'
+[02-Jun-2025 12:21:30 Europe/Berlin] Error fetching staff label data: Table 'crm_dashboard.lead_labels' doesn't exist
+[02-Jun-2025 12:21:33 Europe/Berlin] Error fetching task label data: Table 'crm_dashboard.task_labels' doesn't exist
+[02-Jun-2025 12:21:35 Europe/Berlin] Error fetching task delay data: Table 'crm_dashboard.task_priorities' doesn't exist
+[02-Jun-2025 13:46:09 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 993
+[02-Jun-2025 13:46:09 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 993
+[02-Jun-2025 13:46:09 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 1001
+[02-Jun-2025 13:46:09 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 1001
+[02-Jun-2025 13:47:22 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 980
+[02-Jun-2025 13:47:22 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 980
+[02-Jun-2025 13:47:22 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 988
+[02-Jun-2025 13:47:22 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 988
+[02-Jun-2025 13:47:23 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 980
+[02-Jun-2025 13:47:23 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 980
+[02-Jun-2025 13:47:23 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 988
+[02-Jun-2025 13:47:23 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 988
+[02-Jun-2025 13:47:33 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 980
+[02-Jun-2025 13:47:33 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 980
+[02-Jun-2025 13:47:33 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 988
+[02-Jun-2025 13:47:33 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 988
+[02-Jun-2025 13:48:02 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:02 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:02 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:02 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:13 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:13 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:13 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:13 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:39 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:39 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:39 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:39 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:40 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:40 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 969
+[02-Jun-2025 13:48:40 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:48:40 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 977
+[02-Jun-2025 13:49:35 Europe/Berlin] PHP Warning:  Undefined variable $userRole in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 964
+[02-Jun-2025 13:49:35 Europe/Berlin] PHP Deprecated:  ucfirst(): Passing null to parameter #1 ($string) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 964
+[02-Jun-2025 13:49:35 Europe/Berlin] PHP Warning:  Undefined variable $userCreatedAt in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 972
+[02-Jun-2025 13:49:35 Europe/Berlin] PHP Deprecated:  strtotime(): Passing null to parameter #1 ($datetime) of type string is deprecated in C:\xampp\htdocs\Lead-Management-System\dashboard\profile.php on line 972

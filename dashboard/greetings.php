@@ -2176,8 +2176,8 @@ $greetings = [];
             }
 
             /* Sidebar improvements */
-            .date-range-sidebar {
-                background: #F8FAFC;
+        .date-range-sidebar {
+            background: #F8FAFC;
                 padding: 1rem;
                 border-bottom: 1px solid #E2E8F0;
                 border-right: none;
@@ -2217,8 +2217,8 @@ $greetings = [];
             .nav-btn {
                 width: 44px;
                 height: 44px;
-                display: flex;
-                align-items: center;
+            display: flex;
+            align-items: center;
                 justify-content: center;
                 background: white;
                 border: 1px solid #E2E8F0;
@@ -2226,19 +2226,19 @@ $greetings = [];
                 font-size: 1.1rem;
                 color: #1E293B;
                 touch-action: manipulation;
-            }
+        }
 
-            .month-selector {
+        .month-selector {
                 flex: 1;
-                display: flex;
-                gap: 0.5rem;
-            }
+            display: flex;
+            gap: 0.5rem;
+        }
 
-            .month-selector select {
+        .month-selector select {
                 height: 44px;
                 padding: 0 1rem;
                 font-size: 1rem;
-                border: 1px solid #E2E8F0;
+            border: 1px solid #E2E8F0;
                 border-radius: 8px;
                 background-color: white;
                 appearance: none;
@@ -2254,50 +2254,50 @@ $greetings = [];
                 padding: 1rem;
                 margin-bottom: 0.5rem;
                 border-radius: 8px;
-                background: white;
+            background: white;
                 border: 1px solid #E2E8F0;
-                font-weight: 500;
+            font-weight: 500;
                 touch-action: manipulation;
             }
 
             .date-option.active {
                 background: #4F46E5;
-                color: white;
+            color: white;
                 border-color: #4F46E5;
             }
 
             /* Custom range inputs improvements */
-            .custom-range-input {
+        .custom-range-input {
                 margin: 1rem 0;
-                padding: 1rem;
-                background: white;
-                border-radius: 8px;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
                 border: 1px solid #E2E8F0;
-            }
+        }
 
-            .custom-range-input input {
+        .custom-range-input input {
                 width: 100%;
                 height: 44px;
                 padding: 0 1rem;
                 margin-bottom: 0.5rem;
-                border: 1px solid #E2E8F0;
+            border: 1px solid #E2E8F0;
                 border-radius: 8px;
                 font-size: 1rem;
             }
 
             /* Selected dates display improvements */
-            .selected-dates {
+        .selected-dates {
                 margin: 1rem;
-                padding: 1rem;
+            padding: 1rem;
                 background: white;
-                border-radius: 8px;
-                border: 1px solid #E2E8F0;
-            }
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+        }
 
-            .selected-dates input {
+        .selected-dates input {
                 height: 44px;
                 padding: 0 1rem;
-                margin-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
                 font-size: 1rem;
                 background: #F8FAFC;
             }
@@ -2306,7 +2306,7 @@ $greetings = [];
             .date-range-modal .modal-footer {
                 padding: 1rem;
                 border-top: 1px solid #E2E8F0;
-                background: white;
+            background: white;
                 position: sticky;
                 bottom: 0;
                 z-index: 1;
@@ -2315,7 +2315,7 @@ $greetings = [];
             .date-range-modal .btn {
                 height: 44px;
                 font-size: 1rem;
-                font-weight: 500;
+            font-weight: 500;
                 padding: 0 1.5rem;
                 border-radius: 8px;
                 width: 100%;
@@ -2578,8 +2578,10 @@ $greetings = [];
                     </div>
                 </div>
         </div>
+
+        <!-- Footer -->
+        <?php include '../includes/dashboard-footer.php'; ?>
     </div>
-</div>
 
 <!-- MODAL COMPONENTS -->
 
