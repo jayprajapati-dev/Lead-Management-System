@@ -7,6 +7,11 @@ if (session_status() === PHP_SESSION_NONE) {
 // Include configuration
 require_once '../includes/config.php';
 
+// Basic sanitize function (you can improve this as needed)
+function sanitizeInput($data) {
+    return htmlspecialchars(trim($data), ENT_QUOTES, 'UTF-8');
+}
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     die(json_encode([
@@ -104,18 +109,18 @@ try {
 
     $stmt = $conn->prepare($sql);
     $stmt->bind_param(
-        "ssisssssssi",
-        $data['status'],
-        $source_id,
-        $data['assigned_to'],
-        $data['phone'],
-        $data['company'],
-        $data['lead_date'],
-        $data['name'],
-        $data['email'],
-        $data['reference'],
-        $data['address'],
-        $_SESSION['user_id']
+        "siissssssii",
+        $data['status'],      // string
+        $source_id,           // int
+        $data['assigned_to'], // int
+        $data['phone'],       // string
+        $data['company'],     // string
+        $data['lead_date'],   // string (date)
+        $data['name'],        // string
+        $data['email'],       // string
+        $data['reference'],   // string
+        $data['address'],     // string
+        $_SESSION['user_id']  // int
     );
 
     // Execute the statement
@@ -176,9 +181,9 @@ try {
     // Log the error
     error_log("Error creating lead: " . $e->getMessage());
 
-    // Return error response with more details in development
+    // Return error response (consider hiding message in production)
     echo json_encode([
         'status' => 'error',
         'message' => 'Failed to create lead: ' . $e->getMessage()
     ]);
-} 
+}   

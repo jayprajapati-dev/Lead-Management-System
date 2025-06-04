@@ -17,6 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     ]));
 }
 
+submitBtn.addEventListener('click', function(e) {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+    }
+
+    const formData = new FormData(form);
+
+    // Add country code to phone number
+    const countryCode = document.querySelector('.country-flag-dropdown').textContent.trim().split(' ')[0];
+    formData.set('customer_mobile', countryCode + formData.get('customer_mobile'));
+
+    // Generate unique submission_id
+    const submissionId = 'lead_' + Date.now();
+    formData.set('submission_id', submissionId);
+
+    // Submit form
+    submitLead(formData);
+});
+
+
 // Add duplicate submission prevention
 $submission_id = $_POST['submission_id'] ?? '';
 if (empty($submission_id)) {
@@ -44,8 +67,8 @@ try {
     // Get POST data
     $data = [
         'name' => $_POST['customer_name'] ?? '',
-        'email' => $_POST['customer_email'] ?? null,
-        'phone' => $_POST['mobile_number'] ?? '',
+        'email' => $_POST['email'] ?? null,
+        'phone' => $_POST['customer_mobile'] ?? '',
         'company' => $_POST['company_name'] ?? null,
         'address' => $_POST['address'] ?? null,
         'notes' => $_POST['comment'] ?? null,

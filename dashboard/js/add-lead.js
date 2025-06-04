@@ -80,6 +80,7 @@ function populateLabelsDropdown(labels) {
     }
 }
 
+// submitBtn with id submitLeadBtn listens to click event and triggers form validation & AJAX submit.
 function initializeFormSubmission() {
     const form = document.getElementById('addLeadForm');
     const submitBtn = document.getElementById('submitLeadBtn');
@@ -96,10 +97,16 @@ function initializeFormSubmission() {
         const formData = new FormData(form);
         
         // Add country code to phone number
-        const countryCode = document.querySelector('.country-flag-dropdown').textContent.trim().split(' ')[0];
+        const countryCode = document.querySelector('.country-flag-dropdown').textContent.trim().split(' ')[1];
+        // Note: split index 1 because your dropdown button has "flag + code", e.g. "🇮🇳 +91"
+        // Adjust if needed depending on actual innerText content
         formData.set('customer_mobile', countryCode + formData.get('customer_mobile'));
         
-        // Submit form
+        // Generate unique submission_id and add to formData
+        const submissionId = 'lead_' + Date.now();
+        formData.set('submission_id', submissionId);
+        
+        // Submit form via AJAX
         submitLead(formData);
     });
 }
@@ -111,7 +118,7 @@ function submitLead(formData) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
     
-    fetch('add-lead.php', {
+    fetch('ajax/save_lead.php', {  // <-- Removed extra comma from your original
         method: 'POST',
         body: formData
     })
@@ -159,4 +166,4 @@ function submitLead(formData) {
         submitBtn.disabled = false;
         submitBtn.textContent = originalText;
     });
-} 
+}
