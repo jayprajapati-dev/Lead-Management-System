@@ -3,28 +3,41 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-require_once '../includes/config.php';
-
+// Get logged in user details from session (dynamic)
 $loggedInUserId = $_SESSION['user_id'] ?? '';
-$loggedInUserName = $_SESSION['user_first_name'] ?? 'Unknown User';
 
 $usersList = [];
 try {
-    $usersResult = executeQuery("SELECT id, first_name, last_name FROM users WHERE status = 'active' ORDER BY first_name")->get_result();
-    if ($usersResult) {
-        while ($user = $usersResult->fetch_assoc()) {
+    $conn = new mysqli('localhost', 'root', '', 'crm_dashboard');
+    
+    if ($conn->connect_error) {
+        throw new Exception("Connection failed: " . $conn->connect_error);
+    }
+    
+    // Get all users from database
+    $query = "SELECT id, CONCAT(first_name, ' ', last_name) as full_name FROM users ORDER BY first_name";
+    $result = $conn->query($query);
+    
+    if ($result && $result->num_rows > 0) {
+        while ($user = $result->fetch_assoc()) {
             $usersList[] = [
                 'id' => $user['id'],
-                'name' => htmlspecialchars($user['first_name'] . ' ' . $user['last_name'])
+                'full_name' => htmlspecialchars($user['full_name'])
             ];
         }
-        $usersResult->free();
     }
+    $conn->close();
+    
 } catch (Exception $e) {
-    error_log("Error fetching users for dropdown: " . $e->getMessage());
-    $usersList = [];
+    echo "<script>console.error('Database Error: " . $e->getMessage() . "');</script>";
 }
+
+// Debug
+echo "<script>console.log('Current User ID: " . $loggedInUserId . "');</script>";
+echo "<script>console.log('Users List: ', " . json_encode($usersList) . ");</script>";
 ?>
+
+
 
 <!-- Add Lead Modal -->
 <div class="modal fade" id="addLeadModal" tabindex="-1" aria-labelledby="addLeadModalLabel" aria-hidden="true">
@@ -78,17 +91,18 @@ try {
           <div class="row mb-4">
             <div class="col-md-6">
               <label for="assigned_to" class="form-label fw-bold required-field">
-                <i class="fas fa-user-check me-2"></i>Assigned To
+                <i class="fas fa-user-check me-2"></i>User:
               </label>
-              <select class="form-select form-select-lg" id="assigned_to" name="user_id" required>
-                <option value="" disabled>Select User</option>
-                <?php foreach ($usersList as $user): ?>
-                  <option value="<?php echo htmlspecialchars($user['id']); ?>"
-                    <?php echo ($loggedInUserId == $user['id']) ? 'selected' : ''; ?>>
-                    <?php echo $user['name']; ?>
-                  </option>
-                <?php endforeach; ?>
-              </select>
+              <!-- In the dropdown, pre-select logged in user: -->
+              <select class="form-select form-select-lg" id="assigned_to" name="assigned_to" required>
+    <option value="" disabled>Select User</option>
+    <?php foreach ($usersList as $user): ?>
+        <option value="<?php echo htmlspecialchars($user['id']); ?>" 
+                <?php echo ($user['id'] == $loggedInUserId) ? 'selected' : ''; ?>>
+            <?php echo htmlspecialchars($user['full_name']); ?>
+        </option>
+    <?php endforeach; ?>
+</select>
               <div class="invalid-feedback">Please select a user</div>
             </div>
             <div class="col-md-6">
@@ -264,6 +278,10 @@ try {
         showErrorToast('Network or server error occurred.');
       });
     }
+    // Add after the try-catch block:
+if (empty($usersList)) {
+    echo "<script>console.error('No active users found!');</script>";
+}
 
     function showErrorToast(message) {
       const toastEl = document.getElementById('leadErrorToast');

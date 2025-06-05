@@ -828,3 +828,142 @@ Stack trace:
 [02-Jun-2025 21:50:13 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
 [02-Jun-2025 21:50:13 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
 [02-Jun-2025 21:56:54 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 10:02:16 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 14:39:44 Europe/Berlin] PHP Warning:  mysqli::__construct(): Error while reading greeting packet. PID=5740 in C:\xampp\htdocs\Lead-Management-System\includes\config.php on line 38
+[03-Jun-2025 14:39:44 Europe/Berlin] Database connection error: MySQL server has gone away
+[03-Jun-2025 15:00:22 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:00:25 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:00:41 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:08:46 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:12:51 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
+[03-Jun-2025 15:12:51 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
+[03-Jun-2025 15:12:51 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[03-Jun-2025 15:12:51 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[03-Jun-2025 15:12:53 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:15:51 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:30:24 Europe/Berlin] Received data: 
+[03-Jun-2025 15:30:34 Europe/Berlin] Received data: Array
+(
+    [content] => {"status":"error","message":"Note content is required"}{"status":"error","message":"Note content is required"}
+)
+
+[03-Jun-2025 15:30:40 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:30:45 Europe/Berlin] Received data: Array
+(
+    [content] => {"status":"error","message":"Note content is required"}
+)
+
+[03-Jun-2025 15:31:26 Europe/Berlin] Received data: 
+[03-Jun-2025 15:34:53 Europe/Berlin] Received data: Array
+(
+    [content] => C:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.php
+)
+
+[03-Jun-2025 15:35:02 Europe/Berlin] Received data: Array
+(
+    [content] => C:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.php
+)
+
+[03-Jun-2025 15:35:04 Europe/Berlin] Received data: Array
+(
+    [content] => C:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.php
+)
+
+[03-Jun-2025 15:35:06 Europe/Berlin] Received data: Array
+(
+    [content] => C:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.php
+)
+
+[03-Jun-2025 15:35:13 Europe/Berlin] Received data: Array
+(
+    [content] => C:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.phpC:\xampp\htdocs\Lead-Management-System\includes\modals\add-note.php
+)
+
+[03-Jun-2025 15:38:36 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 15:45:26 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 17:21:35 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[03-Jun-2025 17:21:57 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
+[03-Jun-2025 17:21:57 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 238
+[03-Jun-2025 17:21:57 Europe/Berlin] PHP Warning:  Undefined variable $usersList in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[03-Jun-2025 17:21:57 Europe/Berlin] PHP Warning:  foreach() argument must be of type array|object, null given in C:\xampp\htdocs\Lead-Management-System\dashboard\reminders.php on line 246
+[03-Jun-2025 17:23:00 Europe/Berlin] Query execution error: Table 'crm_dashboard.lead_status' doesn't exist
+[03-Jun-2025 17:23:00 Europe/Berlin] Error fetching lead status data: Table 'crm_dashboard.lead_status' doesn't exist
+[04-Jun-2025 11:23:32 Europe/Berlin] PHP Warning:  mysqli::__construct(): Error while reading greeting packet. PID=4572 in C:\xampp\htdocs\Lead-Management-System\includes\config.php on line 38
+[04-Jun-2025 11:23:32 Europe/Berlin] Database connection error: MySQL server has gone away
+[04-Jun-2025 11:00:17 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:30 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:31 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:31 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:33 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:34 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:34 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:35 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:01:43 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:03:19 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:03:19 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:03:20 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:03:20 UTC] Database connection error: Access denied for user 'root'@'localhost' (using password: NO)
+[04-Jun-2025 11:18:35 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function isLoggedIn() in C:\Program Files\Ampps\www\Lead-Management-System\public\login.php:10
+Stack trace:
+#0 {main}
+  thrown in C:\Program Files\Ampps\www\Lead-Management-System\public\login.php on line 10
+[04-Jun-2025 11:22:56 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function executeQuery() in C:\Program Files\Ampps\www\Lead-Management-System\public\register.php:83
+Stack trace:
+#0 {main}
+  thrown in C:\Program Files\Ampps\www\Lead-Management-System\public\register.php on line 83
+[04-Jun-2025 14:03:17 Europe/Berlin] Query execution error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[04-Jun-2025 14:03:17 Europe/Berlin] Login error: Cannot add or update a child row: a foreign key constraint fails (`crm_dashboard`.`login_history`, CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE)
+[04-Jun-2025 14:12:33 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 14:12:33 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 14:14:38 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 14:14:38 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:37:14 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:37:14 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:39:57 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:39:57 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:39:57 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:39:57 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:40:09 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[04-Jun-2025 18:40:09 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:40:09 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:48:12 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:48:12 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 18:59:48 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::fetch_assoc() in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php:15
+Stack trace:
+#0 C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php(384): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 15
+[04-Jun-2025 18:59:56 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::fetch_assoc() in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php:15
+Stack trace:
+#0 C:\xampp\htdocs\Lead-Management-System\dashboard\leads.php(941): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 15
+[04-Jun-2025 18:59:59 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::fetch_assoc() in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php:15
+Stack trace:
+#0 C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php(384): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 15
+[04-Jun-2025 19:03:07 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::fetch_assoc() in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php:15
+Stack trace:
+#0 C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php(384): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 15
+[04-Jun-2025 19:03:45 Europe/Berlin] PHP Fatal error:  Uncaught Error: Call to undefined method mysqli_stmt::fetch_assoc() in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php:15
+Stack trace:
+#0 C:\xampp\htdocs\Lead-Management-System\dashboard\dashboard.php(384): include()
+#1 {main}
+  thrown in C:\xampp\htdocs\Lead-Management-System\includes\modals\add-lead.php on line 15
+[04-Jun-2025 19:03:48 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:03:48 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:11:16 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:11:16 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:29:18 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:29:18 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:29:49 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:29:49 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:30:54 Europe/Berlin] Query execution error: Unknown column 'name' in 'field list'
+[04-Jun-2025 19:30:54 Europe/Berlin] Error fetching users for dropdown: Unknown column 'name' in 'field list'
+[05-Jun-2025 09:14:50 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[05-Jun-2025 09:14:55 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[05-Jun-2025 09:15:18 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist
+[05-Jun-2025 09:17:32 Europe/Berlin] Error fetching labels: Table 'crm_dashboard.lead_labels' doesn't exist

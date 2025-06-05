@@ -97,9 +97,9 @@ function initializeFormSubmission() {
         const formData = new FormData(form);
         
         // Add country code to phone number
-        const countryCode = document.querySelector('.country-flag-dropdown').textContent.trim().split(' ')[1];
-        // Note: split index 1 because your dropdown button has "flag + code", e.g. "🇮🇳 +91"
-        // Adjust if needed depending on actual innerText content
+        const countryCode = document.querySelector('.country-flag-dropdown').textContent.trim().split(' ')[0];
+        // Extract country code from dropdown button text
+        // The country code is the first part of the text after splitting by space
         formData.set('customer_mobile', countryCode + formData.get('customer_mobile'));
         
         // Generate unique submission_id and add to formData
@@ -118,7 +118,7 @@ function submitLead(formData) {
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
     
-    fetch('ajax/save_lead.php', {  // <-- Removed extra comma from your original
+    fetch('ajax/save_lead.php', {
         method: 'POST',
         body: formData
     })
@@ -137,9 +137,44 @@ function submitLead(formData) {
                 document.getElementById('addLeadForm').reset();
                 bootstrap.Modal.getInstance(document.getElementById('addLeadModal')).hide();
                 
-                // Refresh leads list if available
-                if (typeof refreshLeadsList === 'function') {
-                    refreshLeadsList();
+                // Get the lead status for updating UI
+                const leadStatus = formData.get('status');
+                
+                // Update dashboard if we're on dashboard.php
+                if (window.location.pathname.includes('dashboard.php')) {
+                    // Refresh dashboard data using the refreshDashboard function
+                    if (typeof refreshDashboard === 'function') {
+                        refreshDashboard();
+                    } else {
+                        console.log('refreshDashboard function not found, trying alternative methods');
+                        // Try alternative methods
+                        if (typeof fetchDashboardData === 'function') {
+                            fetchDashboardData();
+                        }
+                    }
+                    
+                    // Update status counts
+                    if (typeof updateStatusCounts === 'function') {
+                        updateStatusCounts();
+                    }
+                    
+                    // If handleAddLeadSuccess exists (from lead-display.js), call it
+                    if (typeof window.handleAddLeadSuccess === 'function') {
+                        window.handleAddLeadSuccess(data);
+                    }
+                    
+                    // Refresh the page after a short delay if needed
+                    // setTimeout(() => window.location.reload(), 1500);
+                }
+                
+                // If we're on leads.php, store info for page reload
+                if (window.location.pathname.includes('leads.php')) {
+                    sessionStorage.setItem('newLeadAdded', 'true');
+                    sessionStorage.setItem('newLeadId', data.lead?.id || '');
+                    sessionStorage.setItem('newLeadStatus', leadStatus);
+                    
+                    // Reload the page to show the new lead
+                    window.location.reload();
                 }
             });
         } else {

@@ -64,6 +64,7 @@ if ($result->num_rows > 0) {
 }
 
 try {
+    error_log("Form Data: " . print_r($_POST, true));
     // Get POST data
     $data = [
         'name' => $_POST['customer_name'] ?? '',
@@ -73,7 +74,7 @@ try {
         'address' => $_POST['address'] ?? null,
         'notes' => $_POST['comment'] ?? null,
         'reference' => $_POST['reference'] ?? null,
-        'assigned_to' => $_POST['user_id'] ?? $_SESSION['user_id'],
+        'assigned_to' => $_POST['assigned_id'] ?? $_SESSION['assigned_id'],
         'submission_id' => $submission_id
     ];
 
@@ -157,3 +158,4 @@ try {
         'message' => 'Failed to save lead'
     ]);
 } 
+error_log("Database Error: " . $conn->error);

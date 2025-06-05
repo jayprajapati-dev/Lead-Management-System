@@ -406,6 +406,50 @@ try {
         </div>
     </main>
 
+    <!-- Edit Note Modal -->
+    <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editNoteForm">
+                        <input type="hidden" id="editNoteId" name="id">
+                        <div class="mb-3">
+                            <label for="editNoteContent" class="form-label">Note Content</label>
+                            <textarea class="form-control" id="editNoteContent" name="content" rows="4" required></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveNoteChanges">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Note Modal (already exists) -->
+    <div class="modal fade" id="deleteNoteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteNoteModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want to delete this note?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="footer">
         <?php include '../includes/dashboard-footer.php'; ?>
@@ -502,6 +546,59 @@ try {
             }
         });
 
+        // Handle edit button clicks
+        let noteToEdit = null;
+        const editModal = new bootstrap.Modal(document.getElementById('editNoteModal'));
+        
+        document.querySelectorAll('.edit-note').forEach(button => {
+            button.addEventListener('click', function() {
+                noteToEdit = this.dataset.id;
+                
+                // Find the note content from the current row
+                const noteRow = this.closest('tr');
+                const noteContent = noteRow.querySelector('td:nth-child(2)').innerText;
+                
+                // Populate the edit form
+                document.getElementById('editNoteId').value = noteToEdit;
+                document.getElementById('editNoteContent').value = noteContent;
+                
+                // Show the modal
+                editModal.show();
+            });
+        });
+        
+        // Handle edit form submission
+        document.getElementById('saveNoteChanges').addEventListener('click', function() {
+            const noteId = document.getElementById('editNoteId').value;
+            const noteContent = document.getElementById('editNoteContent').value;
+            
+            if (noteId && noteContent.trim() !== '') {
+                fetch('ajax/update-note.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ 
+                        id: noteId,
+                        content: noteContent 
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        editModal.hide();
+                        window.location.reload();
+                    } else {
+                        alert('Error updating note: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while updating the note');
+                });
+            }
+        });
+        
         // Handle delete button clicks
         let noteToDelete = null;
         const deleteModal = new bootstrap.Modal(document.getElementById('deleteNoteModal'));
